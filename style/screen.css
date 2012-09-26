@@ -1,0 +1,63 @@
+#page-bottom-links {
+	background-color : #e0e0e0;
+	color : #1476bf;
+	font-size : 13px;
+	padding : 4px 10px;
+}
+
+#page-bottom-links span {
+	display : inline-block;
+	float : right;
+}
+
+#page-content {
+	background-color : #ccc;
+}
+
+#page-content-bottom {
+	background-color : #e8e8e8;
+	padding : 25px 30px 0;
+}
+
+#page-content-main {
+	background-color : #e8e8e8;
+}
+
+#page-media {
+	background-color : #1476bf;
+	background-image : url(bg_media.png);
+	background-position : top center;
+	background-repeat : repeat-y;
+	color : white;
+	font-size : 17px;
+	font-weight : bold;
+	padding : 7px 15px;
+	text-transform : uppercase;
+}
+
+#page-media a {
+	color : white;
+}
+
+#page-media-icons {
+	display : inline-block;
+	float : right;
+	margin-top : -2px;
+}
+
+#page-media-icons a {
+	display : inline-block;
+	padding : 0 1px;
+}
+
+/*--[ Page specific styles ]--------------------------------------------------*/
+
+#program div.desc {
+	background-color : #e8e8e8;
+	border-top-color : #e8e8e8;
+}
+
+#program fieldset {
+	background-color : #f6f6f6;
+}
+

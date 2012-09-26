@@ -1,0 +1,527 @@
+#page-all {
+	margin : 0 auto;
+	width : 960px;
+}
+
+#page-bottom {
+	background-image : url(bg_bottom.png);
+	background-repeat : no-repeat;
+	height : 150px;
+}
+
+#page-content {
+	position : relative;
+	padding : 0;
+}
+
+#page-content-main {
+	min-height : 400px;
+	padding : 10px 130px;
+}
+
+#page-header {
+	background-image : url(bg_header.png);
+	background-repeat : no-repeat;
+	height : 150px;
+}
+
+#page-menus {
+	background-color : #c9172a;
+	border-bottom : 1px solid silver;
+	text-align : center;
+}
+
+#page-menus ul {
+	margin : 0;
+	padding : 0;
+}
+
+#page-menus ul li {
+	display : inline;
+	list-style : none;
+	padding : 0 3px;
+	position : relative;
+}
+
+#page-menus ul li a {
+	color : white;
+	display : inline-block;
+	font-weight : bold;
+	padding : 5px 9px;
+}
+
+#page-menus ul li:hover a {
+	background-color : #acbed2;
+	color : red;
+}
+
+#page-menus ul li.sel a {
+	background-color : #acbed2;
+	color : red;
+}
+
+
+a:link,
+a:visited {
+	color : #1177bc;
+	text-decoration: none;
+}
+
+a:hover,
+a:active {
+	color :  #cc3300;
+	text-decoration : none;
+}
+
+body {
+	background-color : #ddd;
+	background-image : url(bg_content.png);
+	color : #444;
+	font-family : Arial, Helvetica, sans-serif;
+	font-size : 11pt;
+	margin : 0 0 2em;
+}
+
+div.border {
+	border : 1px solid black;
+}
+
+h1 {
+	color : #1476bf;
+	font-size : 15pt;
+}
+
+h2 {
+	color : #666;
+	font-size : 14pt;
+}
+
+img {
+	border : 0;
+}
+
+img.border {
+	border : 1px solid black;
+}
+
+img.center {
+	display : block;
+	margin : auto;
+}
+
+input {
+	font-family : Arial, Helvetica, sans-serif;
+	font-size : 11pt;
+}
+
+ol.spaced li,
+ul.spaced li {
+	margin : 0.8em 0;
+}
+
+ol.spaced15 li,
+ul.spaced15 li {
+	margin : 0.4em 0;
+}
+
+td {
+	vertical-align : top;
+}
+
+table caption {
+	font-size : 120%;
+	font-weight : bold;
+}
+
+table.border {
+	border : solid black !important;
+	border-radius : 0 !important;
+	border-width : 0 0 1px 1px !important;
+	margin : 1.5em 0;
+}
+
+table.border td,
+table.border th {
+	border : solid black !important;
+	border-radius : 0 !important;
+	border-width : 1px 1px 0 0 !important;
+	color : black;
+	padding : 1px 3px;
+}
+
+table.border th {
+	text-align : center;
+}
+
+table.center {
+	margin : auto;
+}
+
+div.faded-bg,
+fieldset.faded-bg,
+p.faded-bg,
+table.faded-bg td,
+table.faded-bg th {
+	background-color : #f2f2f2;
+	border : 1px solid #fff;
+	border-radius : 10px;
+	padding : 14px;
+}
+
+fieldset.faded-bg {
+	margin-bottom : 1em;
+	margin-top : 1em;
+}
+
+fieldset.faded-bg legend {
+	background-color : #e2e2e2;
+	border : 1px solid #fff;
+	border-radius : 10px;
+	color : #1476bf;
+	font-size : 12pt;
+	font-weight : bold;
+	padding : 8px 14px;
+}
+
+table.faded-bg h2.legend {
+	border-top : 0;
+	border-bottom : 1px solid #666;
+	margin-top : 14px;
+	padding : 0 0 4px;
+}
+
+table.no-padding-tb td,
+table.no-padding-tb th {
+	padding-bottom : 0 !important;
+	padding-top : 0 !important;
+}
+
+table.padding-20px td,
+table.padding-20px th {
+	padding : 20px;
+}
+
+.tac,
+table.tac td,
+table.tac th {
+	text-align : center;
+}
+
+.left {
+	display : table;
+	float : left;
+	margin-bottom : 15px;
+	margin-right : 25px;
+}
+
+.right {
+	display : table;
+	float : right;
+	margin-bottom : 15px;
+	margin-left : 25px;
+}
+
+.vac td,
+.vam td {
+	vertical-align : middle;
+}
+
+/*--[ BR6 specific styles ]---------------------------------------------------*/
+
+.closeButton {
+	font-size : 20pt;
+	position : absolute;
+	right : -20px;
+	top : -20px;
+}
+
+.tour {
+	margin : 1em 0;
+}
+
+.tour .c11 {
+	background-color : gray;
+	border : solid black;
+	border-radius : 8px 0 0 0;
+	border-width : 2px 0 0 2px;
+	width : 10px;
+}
+
+.tour .c12 {
+	background-color : gray;
+	border : solid black;
+	border-width : 2px 0 0 0;
+	width : 450px;
+}
+
+.tour .c13 {
+	background-color : gray;
+	border : solid black;
+	border-radius : 0 8px 0 0;
+	border-width : 2px 2px 0 0;
+	width : 10px;
+}
+
+.tour .c21 {
+	background-color : gray;
+	border : solid black;
+	border-width : 0 0 0 2px;
+}
+
+.tour .c22 {
+	background-color : gray;
+}
+
+.tour .c23 {
+	background-color : gray;
+	border : solid black;
+	border-width : 0 2px 0 0;
+}
+
+.tour .c24 {
+	border : solid black;
+	border-width : 1px 0 1px 0;
+	min-width : 25px;
+}
+
+.tour .c25 {
+	border : solid black;
+	border-width : 1px 1px 1px 0;
+	border-radius : 0 8px 8px 0;
+	width : 10px;
+}
+
+.tour .c31 {
+	background-color : gray;
+	border : solid black;
+	border-radius : 0 0 0 8px;
+	border-width : 0 0 2px 2px;
+	width : 10px;
+}
+
+.tour .c32 {
+	background-color : gray;
+	border : solid black;
+	border-width : 0 0 2px 0;
+}
+
+.tour .c33 {
+	background-color : gray;
+	border : solid black;
+	border-radius : 0 0 8px 0;
+	border-width : 0 2px 2px 0;
+	width : 10px;
+}
+/*
+.tour .c34 { 
+	border : solid black;
+	border-width : 0 1px 0 1px;
+}
+*/
+.tour .c42 { 
+	border : solid black;
+	border-width : 0 1px 0 1px;
+	padding : 10px 10px 0 50px;
+}
+/*
+.tour .c44 { 
+	border : solid black;
+	border-radius : 0 0 4px 4px;
+	border-width : 0 1px 1px 1px;
+}
+*/
+
+.tour .c52 { 
+	border : solid black;
+	border-width : 0 1px 1px 1px;
+	border-radius : 0 0 8px 8px;
+}
+
+.tour .r1,
+.tour .r3,
+.tour .r5 {
+	height : 10px;
+}
+
+.tour .join {
+	font-size : 30px;
+	margin : 30px 20px;
+	text-align : center;
+}
+
+.tour .joined {
+	color : green;
+	display : none;
+	font-size : 30px;
+	margin : 20px 20px;
+	text-align : center;
+}
+
+.tour .joined a {
+	display : block;
+	font-size : 15px;
+	
+}
+
+.tour .l1,
+.tour .l2 {
+	color : deepskyblue;
+	font-size : 15px;
+	margin : 0 0 3px;
+	text-shadow : 1px 2px black;
+}
+
+.tour .thumb {
+	float : left;
+	margin-right : 20px;
+}
+
+.tour h2 {
+	color : orange;
+	font-size : 35px;
+	letter-spacing : 1px;
+	margin : 10px 0 0;
+	text-shadow : 2px 2px black;
+}
+
+.tour h3 {
+	margin : 0 0 0 -40px;
+}
+
+.tour p {
+	margin : 0.5em 0;
+}
+
+
+#seating {
+	background-color : #fcf2c3;
+	background-image : url(../seating_layout.png);
+	background-repeat : no-repeat;
+	color : black;
+	font : 2pt arial;
+	margin-left : -100px !important;
+/*	height : 832px;*/
+	width : 900px;
+}
+
+#seating,
+#seating table {
+	margin : 0;
+	padding : 0;
+}
+
+#seating td,
+#seating th {
+	margin : 0 !important;
+	padding : 0 !important;
+}
+
+#seating .me {
+	background-color : #8f8 !important;
+	background-image : none !important;
+	cursor : help;
+	outline : 1px solid lime;
+}
+
+#seating .occ {
+	background-color : #f88 !important;
+	background-image : none !important;
+	cursor : help;
+	outline : 1px solid red;
+}
+
+#seating .rvd {
+	background-color : gray !important;
+	background-image : none !important;
+	cursor : help;
+}
+
+#seating .vac {
+	background-image : none !important;
+	text-align : center;
+	vertical-align : middle;
+}
+
+#seating .vac2 {
+	background-color : #8d8 !important;
+	background-image : none !important;
+	cursor : help;
+	outline : 1px solid #080;
+}
+
+#seating .me input,
+#seating .occ input,
+#seating .rvd input,
+#seating .vac2 input {
+	visibility : hidden;
+}
+
+#seating .p1 th {
+	border : 0;
+	height : 22px;
+	padding : 0 0 !important;
+	width : 17px;
+}
+
+#seating .p2 th {
+	border : 0;
+	height : 23px;
+	padding : 0 0 !important;
+	width : 12px;
+}
+
+#seating .bt {
+	width : 21px;
+}
+
+#seating .lm {
+	width : 131px;
+}
+
+#seating .lm2 {
+	width : 574px;
+}
+
+#seating .rm {
+/*	width : 28px;*/
+}
+
+#seating .rm2 {
+/*	width : 35px;*/
+}
+
+#seating .tt {
+	width : 27px;
+}
+
+
+/*--[ Page specific styles ]--------------------------------------------------*/
+
+.center {
+	margin-left : auto;
+	margin-right : auto;
+}
+
+.error {
+	color : red;
+}
+
+fieldset {
+	background-color : #e8e8e8;
+}
+
+input.invalid {
+	background-color : #fdd;
+	border-color : red;
+}
+
+table.small {
+	font-size : 10pt;
+}
+
+/*
+table tr:hover {
+	background-color : #fcc;
+}
+*/
+
