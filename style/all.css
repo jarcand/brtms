@@ -6,7 +6,8 @@
 #page-bottom {
 	background-image : url(bg_bottom.png);
 	background-repeat : no-repeat;
-	height : 150px;
+	height : 243px;
+	background-size: 100% 100%;
 }
 
 #page-content {
@@ -22,7 +23,8 @@
 #page-header {
 	background-image : url(bg_header.png);
 	background-repeat : no-repeat;
-	height : 150px;
+	background-size: 100% 100%;
+	height : 215px;
 }
 
 #page-menus {
