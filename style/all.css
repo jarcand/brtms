@@ -25,6 +25,7 @@
 	background-repeat : no-repeat;
 	background-size: 100% 100%;
 	height : 215px;
+	width : 960px;
 }
 
 #page-menus {
@@ -243,13 +244,18 @@ table.tac th {
 	top : -20px;
 }
 
+#non-overview-wrapper {
+	margin-left : 130px;
+}
+
 #registration-overview {
 	background-color : #c9172a;
 	color : #bbb;
 	float : left;
 	font-size : 9pt;
-	margin : 0 40px 10px -15px;
+	margin : 0 0 10px -15px;
 	padding : 0;
+	position : fixed;
 	width : 100px;
 }
 

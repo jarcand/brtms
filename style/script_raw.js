@@ -70,6 +70,10 @@ function showTournament(data, sts) {
 
 var major_limit = 0;
 function loadMyTeams() {
+	if (!session) {
+		return;
+	}
+	
 	$.ajax({
 	  url: '${ROOT}/a/getmyteams',
 	  type: 'GET',

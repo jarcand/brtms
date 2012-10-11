@@ -5,7 +5,7 @@ require_once 'l/view.inc.php';
 
 $src = sPrintF('
 <div id="registration-overview"></div>
-<div style="display:table;">
+<div id="non-overview-wrapper">
 <div id="tournaments"><h2 class="loading">Loading Tournament List&hellip;</h2></div>
 <script type="text/javascript">
 	var session = %1$s;
