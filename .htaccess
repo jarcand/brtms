@@ -1,0 +1,5 @@
+RewriteEngine On
+
+RewriteRule ^tournament/([0-9]+)$ single_tournament?tid=$1 [L]
+RewriteRule ^tournament/([^/]+)$ single_tournament?scode=$1 [L]
+

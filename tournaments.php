@@ -4,10 +4,12 @@ require_once 'l/session.inc.php';
 require_once 'l/view.inc.php';
 
 $src = sPrintF('
+<div id="registration-overview"></div>
 <div id="tournaments"><h2 class="loading">Loading Tournament List&hellip;</h2></div>
 <script type="text/javascript">
-	loadTournaments();
 	var session = %1$s;
+	var tournament_list = true;
+	loadTournaments();
 </script>
 ', $_p['pid'] ? 'true' : 'false');
 
