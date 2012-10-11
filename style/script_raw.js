@@ -1,13 +1,15 @@
-function genTournament(t) {
+function genTournament(t, detailed) {
+	var players_src = 'Players: ' + t.players + (t.teamsize > 1 ? ', Teams: <em>Coming Soon</em>' /*+ t.teams*/ : '');
 	if ($('#tour' + t.tid).length) {
-		$('#tour' + t.tid + ' .l2').each(function() {$(this).html('Players: ' + t.players + ', Teams: ' + t.teams);});
+		$('#tour' + t.tid + ' .l2').each(function() {$(this).html(players_src);});
 		return '';
 	}
 	
-	src1 = '<table cellpadding="0" cellspacing="0"><tr><td><img class="thumb" src="game-'
-          + (t.shortcode || 'default') + '.png" /></td><td><h2>' + t.name + '</h2>'
-	  + '<p class="l1">' + (t.major == '1' ? 'Major Tournament' : 'Ad-Hoc Tournament') + ' organized by ' + t.organizer + '</p>'
-	  + '<p class="l2">Players: ' + t.players + (t.teamsize > 1 ? ', Teams: ' + t.teams : '') + '</p></td></tr></table>';
+	src1 = '<table cellpadding="0" cellspacing="0"><tr><td><img class="thumb" src="${ROOT}/imgs/game-'
+          + (t.shortcode || 'default') + '.png" /></td><td><h2><a href="${ROOT}/tournament/' + (t.shortcode || t.tid)
+	  + '">' + t.name + '</a></h2>'
+	  + '<p class="l1">' + (t.major == '1' ? 'Major Tournament' : 'Crowdsourced Tournament') + ' organized by ' + t.organizer + '</p>'
+	  + '<p class="l2">' + players_src + '</p></td></tr></table>';
 	src2 = '<p class="join"><a href="#" onclick="return joinTournament(' + t.tid + ');">JOIN</a></p>'
 	  + '<p class="joined">JOINED <a href="#" onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>';
 	src3 = '<h3>Description:</h3><p>' + t.desc + '</p>'
@@ -20,41 +22,58 @@ function genTournament(t) {
 	  + '<tr class="r2"><td class="c21"></td><td class="c22">' + src1 + '</td><td class="c23"></td><td class="c24">' + src2
 	  + '</td><td class="c25"></td></tr>'
 	  + '<tr class="r3"><td class="c31"></td><td class="c32"></td><td class="c33"></td><td class="c34">'
-	  + '</td><td class="c35"></td></tr>'
-	  + '<tr class="r4"><td class="c41"></td><td class="c42">' + src3 + '</td><td class="c43"></td><td class="c44">' + src4
-	  + '</td><td class="c45"></td></tr>'
-	  + '<tr class="r5"><td class="c51"></td><td class="c52"></td><td class="c53"></td><td class="c54">'
-	  + '</td><td class="c55"></td></tr>'
-	  + '</table>';
+	  + '</td><td class="c35"></td></tr>';
+	if (detailed) {
+		src += '<tr class="r4"><td class="c41"></td><td class="c42">' + src3 + '</td><td class="c43"></td><td class="c44">' + src4
+		  + '</td><td class="c45"></td></tr>'
+		  + '<tr class="r5"><td class="c51"></td><td class="c52"></td><td class="c53"></td><td class="c54">'
+		  + '</td><td class="c55"></td></tr>'
+	}
+	src += '</table>';
 	
 	return src;
 }
 
 function loadTournaments() {
+	var callback = tournament_list ? showTournamentList : showTournament;
 	$.ajax({
-	  url: 'a/gettournaments',
+	  url: '${ROOT}/a/gettournaments',
 	  type: 'GET',
 	  dataType: 'json'
-	}).done(function(data, sts) {
-		var src = '';
-		for (var i = 0; i < data.tournaments.length; i++) {
-			src += genTournament(data.tournaments[i]);
-		}
-		$('#tournaments .loading').hide();
-		$('#tournaments').append(src);
-		loadMyTeams();
-	}).fail(function(jqSHR, textStatus) {
+	}).done(callback
+	).fail(function(jqSHR, textStatus) {
 		alert(textStatus); //TODO
 	});
 }
 
+function showTournamentList(data, sts) {
+	var src = '';
+	for (var i = 0; i < data.tournaments.length; i++) {
+		src += genTournament(data.tournaments[i]);
+	}
+	$('#tournaments .loading').hide();
+	$('#tournaments').append(src);
+	loadMyTeams();
+}
+
+function showTournament(data, sts) {
+	var src = '';
+	for (var i = 0; i < data.tournaments.length; i++) {
+		if (data.tournaments[i].tid == tid) {
+			src += genTournament(data.tournaments[i]);
+		}
+	}
+	$('#tournaments .loading').hide();
+	$('#tournaments').append(src);
+	loadMyTeams();
+}
+
 function loadMyTeams() {
 	$.ajax({
-	  url: 'a/getmyteams',
+	  url: '${ROOT}/a/getmyteams',
 	  type: 'GET',
 	  dataType: 'json'
 	}).done(function(data, sts) {
-		var src = '';
 		if (data.result != 'error') {
 			for (var tid in data.myteams) {
 				$('#tour' + tid + ' .join').hide();
@@ -77,7 +96,7 @@ function showCreate() {
 
 function createTournament(frm) {
 	$.ajax({
-	  url: 'a/createtournament',
+	  url: '${ROOT}/a/createtournament',
 	  type: 'POST',
 	  data: {
 	  	tname: frm.tname.value,
@@ -112,7 +131,7 @@ function joinTournament(tid) {
 		return false;
 	}
 	$.ajax({
-	  url: 'a/jointournament',
+	  url: '${ROOT}/a/jointournament',
 	  type: 'POST',
 	  data: {
 	  	tid: tid
@@ -136,7 +155,7 @@ function joinTournament(tid) {
 
 function leaveTournament(tid) {
 	$.ajax({
-	  url: 'a/leavetournament',
+	  url: '${ROOT}/a/leavetournament',
 	  type: 'POST',
 	  data: {
 	  	tid: tid
@@ -199,7 +218,7 @@ function createAccount(frm) {
 	}
 	
 	$.ajax({
-	  url: 'a/createaccount',
+	  url: '${ROOT}/a/createaccount',
 	  type: 'POST',
 	  data: {
 	  	tok: frm.tok.value,
@@ -245,7 +264,7 @@ function chooseSeat(frm) {
 	}
 	
 	$.ajax({
-	  url: 'a/chooseseat',
+	  url: '${ROOT}/a/chooseseat',
 	  type: 'POST',
 	  data: {
 	  	seat: seat
@@ -264,4 +283,5 @@ function chooseSeat(frm) {
 	
 	return false;
 }
+
 
