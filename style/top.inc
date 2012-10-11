@@ -31,11 +31,12 @@
 <div id="page-all">
 <div id="page-header">&nbsp;</div>
 <div id="page-menus">
-<ul>
-<li><a href="${ROOT}/">Tournaments</a></li>
-<li><a href="${ROOT}/t/myteams">My Teams</a></li>
-<li><a href="${ROOT}/seats">Seats</a></li>
+<ul class="user">
 ${CURR_USER}
+</ul>
+<ul>
+<li><a href="${ROOT}/tournaments">Tournaments</a></li>
+<li><a href="${ROOT}/seats">Seats</a></li>
 </ul>
 </div>
 <div id="page-content-wide">
