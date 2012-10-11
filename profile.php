@@ -16,7 +16,10 @@ $res = $db->query($sql = sPrintF('SELECT
   FROM DUAL', $_p['pid']));
 $sp = $res->fetch_assoc();
 
-$src = '<h1>Player Profile</h1>';
+$src = '
+<div class="center">
+<h1>Player Profile</h1>
+';
 
 $src .= sPrintF('<fieldset class="faded-bg" style="width:400px;">
 <legend>Account Info</legend>
@@ -31,16 +34,24 @@ $src .= sPrintF('<fieldset class="faded-bg" style="width:400px;">
 </fieldset>
 ', $_p['fname'], $_p['lname'], $_p['email'], $_p['username'], $_p['dname']);
 
+
+$seat_release = '';
+if ($_p['seat']) {
+	$seat_release = '&ndash; <a href="javascript:releaseSeat();">Release Seat</a>';
+}
+
 $src .= sPrintF('<fieldset class="faded-bg" style="width:400px;">
 <legend>Registration Info</legend>
 <table cellspacing="10" style="margin:-10px;" width="100%%">
 <col width="160" /><col />
 <tr><td colspan="2" style="text-align:center;">%1$s</td></tr>
 <tr><td>Joined Tournaments</td><td>%2$s Major<br /> %3$s Ad-Hoc</td></tr>
-<tr><td>Seat:</td><td><a href="${ROOT}/seats">%4$s</a></td></tr>
+<tr><td>Seat:</td><td><a href="${ROOT}/seats">%4$s</a> %5$s</td></tr>
 </table>
 </fieldset>
-', $_p['ticket'], $sp['tours_major'], $sp['tours_adhoc'], $_p['seat'] ? $_p['seat'] : 'Not Selected');
+', $_p['ticket'], $sp['tours_major'], $sp['tours_adhoc'], $_p['seat'] ? $_p['seat'] : 'Not Selected', $seat_release);
+
+$src .= '</div>';
 
 mp($src);
 

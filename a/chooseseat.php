@@ -8,23 +8,34 @@ requireSession();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
-	$s_seat = s($_POST['seat']);
-	
-	$res = $db->query($sql = 'SELECT * FROM `players` WHERE `seat`=' . $s_seat);
-	if (!$res) {
-		error($sql);
+	$seat = $_POST['seat'];
+	if ($seat == 'release') {
+		$seat = null;
 	}
 	
-	if ($res->fetch_assoc()) {
-		
-		$ret = array('result' => 'invalid', 'errorType' => 'dupe');
+	if ($seat != null && !preg_match('/^[a-z][0-9][0-9]$/i', $seat)) {
+		$ret = array('result' => 'invalid', 'errorType' => 'invalid');
 		
 	} else {
+		
+		$s_seat = s($seat);
 	
-		if (!$db->query($sql = 'UPDATE `players` SET `seat`=' . $s_seat . ' WHERE `pid`=' . s($_p['pid']))) {
+		$res = $db->query($sql = 'SELECT * FROM `players` WHERE `seat`=' . $s_seat);
+		if (!$res) {
 			error($sql);
 		}
-		$ret = array('result' => 'success');
+	
+		if ($res->fetch_assoc()) {
+		
+			$ret = array('result' => 'invalid', 'errorType' => 'dupe');
+		
+		} else {
+	
+			if (!$db->query($sql = 'UPDATE `players` SET `seat`=' . $s_seat . ' WHERE `pid`=' . s($_p['pid']))) {
+				error($sql);
+			}
+			$ret = array('result' => 'success');
+		}
 	}
 	
 	header('Content-Type: application/json');

@@ -295,4 +295,23 @@ function chooseSeat(frm) {
 	return false;
 }
 
+function releaseSeat() {
+	$.ajax({
+	  url: '${ROOT}/a/chooseseat',
+	  type: 'POST',
+	  data: {
+	  	seat: 'release'
+	  },
+	  dataType: 'json'
+	}).done(function(data, sts) {
+		var src = '';
+		if (data.result == 'success') {
+			document.location.reload();
+		} else {
+			alert(data.result + ': ' + data.errorType); //TODO
+		}
+	}).fail(function(jqSHR, textStatus) {
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+	});
+}
 
