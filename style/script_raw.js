@@ -84,7 +84,7 @@ function loadMyTeams() {
 			}
 		}
 		var src = '<ul><li class="bg"><strong>Joined Tournaments</strong></li>'
-		 + '<li><big>' + major_c + ' of ' + data.limit + '</big><br /> Major</li>'
+		 + '<li><big>' + major_c + ' of ' + data.limit_s + '</big><br /> Major</li>'
 		 + '<li><big>' + crowd_c + '</big><br /> Crowdsourced</li>'
 		 + '</ul>';
 		$('#registration-overview').html(src);

@@ -19,8 +19,14 @@ while ($o = $res->fetch_assoc()) {
 	$myteams[$o['tp_tid']] = $o;
 }
 
+$limit_s = $_p['credits'];
+if ($limit_s == '200') {
+	$limit_s = '<small>unlimited</small>';
+}
+
 $ret['myteams'] = $myteams;
 $ret['limit'] = $_p['credits'];
+$ret['limit_s'] = $limit_s;
 
 header('Content-Type: application/json');
 echo json_encode($ret);

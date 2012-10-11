@@ -248,7 +248,7 @@ table.tac th {
 	color : #bbb;
 	float : left;
 	font-size : 9pt;
-	margin : 0 10px 10px -15px;
+	margin : 0 40px 10px -15px;
 	padding : 0;
 	width : 100px;
 }
@@ -275,11 +275,6 @@ table.tac th {
 
 #registration-overview big {
 	font-size : 20pt;
-}
-
-#tournaments {
-	display : table;
-	padding-left : 30px;
 }
 
 .tour {
