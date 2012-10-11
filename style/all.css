@@ -30,12 +30,18 @@
 #page-menus {
 	background-color : #c9172a;
 	border-bottom : 1px solid silver;
+	color : #ccc;
 	text-align : center;
 }
 
 #page-menus ul {
 	margin : 0;
-	padding : 0;
+	padding : 0 10px;
+}
+
+#page-menus ul.user {
+	background-color : #89000a;
+	float : right;
 }
 
 #page-menus ul li {
@@ -237,6 +243,45 @@ table.tac th {
 	top : -20px;
 }
 
+#registration-overview {
+	background-color : #c9172a;
+	color : #bbb;
+	float : left;
+	font-size : 9pt;
+	margin : 0 10px 10px -15px;
+	padding : 0;
+	width : 100px;
+}
+
+#registration-overview ul {
+	border : solid #89000a;
+	border-width : 1px 0 0;
+	margin : 0;
+	padding : 0;
+	list-style-type : none;
+}
+
+#registration-overview li {
+	border : solid #89000a;
+	border-width : 0 1px 1px;
+	margin : 0;
+	padding : 4px;
+	text-align : center;
+}
+
+#registration-overview li.bg {
+	background-color : #89000a;
+}
+
+#registration-overview big {
+	font-size : 20pt;
+}
+
+#tournaments {
+	display : table;
+	padding-left : 30px;
+}
+
 .tour {
 	margin : 1em 0;
 }
@@ -379,7 +424,8 @@ table.tac th {
 	margin-right : 20px;
 }
 
-.tour h2 {
+.tour h2,
+.tour h2 a {
 	color : orange;
 	font-size : 30px;
 	letter-spacing : 1px;
@@ -398,7 +444,7 @@ table.tac th {
 
 #seating {
 	background-color : #fcf2c3;
-	background-image : url(../seating_layout.png);
+	background-image : url(../imgs/seating_layout.png);
 	background-repeat : no-repeat;
 	color : black;
 	font : 2pt arial;
@@ -500,6 +546,7 @@ table.tac th {
 /*--[ Page specific styles ]--------------------------------------------------*/
 
 .center {
+	display : table;
 	margin-left : auto;
 	margin-right : auto;
 }

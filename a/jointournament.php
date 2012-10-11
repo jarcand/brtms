@@ -8,36 +8,56 @@ requireSession('json');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
-	$V = $_POST;
+	$tid_s = s($_POST['tid']);
 	
-	$fields = array();
-	$fields['tid']		= $V['tid'];
-	$fields['pid']		= $_p['pid'];
+	$ret = array();
+	$count = 0;
 	
-	$sqlp = array();
-	foreach ($fields as $key => $value) {
-		$sqlp[] = sPrintF('`%s`=%s', $key, s($value));
-	}
-	
-	$res = $db->query($sql = 'SELECT * FROM `tournament_players` WHERE ' . implode(' AND ', $sqlp));
+	$res = $db->query($sql = sPrintF('SELECT `major` FROM `tournaments`
+	  WHERE `tid`=%1$s', $tid_s));
 	if (!$res) {
 		error($sql);
 	}
+	$row = $res->fetch_assoc();
 	
-	$ret = array();
+	if ($row['major'] == '1') {
+		$res = $db->query($sql = sPrintF('SELECT COUNT(*) AS `c` FROM `tournament_players`
+		  INNER JOIN `tournaments` USING (`tid`)
+		  WHERE `major`=1 AND `pid`=%1$s', s($_p['pid'])));
+		if (!$res) {
+			error($sql);
+		}
+		$row = $res->fetch_assoc();
+		$count = $row['c'];
+	}
 	
-	if ($res->fetch_assoc()) {
-		
+	if ($count >= $_p['credits']) {
 		$ret['result'] = 'error';
-		$ret['errorType'] = 'duplicateEntry';
+		$ret['errorType'] = 'overlimit';
 		
 	} else {
 	
-		if (!$db->query($sql = 'INSERT INTO `tournament_players` SET ' . implode(', ', $sqlp))) {
+		$res = $db->query($sql = sPrintF('SELECT * FROM `tournament_players`
+		  WHERE `pid`=%1$s AND `tid`=%2$s', s($_p['pid']), $tid_s));
+		if (!$res) {
 			error($sql);
 		}
 	
-		$ret['result'] = 'success';
+	
+		if ($res->fetch_assoc()) {
+		
+			$ret['result'] = 'error';
+			$ret['errorType'] = 'duplicateEntry';
+		
+		} else {
+	
+			if (!$db->query($sql = sPrintF('INSERT INTO `tournament_players`
+			  SET `pid`=%1$s, `tid`=%2$s', s($_p['pid']), s($_POST['tid'])))) {
+				error($sql);
+			}
+	
+			$ret['result'] = 'success';
+		}
 	}
 	
 	header('Content-Type: application/json');

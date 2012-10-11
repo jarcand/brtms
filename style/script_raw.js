@@ -68,18 +68,27 @@ function showTournament(data, sts) {
 	loadMyTeams();
 }
 
+var major_limit = 0;
 function loadMyTeams() {
 	$.ajax({
 	  url: '${ROOT}/a/getmyteams',
 	  type: 'GET',
 	  dataType: 'json'
 	}).done(function(data, sts) {
+		var major_c = 0, crowd_c = 0;
 		if (data.result != 'error') {
 			for (var tid in data.myteams) {
+				data.myteams[tid].t_major == '1' ? major_c++ : crowd_c++;
 				$('#tour' + tid + ' .join').hide();
 				$('#tour' + tid + ' .joined').show();
 			}
 		}
+		var src = '<ul><li class="bg"><strong>Joined Tournaments</strong></li>'
+		 + '<li><big>' + major_c + ' of ' + data.limit + '</big><br /> Major</li>'
+		 + '<li><big>' + crowd_c + '</big><br /> Crowdsourced</li>'
+		 + '</ul>';
+		$('#registration-overview').html(src);
+		major_limit = data.limit;
 	}).fail(function(jqSHR, textStatus) {
 		alert(textStatus); //TODO
 	});
@@ -142,12 +151,14 @@ function joinTournament(tid) {
 		if (data.result == 'success') {
 			$('#tour' + tid + ' .join').hide();
 			$('#tour' + tid + ' .joined').show();
+		} else if (data.result == 'error' && data.errorType == 'overlimit') {
+			alert('You have exceeded your limit of ' + major_limit + ' Major Tournaments.');
 		} else {
 			alert(data.result + ': ' + data.errorType); //TODO
 		}
 		loadTournaments();
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus); //TODO
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
 	});
 	
 	return false;
