@@ -13,7 +13,7 @@ $res = $db->query($sql = sPrintF('SELECT t.tid, t.name AS `tname`, op.fname AS `
   INNER JOIN `groups` `g` USING (`gid`)
   INNER JOIN `players` `lp` ON `leader_pid`=`lp`.`pid`
   INNER JOIN `tournament_players` `tp` USING (`gid`)
-  WHERE `tp`.`pid`=' . s($_pid)));
+  WHERE `tp`.`pid`=' . s($_p['pid'])));
 if (!$res) {
 	error($sql);
 }

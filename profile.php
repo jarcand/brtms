@@ -12,7 +12,7 @@ $res = $db->query($sql = sPrintF('SELECT
     WHERE `major`=1 AND `pid`=%1$s) AS `tours_major`,
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
     INNER JOIN `tournament_players` `tp` USING (`tid`)
-    WHERE `major`=0 AND `pid`=%1$s) AS `tours_orga`
+    WHERE `major`=0 AND `pid`=%1$s) AS `tours_adhoc`
   FROM DUAL', $_p['pid']));
 $sp = $res->fetch_assoc();
 
@@ -36,11 +36,11 @@ $src .= sPrintF('<fieldset class="faded-bg" style="width:400px;">
 <table cellspacing="10" style="margin:-10px;" width="100%%">
 <col width="160" /><col />
 <tr><td colspan="2" style="text-align:center;">%1$s</td></tr>
-<tr><td>Joined Tournaments</td><td>%2$s Major<br /> %3$s Organic</td></tr>
+<tr><td>Joined Tournaments</td><td>%2$s Major<br /> %3$s Ad-Hoc</td></tr>
 <tr><td>Seat:</td><td><a href="${ROOT}/seats">%4$s</a></td></tr>
 </table>
 </fieldset>
-', $_p['ticket'], $sp['tours_major'], $sp['tours_orga'], $_p['seat'] ? $_p['seat'] : 'Not Selected');
+', $_p['ticket'], $sp['tours_major'], $sp['tours_adhoc'], $_p['seat'] ? $_p['seat'] : 'Not Selected');
 
 mp($src);
 

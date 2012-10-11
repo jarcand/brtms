@@ -4,27 +4,28 @@ function genTournament(t) {
 		return '';
 	}
 	
-	src1 = '<img class="thumb" src="game.png" /><h2>' + t.name + '</h2>';
-	src1 += '<p class="l1">' + (t.major == '1' ? 'Major Tournament' : 'Organic Tournament') + ' organized by ' + t.organizer + '</p>';
-	src1 += '<p class="l2">Players: ' + t.players + ', Teams: ' + t.teams + '</p>';
+	src1 = '<table cellpadding="0" cellspacing="0"><tr><td><img class="thumb" src="game-'
+          + (t.shortcode || 'default') + '.png" /></td><td><h2>' + t.name + '</h2>'
+	  + '<p class="l1">' + (t.major == '1' ? 'Major Tournament' : 'Ad-Hoc Tournament') + ' organized by ' + t.organizer + '</p>'
+	  + '<p class="l2">Players: ' + t.players + (t.teamsize > 1 ? ', Teams: ' + t.teams : '') + '</p></td></tr></table>';
 	src2 = '<p class="join"><a href="#" onclick="return joinTournament(' + t.tid + ');">JOIN</a></p>'
 	  + '<p class="joined">JOINED <a href="#" onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>';
-	src3 = '<h3>Description:</h3><p>' + t.desc + '</p>';
-	src3 += '<h3>Prizes:</h3><p>' + t.prizes + '</p>';
+	src3 = '<h3>Description:</h3><p>' + t.desc + '</p>'
+	  + '<h3>Prizes:</h3><p>' + t.prizes + '</p>';
 	src4 = '';
 	
-	var src = '<table cellspacing="0" class="tour" id="tour' + t.tid + '">';
-	src += '<tr class="r1"><td class="c11"></td><td class="c12"></td><td class="c13"></td><td class="c14">'
-	  + '</td><td class="c15"></td></tr>';
-	src += '<tr class="r2"><td class="c21"></td><td class="c22">' + src1 + '</td><td class="c23"></td><td class="c24">' + src2
-	  + '</td><td class="c25"></td></tr>';
-	src += '<tr class="r3"><td class="c31"></td><td class="c32"></td><td class="c33"></td><td class="c34">'
-	  + '</td><td class="c35"></td></tr>';
-	src += '<tr class="r4"><td class="c41"></td><td class="c42">' + src3 + '</td><td class="c43"></td><td class="c44">' + src4
-	  + '</td><td class="c45"></td></tr>';
-	src += '<tr class="r5"><td class="c51"></td><td class="c52"></td><td class="c53"></td><td class="c54">'
-	  + '</td><td class="c55"></td></tr>';
-	src += '</table>';
+	var src = '<table cellspacing="0" class="tour" id="tour' + t.tid + '">'
+	  + '<tr class="r1"><td class="c11"></td><td class="c12"></td><td class="c13"></td><td class="c14">'
+	  + '</td><td class="c15"></td></tr>'
+	  + '<tr class="r2"><td class="c21"></td><td class="c22">' + src1 + '</td><td class="c23"></td><td class="c24">' + src2
+	  + '</td><td class="c25"></td></tr>'
+	  + '<tr class="r3"><td class="c31"></td><td class="c32"></td><td class="c33"></td><td class="c34">'
+	  + '</td><td class="c35"></td></tr>'
+	  + '<tr class="r4"><td class="c41"></td><td class="c42">' + src3 + '</td><td class="c43"></td><td class="c44">' + src4
+	  + '</td><td class="c45"></td></tr>'
+	  + '<tr class="r5"><td class="c51"></td><td class="c52"></td><td class="c53"></td><td class="c54">'
+	  + '</td><td class="c55"></td></tr>'
+	  + '</table>';
 	
 	return src;
 }
@@ -99,7 +100,7 @@ function createTournament(frm) {
 		}
 		joinTournament(data.tournaments[0].tid);
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus); //TODO
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
 	});
 	
 	return false;

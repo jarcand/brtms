@@ -11,15 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$V = $_POST;
 	
 	$fields = array();
-	$fields['owner_pid']	= $_pid;
+	$fields['owner_pid']	= $_p['pid'];
 	$fields['name']		= $V['tname'];
-	$fields['major']	= @$V['major'] == 'yes' ? 1 : 0;
+	$fields['major']	= @$V['major'] == 'true' ? 1 : 0;
 	$fields['teamsize']	= $V['teamsize'];
-	$fields['editable']	= 1;
-	$fields['startts_s']	= NULL; //TODO
-	$fields['endts_s']	= NULL; //TODO
-	$fields['startts_a']	= NULL; //TODO
-	$fields['endts_a']	= NULL; //TODO
 	$fields['game']		= $V['game'];
 	$fields['desc']		= $V['desc'];
 	$fields['prizes']	= $V['prizes'];
