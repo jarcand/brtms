@@ -51,16 +51,19 @@ Battle Royale Organizing Committee
 // -----------------------------------------------------------------------------
 
 $src = sPrintF('
+<div class="center">
+<h1>Send Invitation Email</h1>
 <form action="#" method="post">
 <table>
 <tr><td>To:</td><td><input type="text" name="to" size="60" value="%1$s %2$s &lt;%3$s&gt;" /></td></tr>
 <tr><td>Subject:</td><td><input type="text" name="subject" size="60" value="Your Invitation to the Battle Royale Players Portal" /></td></tr>
 <tr><td>Headers:</td><td><textarea cols="40" rows="4" style="font-family:sans-serif;font-size:10pt;">%4$s</textarea></td></tr>
-<tr><td>Message:</td><td><textarea cols="80" rows="20" style="font-family:sans-serif;font-size:9pt;">%5$s</textarea></td></tr>
-<tr><td></td><td><input type="submit" value="Send Email Invitation" /></td></tr>
+<tr><td>Message:</td><td><textarea cols="60" rows="20" style="font-family:sans-serif;font-size:9pt;">%5$s</textarea></td></tr>
+<tr><td></td><td><input type="submit" value="Send Email Invitation" /> %6$s</td></tr>
 </table>
 </form>
-', $p['fname'], $p['lname'], $p['email'], implode("\r\n", $headers), $msg);
+</div>
+', $p['fname'], $p['lname'], $p['email'], implode("\r\n", $headers), $msg, $p['invitedts']);
 
 mp($src);
 
