@@ -35,6 +35,7 @@
 ${CURR_USER}
 </ul>
 <ul>
+<li><a href="${ROOT}/">Home</a></li>
 <li><a href="${ROOT}/tournaments">Tournaments</a></li>
 <li><a href="${ROOT}/seats">Seats</a></li>
 </ul>

@@ -40,6 +40,19 @@ function requireSession($type = 'html') {
 	}
 }
 
+function requireAdminSession($type = 'html') {
+	global $config, $_p;
+	if (!isSet($_p) || $_p['pid'] != 1) {
+		if ($type == 'json') {
+			header('Content-Type: application/json');
+			die('{"result":"error","errorType":"autha"}');
+			
+		} else if ($type == 'html') {
+			header('Location: ' . $config['ROOT'] . '/');
+		}
+	}
+}
+
 function setCurrUser($new_ses_token) {
 	global $ses_token;
 	$ses_token = $new_ses_token;

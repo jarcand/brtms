@@ -6,6 +6,9 @@ function genSeatCell($seat, $res_seats = array()) {
 	global $_p;
 	
 	if (isSet($res_seats[$seat])) {
+		if ($res_seats[$seat] == ' Unavailable') {
+			return '<th></th>';
+		}
 		return sPrintF('<th class="%3$s" title="Seat %1$s - %2$s">'
 		  . '<input type="checkbox" /></th>',
 			$seat,

@@ -4,7 +4,7 @@ require_once '../l/db.inc.php';
 require_once '../l/session.inc.php';
 require_once '../l/utils.inc.php';
 
-requireSession();
+requireSession('json');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$seat = null;
 	}
 	
-	if ($seat != null && !preg_match('/^[a-z][0-9][0-9]$/i', $seat)) {
-		$ret = array('result' => 'invalid', 'errorType' => 'invalid');
+	if ($seat != null && !preg_match('/^[a-z][0-9][0-9]?$/i', $seat)) {
+		$ret = array('result' => 'invalid', 'errorType' => 'invalidParameter');
 		
 	} else {
 		
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
 		} else {
 	
-			if (!$db->query($sql = 'UPDATE `players` SET `seat`=' . $s_seat . ' WHERE `pid`=' . s($_p['pid']))) {
+			if (!$db->query($sql = 'UPDATE `players` SET `seatts`=NOW(), `seat`=' . $s_seat . ' WHERE `pid`=' . s($_p['pid']))) {
 				error($sql);
 			}
 			$ret = array('result' => 'success');

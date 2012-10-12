@@ -5,7 +5,7 @@ require_once 'session.inc.php';
 function mp($main_body) {
 	global $config, $_p;
 	
-	$title = 'Battle Royale VI - Tournament Management System';
+	$title = 'Battle Royale VI - Players Portal';
 	
 	$str = file_get_contents(dirname(__FILE__) . '/../style/top.inc');
 	$contents = str_replace('%%TITLE%%', $title, $str);

@@ -19,6 +19,11 @@ function outputPage($msg = '') {
 
 	$msg_src = !$msg ? '' : sPrintF('<tr><td class="error tac" colspan="2">%s</td></tr>', $msg);
 	
+	$r = @$_GET['r'];
+	if (!$r) {
+		$r = $_SERVER['HTTP_REFERER'];
+	}
+	
 	$src = sPrintF('
 <form action="login" method="post">
 <input type="hidden" name="r" value="%1$s" />
@@ -46,7 +51,7 @@ function outputPage($msg = '') {
 </table>
 </fieldset>
 </form>
-', @$_GET['r'], $msg_src, $pids_html);
+', $r, $msg_src, $pids_html);
 	
 	mp($src);
 }
@@ -87,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	setCurrUser($token);
 	
-	if (!$r) {
+	if (!$r || preg_match('#/login$#', $r)) {
 		$r = $config['ROOT'] . '/';
 	}
 	

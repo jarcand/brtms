@@ -25,7 +25,6 @@
 	background-repeat : no-repeat;
 	background-size: 100% 100%;
 	height : 215px;
-	width : 960px;
 }
 
 #page-menus {
@@ -280,15 +279,41 @@ table.tac th {
 }
 
 #registration-overview big {
+	display : inline-block;
 	font-size : 20pt;
+	line-height : 17pt;
+	margin : 10px 0;
 }
 
 .tour {
 	margin : 1em 0;
 }
 
+.crowd .c11,
+.crowd .c12,
+.crowd .c13,
+.crowd .c21,
+.crowd .c22,
+.crowd .c23,
+.crowd .c31,
+.crowd .c32,
+.crowd .c33 {
+	background-color : #9b9;
+}
+
+.major .c11,
+.major .c12,
+.major .c13,
+.major .c21,
+.major .c22,
+.major .c23,
+.major .c31,
+.major .c32,
+.major .c33 {
+	background-color : #b99;
+}
+
 .tour .c11 {
-	background-color : gray;
 	border : solid black;
 	border-radius : 8px 0 0 0;
 	border-width : 2px 0 0 2px;
@@ -296,14 +321,12 @@ table.tac th {
 }
 
 .tour .c12 {
-	background-color : gray;
 	border : solid black;
 	border-width : 2px 0 0 0;
 	width : 570px;
 }
 
 .tour .c13 {
-	background-color : gray;
 	border : solid black;
 	border-radius : 0 8px 0 0;
 	border-width : 2px 2px 0 0;
@@ -311,17 +334,11 @@ table.tac th {
 }
 
 .tour .c21 {
-	background-color : gray;
 	border : solid black;
 	border-width : 0 0 0 2px;
 }
 
-.tour .c22 {
-	background-color : gray;
-}
-
 .tour .c23 {
-	background-color : gray;
 	border : solid black;
 	border-width : 0 2px 0 0;
 }
@@ -340,7 +357,6 @@ table.tac th {
 }
 
 .tour .c31 {
-	background-color : gray;
 	border : solid black;
 	border-radius : 0 0 0 8px;
 	border-width : 0 0 2px 2px;
@@ -348,13 +364,11 @@ table.tac th {
 }
 
 .tour .c32 {
-	background-color : gray;
 	border : solid black;
 	border-width : 0 0 2px 0;
 }
 
 .tour .c33 {
-	background-color : gray;
 	border : solid black;
 	border-radius : 0 0 8px 0;
 	border-width : 0 2px 2px 0;
@@ -392,9 +406,20 @@ table.tac th {
 }
 
 .tour .join {
+	text-align : center;
+}
+
+.tour .underlim {
 	font-size : 30px;
 	margin : 30px 20px;
-	text-align : center;
+}
+
+.tour .overlim {
+	cursor : help;
+	display : none;
+	font-size : 12pt;
+	line-height : 16pt;
+	margin : 15px 15px;
 }
 
 .tour .joined {
@@ -417,7 +442,7 @@ table.tac th {
 	font-size : 15px;
 	margin : 0 0 3px;
 	padding : 0 10px;
-	text-shadow : 1px 2px black;
+	text-shadow : 1px 1px #222, 0 0 3px #bbb;
 }
 
 .tour .thumb {
@@ -517,6 +542,7 @@ table.tac th {
 	height : 23px;
 	padding : 0 0 !important;
 	width : 12px;
+
 }
 
 #seating .bt {
@@ -541,6 +567,15 @@ table.tac th {
 
 #seating .tt {
 	width : 27px;
+}
+
+.dis {
+	margin-top : 30px;
+}
+
+#disqus_thread {
+	background-color : #ddd;
+	padding : 10px;
 }
 
 

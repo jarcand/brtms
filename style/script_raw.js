@@ -10,13 +10,14 @@ function genTournament(t, detailed) {
 	  + '">' + t.name + '</a></h2>'
 	  + '<p class="l1">' + (t.major == '1' ? 'Major Tournament' : 'Crowdsourced Tournament') + ' organized by ' + t.organizer + '</p>'
 	  + '<p class="l2">' + players_src + '</p></td></tr></table>';
-	src2 = '<p class="join"><a href="#" onclick="return joinTournament(' + t.tid + ');">JOIN</a></p>'
+	src2 = '<div class="join"><p class="underlim"><a href="#" onclick="return joinTournament(' + t.tid + ');">JOIN</a></p>'
+	  + '<p class="overlim" title="A.K.A. You have reached the maximum Major Tournaments for your ticket type.">0 CREDITS,<br /> INSERT<br /> TOKEN</p></div>'
 	  + '<p class="joined">JOINED <a href="#" onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>';
 	src3 = '<h3>Description:</h3><p>' + t.desc + '</p>'
 	  + '<h3>Prizes:</h3><p>' + t.prizes + '</p>';
 	src4 = '';
 	
-	var src = '<table cellspacing="0" class="tour" id="tour' + t.tid + '">'
+	var src = '<table cellspacing="0" class="tour ' + (t.major == '1' ? 'major' : 'crowd') + '" id="tour' + t.tid + '">'
 	  + '<tr class="r1"><td class="c11"></td><td class="c12"></td><td class="c13"></td><td class="c14">'
 	  + '</td><td class="c15"></td></tr>'
 	  + '<tr class="r2"><td class="c21"></td><td class="c22">' + src1 + '</td><td class="c23"></td><td class="c24">' + src2
@@ -53,6 +54,9 @@ function showTournamentList(data, sts) {
 	}
 	$('#tournaments .loading').hide();
 	$('#tournaments').append(src);
+	$('.c11, .c12, .c13, .c21, .c22, .c23, .c31, .c32, .c33').css('cursor', 'pointer').click(function() {
+		document.location = $(this).find('h2 a').attr('href');
+	});
 	loadMyTeams();
 }
 
@@ -60,7 +64,7 @@ function showTournament(data, sts) {
 	var src = '';
 	for (var i = 0; i < data.tournaments.length; i++) {
 		if (data.tournaments[i].tid == tid) {
-			src += genTournament(data.tournaments[i]);
+			src += genTournament(data.tournaments[i], true);
 		}
 	}
 	$('#tournaments .loading').hide();
@@ -88,9 +92,16 @@ function loadMyTeams() {
 			}
 		}
 		var src = '<ul><li class="bg"><strong>Joined Tournaments</strong></li>'
-		 + '<li><big>' + major_c + ' of ' + data.limit_s + '</big><br /> Major</li>'
-		 + '<li><big>' + crowd_c + '</big><br /> Crowdsourced</li>'
+		 + '<li><big>' + major_c + ' of ' + data.limit_s + '</big><br /> Major Tournaments</li>'
+		 + '<li><big>' + crowd_c + '</big><br /> Crowdsourced Tournaments</li>'
 		 + '</ul>';
+		if (major_c >= data.limit) {
+			$('.tour.major .underlim').hide();
+			$('.tour.major .overlim').show();
+		} else {
+			$('.tour.major .overlim').hide();
+			$('.tour.major .underlim').show();
+		}
 		$('#registration-overview').html(src);
 		major_limit = data.limit;
 	}).fail(function(jqSHR, textStatus) {
@@ -108,6 +119,10 @@ function showCreate() {
 }
 
 function createTournament(frm) {
+	if (!session) {
+		alert('You need to login or purchase a BR6 ticket!');
+		return false;
+	}
 	$.ajax({
 	  url: '${ROOT}/a/createtournament',
 	  type: 'POST',
@@ -117,7 +132,6 @@ function createTournament(frm) {
 	  	desc: frm.desc.value,
 	  	prizes: frm.prizes.value,
 	  	teamsize: frm.teamsize.value,
-	  	major: frm.major.checked,
 	  	notes: frm.notes.value
 	  },
 	  dataType: 'json'
@@ -180,6 +194,8 @@ function leaveTournament(tid) {
 		var src = '';
 		if (data.result == 'success') {
 			$('#tour' + tid + ' .joined').hide();
+			$('#tour' + tid + ' .overlim').hide();
+			$('#tour' + tid + ' .underlim').show();
 			$('#tour' + tid + ' .join').show();
 		} else {
 			alert(data.result + ': ' + data.errorType); //TODO
@@ -269,6 +285,52 @@ function createAccount(frm) {
 	return false;
 }
 
+function updateDname(frm) {
+	$(frm).find('input').removeClass('invalid');
+	$(frm).find('p.error').remove();
+	
+	var error = false;
+	if (frm.dname.value.trim().length == 0) {
+		frm.dname.focus();
+		$(frm.dname).addClass('invalid');
+		$(frm.dname).after('<p class="error">Your display name must not be blank.</p>');
+		error = true;
+	}
+	if (error) {
+		$(frm.subbtn).after('<p class="error">There were errors in your submission.</p>');
+		return false;
+	}
+	
+	$.ajax({
+	  url: '${ROOT}/a/changedname',
+	  type: 'POST',
+	  data: {
+	  	dname: frm.dname.value.trim()
+	  },
+	  dataType: 'json'
+	}).done(function(data, sts) {
+		var src = '';
+		if (data.result == 'success') {
+			alert('Your display name has been successfully changed.');
+			document.location.reload();
+		} else if (data.result == 'invalid') {
+			if (data.field == 'dname') {
+				frm.dname.focus();
+				$(frm.dname).addClass('invalid');
+				$(frm.dname).after('<p class="error">That display name is already in use.</p>');
+			} else {
+				alert(data.result + ': ' + data.errorType); //TODO
+			}
+		} else {
+			alert(data.result + ': ' + data.errorType); //TODO
+		}
+	}).fail(function(jqSHR, textStatus) {
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+	});
+	
+	return false;
+}
+
 function chooseSeat(frm) {
 	var seat = '';
 	for (var i = 0; i < frm.seat.length; i++) {
@@ -288,6 +350,7 @@ function chooseSeat(frm) {
 	}).done(function(data, sts) {
 		var src = '';
 		if (data.result == 'success') {
+			frm.reset();
 			document.location.reload();
 		} else {
 			alert(data.result + ': ' + data.errorType); //TODO
@@ -317,5 +380,56 @@ function releaseSeat() {
 	}).fail(function(jqSHR, textStatus) {
 		alert(textStatus + ': ' + jqSHR.responseText); //TODO
 	});
+}
+
+function changePassword(frm) {
+	$(frm).find('input').removeClass('invalid');
+	$(frm).find('p.error').remove();
+	
+	var error = false;
+	if (frm.pass2.value.trim() != frm.pass1.value.trim()) {
+		frm.pass2.focus();
+		$(frm.pass2).addClass('invalid');
+		$(frm.pass2).after('<p class="error">Your new passwords did not match.</p>');
+		error = true;
+	}
+	if (frm.pass1.value.trim().length < 8) {
+		frm.pass1.focus();
+		$(frm.pass1).addClass('invalid');
+		$(frm.pass1).after('<p class="error">Your password is too short.</p>');
+		error = true;
+	}
+	if (error) {
+		$(frm.subbtn).after('<p class="error">There were errors in your submission.</p>');
+		return false;
+	}
+	
+	$.ajax({
+	  url: '${ROOT}/a/changepwd',
+	  type: 'POST',
+	  data: {
+	  	curpwd: frm.curpwd.value,
+	  	newpwd: frm.pass1.value.trim()
+	  },
+	  dataType: 'json'
+	}).done(function(data, sts) {
+		var src = '';
+		if (data.result == 'success') {
+			alert('Your password has been successfully changed.');
+			frm.reset();
+			document.location.reload();
+		} else if (data.result == 'error' && data.errorType == 'invalidPassword') {
+			frm.curpwd.focus();
+			$(frm.curpwd).addClass('invalid');
+			$(frm.curpwd).after('<p class="error">The password you entered does not match our records.</p>');
+			$(frm.subbtn).after('<p class="error">There were errors in your submission.</p>');
+		} else {
+			alert(data.result + ': ' + data.errorType); //TODO
+		}
+	}).fail(function(jqSHR, textStatus) {
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+	});
+	
+	return false;
 }
 
