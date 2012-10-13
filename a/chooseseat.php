@@ -31,7 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
 		} else {
 	
-			if (!$db->query($sql = 'UPDATE `players` SET `seatts`=NOW(), `seat`=' . $s_seat . ' WHERE `pid`=' . s($_p['pid']))) {
+			if (!$db->query($sql = 'UPDATE `players`
+			  SET `seatts`=NOW(), `seat`=' . $s_seat . '
+			  WHERE `pid`=' . s($_p['pid']))) {
 				error($sql);
 			}
 			$ret = array('result' => 'success');

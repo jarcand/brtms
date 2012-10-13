@@ -25,6 +25,9 @@ $res = $db->query('SELECT *,
   (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `players`,
   (SELECT COUNT(`gid`) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `teams`
   FROM `tournaments` `t` ' . $cond . ' ORDER BY `major` DESC, `players` DESC');
+if (!$res) {
+	error($sql);
+}
 
 $tournaments = array();
 while ($t = $res->fetch_assoc()) {
