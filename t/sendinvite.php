@@ -17,7 +17,6 @@ $p = $res->fetch_assoc();
 
 // -----------------------------------------------------------------------------
 $to = sPrintF('%1$s %2$s <%3$s>', $p['fname'], $p['lname'], $p['email']);
-$to = sPrintF('%1$s %2$s <%3$s>', $p['fname'], $p['lname'], 'jeffrey@battleroyale.ca');
 $subject = 'Your Invitation to the Battle Royale Players Portal';
 // -----------------------------------------------------------------------------
 $headers = implode("\r\n", array(
@@ -73,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (!$res) {
 			error($sql);
 		}
-		echo '  Database succesSfully updated!';
+		echo '  Database successfully updated!';
 		
 	} else {
 		header('Content-Type: text/plain');
