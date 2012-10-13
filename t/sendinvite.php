@@ -23,7 +23,7 @@ $subject = 'Your Invitation to the Battle Royale Players Portal';
 $headers = implode("\r\n", array(
 	'From: Battle Royale Invitation Bot <invite-bot@battleroyale.ca>',
 	'Reply-To: Battle Royale Accounts <accounts@battleroyale.ca>',
-	'CC: Battle Royale Accounts <accounts@battleroyale.ca>',
+	'BCC: Battle Royale Accounts <accounts@battleroyale.ca>',
 	'Content-Type: text/plain; charset=ISO-8859-1',
 	'X-Mailer: PHP/' . phpversion(),
 ));
@@ -45,7 +45,7 @@ new Battle Royale Players Portal.  It is through this portal that you
 will be able to join tournaments, create new tournaments, and select
 your seat.
 
-Please use the personalize link below to accept your invitation.
+Please use the personalized link below to accept your invitation.
 http://players.battleroyale.ca/invitation?t=%3$s
 
 If you have any problems, please email us at accounts@battleroyale.ca
