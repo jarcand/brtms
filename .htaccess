@@ -1,3 +1,4 @@
+Options +MultiViews
 RewriteEngine On
 
 RewriteRule ^tournament/([0-9]+)$ single_tournament?tid=$1 [L]
