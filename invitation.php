@@ -29,6 +29,8 @@ if ($count['c'] <= 1) {
 }
 
 $src = sPrintF('
+<div class="center">
+
 <h1>Create Player Account</h1>
 
 <fieldset class="faded-bg" style="width:500px;">
@@ -46,7 +48,7 @@ $src = sPrintF('
 <fieldset class="faded-bg" style="width:500px;">
 <legend>Account Info</legend>
 <table cellspacing="10" style="margin:-10px;" width="100%%">
-<col width="145" /><col />
+<col width="155" /><col />
 <tr><td>Name:</td><td>%1$s %2$s</td></tr>
 <tr><td>Ticket:</td><td>%6$s</td></tr>
 <tr><td colspan="2"><hr /></td></tr>
@@ -63,6 +65,8 @@ $src = sPrintF('
 </table>
 </fieldset>
 </form>
+
+</div>
 ', $p['fname'], $p['lname'], $p['email'], $username, $p['dname'], $p['ticket'], $tok);
 
 mp($src);
