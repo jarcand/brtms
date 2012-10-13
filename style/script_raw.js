@@ -73,6 +73,7 @@ function showTournament(data, sts) {
 }
 
 var major_limit = 0;
+var registrationOverviewScroll = false;
 function loadMyTeams() {
 	if (!session) {
 		return;
@@ -104,9 +105,12 @@ function loadMyTeams() {
 		}
 		$('#registration-overview').html(src);
 		var tp = parseInt($('#registration-overview').css('top'));
-		$(window).scroll(function() {
-			$('#registration-overview').css('top', Math.max(tp - $(window).scrollTop(), 50));
-		});
+		if (!registrationOverviewScroll) {
+			registrationOverviewScroll = true;
+			$(window).scroll(function() {
+				$('#registration-overview').css('top', Math.max(tp - $(window).scrollTop(), 50));
+			});
+		}
 		major_limit = data.limit;
 	}).fail(function(jqSHR, textStatus) {
 		alert(textStatus); //TODO
