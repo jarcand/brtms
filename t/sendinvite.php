@@ -16,14 +16,14 @@ if (!$res) {
 $p = $res->fetch_assoc();
 
 // -----------------------------------------------------------------------------
-$to = sPrintF('%1$s %2$s &lt;%3$s&gt;', $p['fname'], $p['lname'], $p['email']);
-$to = sPrintF('%1$s %2$s &lt;%3$s&gt;', $p['fname'], $p['lname'], 'jeffrey@battleroyale.ca');
+$to = sPrintF('%1$s %2$s <%3$s>', $p['fname'], $p['lname'], $p['email']);
+$to = sPrintF('%1$s %2$s <%3$s>', $p['fname'], $p['lname'], 'jeffrey@battleroyale.ca');
 $subject = 'Your Invitation to the Battle Royale Players Portal';
 // -----------------------------------------------------------------------------
 $headers = implode("\r\n", array(
-	'From: invite-bot@battleroyale.ca',
-	'Reply-To: accounts@battleroyale.ca',
-	'CC: accounts@battleroyale.ca',
+	'From: Battle Royale Invitation Bot <invite-bot@battleroyale.ca>',
+	'Reply-To: Battle Royale Accounts <accounts@battleroyale.ca>',
+	'CC: Battle Royale Accounts <accounts@battleroyale.ca>',
 	'Content-Type: text/plain; charset=ISO-8859-1',
 	'X-Mailer: PHP/' . phpversion(),
 ));
@@ -91,11 +91,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <tr><td>Subject:</td><td><input type="text" name="subject" readonly="readonly" size="60" value="%2$s" /></td></tr>
 <tr><td>Headers:</td><td><textarea cols="40" readonly="readonly" rows="4" style="font-family:sans-serif;font-size:9pt;">%3$s</textarea></td></tr>
 <tr><td>Message:</td><td><textarea cols="60" readonly="readonly" rows="20" style="font-family:sans-serif;font-size:9pt;">%4$s</textarea></td></tr>
-<tr><td></td><td><input type="submit" value="Send Email Invitation" /> %5$s</td></tr>
+<tr><td></td><td><strong>%5$s</strong> <input type="submit" value="Send Email Invitation" /></td></tr>
 </table>
 </form>
 </div>
-', $to, $subject, $headers, $message, $p['invitedts']);
+', htmlEntities($to), $subject, htmlEntities($headers), $message, $p['invitedts']);
 	
 	mp($src);
 }
