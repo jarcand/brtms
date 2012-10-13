@@ -1,8 +1,8 @@
 <?php
 
-require_once '../l/db.inc.php';
-require_once '../l/session.inc.php';
-require_once '../l/utils.inc.php';
+require_once dirname(__FILE__) . '/../l/db.inc.php';
+require_once dirname(__FILE__) . '/../l/session.inc.php';
+require_once dirname(__FILE__) . '/../l/utils.inc.php';
 
 requireSession('json');
 

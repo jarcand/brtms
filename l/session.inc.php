@@ -1,8 +1,8 @@
 <?php
 
 
-require_once 'config.inc.php';
-require_once 'db.inc.php';
+require_once dirname(__FILE__) . '/config.inc.php';
+require_once dirname(__FILE__) . '/db.inc.php';
 
 define('SES_COOK', $config['instance'] . '-session');
 

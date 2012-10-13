@@ -1,6 +1,6 @@
 <?php
 
-require_once 'session.inc.php';
+require_once dirname(__FILE__) . '/session.inc.php';
 
 function genSeatCell($seat, $res_seats = array()) {
 	global $_p;

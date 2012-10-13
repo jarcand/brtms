@@ -1,6 +1,6 @@
 <?php
 
-require_once 'l/view.inc.php';
+require_once dirname(__FILE__) . '/l/view.inc.php';
 
 mp('<h1>Players Portal</h1>
 

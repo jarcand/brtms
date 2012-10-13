@@ -1,9 +1,9 @@
 <?php
 
-require_once 'l/config.inc.php';
-require_once 'l/db.inc.php';
-require_once 'l/session.inc.php';
-require_once 'l/view.inc.php';
+require_once dirname(__FILE__) . '/l/config.inc.php';
+require_once dirname(__FILE__) . '/l/db.inc.php';
+require_once dirname(__FILE__) . '/l/session.inc.php';
+require_once dirname(__FILE__) . '/l/view.inc.php';
 
 function outputPage($msg = '') {
 	global $db;

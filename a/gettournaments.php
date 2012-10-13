@@ -1,6 +1,6 @@
 <?php
 
-require_once '../l/db.inc.php';
+require_once dirname(__FILE__) . '/../l/db.inc.php';
 
 if (!isSet($tids_str)) {
 	$tids_str = @$_GET['tids'];
