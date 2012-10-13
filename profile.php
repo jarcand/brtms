@@ -23,12 +23,12 @@ $src = '
 
 $src .= sPrintF('
 <form action="#" onsubmit="return updateDname(this);">
-<fieldset class="faded-bg" style="width:400px;">
+<fieldset class="faded-bg" style="width:450px;">
 <legend>Account Info</legend>
 <table cellspacing="10" style="margin:-10px;" width="100%%">
 <col width="180" /><col />
 <tr><td>Name:</td><td>%1$s %2$s</td></tr>
-<tr><td>Email:</td><td>%3$s<br /> <small><em>Contact <a href="mailto:accounts&#64;battleroyale.ca">Accounts</a> for assistance.</em></small></td></tr>
+<tr><td>Email:</td><td>%3$s<br /> <small><em>To change, contact <a href="mailto:accounts&#64;battleroyale.ca">Accounts</a> for assistance.</em></small></td></tr>
 <tr><td>Display Name:</td><td><input type="text" name="dname" value="%5$s" /></td></tr>
 <tr><td></td><td><input type="submit" name="subbtn" value="Update Display Name" /></td></tr>
 </table>
@@ -39,11 +39,11 @@ $src .= sPrintF('
 
 $src .= sPrintF('
 <form action="#" onsubmit="return changePassword(this);">
-<fieldset class="faded-bg" style="width:400px;">
+<fieldset class="faded-bg" style="width:450px;">
 <legend>Change Password</legend>
 <table cellspacing="10" style="margin:-10px;" width="100%%">
 <col width="180" /><col />
-<tr><td>Username:</td><td>%4$s<br /> <small><em>Contact <a href="mailto:accounts&#64;battleroyale.ca">Accounts</a> for assistance.</em></small></td></tr>
+<tr><td>Username:</td><td>%4$s<br /> <small><em>To change, contact <a href="mailto:accounts&#64;battleroyale.ca">Accounts</a> for assistance.</em></small></td></tr>
 <tr><td>Current Password:</td><td><input type="password" name="curpwd" /></td></tr>
 <tr><td>New Password:<br /><small>Must be at least 8 characters long.</small></td><td><input type="password" name="pass1" /></td></tr>
 <tr><td>Repeat Password:</td><td><input type="password" name="pass2" /></td></tr>
@@ -58,7 +58,8 @@ if ($_p['seat']) {
 	$seat_release = '&ndash; <a href="javascript:releaseSeat();">Release Seat</a>';
 }
 
-$src .= sPrintF('<fieldset class="faded-bg" style="width:400px;">
+$src .= sPrintF('
+<fieldset class="faded-bg" style="width:450px;">
 <legend>Registration Info</legend>
 <table cellspacing="10" style="margin:-10px;" width="100%%">
 <col width="180" /><col />

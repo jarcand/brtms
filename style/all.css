@@ -468,77 +468,79 @@ table.tac th {
 }
 
 
-#seating {
+.seating-chart.real {
 	background-color : #fcf2c3;
 	background-image : url(../imgs/seating_layout.png);
 	background-repeat : no-repeat;
 	color : black;
+	clear : both;
 	font : 2pt arial;
-/*	height : 832px;*/
+	margin-bottom : 20px;
 	width : 900px;
 }
 
-#seating,
-#seating table {
-	margin : 0;
+.seating-chart,
+.seating-chart table {
+	margin-bottom : 0;
+	margin-top : 0;
 	padding : 0;
 }
 
-#seating td,
-#seating th {
+.seating-chart td,
+.seating-chart th {
 	margin : 0 !important;
 	padding : 0 !important;
 }
 
-#seating .me {
-	background-color : #8f8 !important;
+.seating-chart .me {
+	background-color : #88f !important;
 	background-image : none !important;
 	cursor : help;
-	outline : 1px solid lime;
+	outline : 1px solid blue;
 }
 
-#seating .occ {
+.seating-chart .occ {
 	background-color : #f88 !important;
 	background-image : none !important;
 	cursor : help;
 	outline : 1px solid red;
 }
 
-#seating .rvd {
+.seating-chart .rvd {
 	background-color : gray !important;
 	background-image : none !important;
 	cursor : help;
 }
 
-#seating .vac {
+.seating-chart .vac {
 	background-image : none !important;
 	text-align : center;
 	vertical-align : middle;
 }
 
-#seating .vac2 {
+.seating-chart .vac2 {
 	background-color : #8d8 !important;
 	background-image : none !important;
 	cursor : help;
 	outline : 1px solid #080;
 }
 
-#seating .me input,
-#seating .occ input,
-#seating .rvd input,
-#seating .vac2 input {
+.seating-chart .me input,
+.seating-chart .occ input,
+.seating-chart .rvd input,
+.seating-chart .vac2 input {
 	visibility : hidden;
 
 }
 
-#seating .p1 th {
+.seating-chart .p1 th {
 	border : 0;
 	height : 22px;
 	padding : 0 0 !important;
 	width : 17px;
 }
 
-#seating .p2 th {
+.seating-chart .p2 th {
 	border : 0;
 	height : 23px;
 	padding : 0 0 !important;
@@ -546,27 +548,27 @@ table.tac th {
 
 }
 
-#seating .bt {
+.seating-chart .bt {
 	width : 21px;
 }
 
-#seating .lm {
+.seating-chart .lm {
 	width : 131px;
 }
 
-#seating .lm2 {
+.seating-chart .lm2 {
 	width : 574px;
 }
 
-#seating .rm {
+.seating-chart .rm {
 /*	width : 28px;*/
 }
 
-#seating .rm2 {
+.seating-chart .rm2 {
 /*	width : 35px;*/
 }
 
-#seating .tt {
+.seating-chart .tt {
 	width : 27px;
 }
 

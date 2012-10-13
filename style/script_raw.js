@@ -355,6 +355,7 @@ function chooseSeat(frm) {
 		var src = '';
 		if (data.result == 'success') {
 			frm.reset();
+			$(frm).find('input').attr('readonly', 'readonly');
 			document.location.reload();
 		} else {
 			alert(data.result + ': ' + data.errorType); //TODO

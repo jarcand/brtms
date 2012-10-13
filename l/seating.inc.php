@@ -28,7 +28,7 @@ function genSeatCell($seat, $res_seats = array()) {
 
 function genSeatChart($res_seats = array()) {
 	
-	$output = '<table cellspacing="0" id="seating">
+	$output = '<table cellspacing="0" class="seating-chart real">
 <tr style="height:98px;"><td>&nbsp;</td></tr>
 <tr>
 <td>
