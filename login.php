@@ -8,15 +8,6 @@ require_once dirname(__FILE__) . '/l/view.inc.php';
 function outputPage($msg = '') {
 	global $db;
 	
-	$pids_html = '';
-	$res = $db->query('SELECT `pid`, `fname`, `lname`, `email`
-	  FROM `players` `p`');
-	
-	while ($p = $res->fetch_assoc()) {
-		$pids_html .= sPrintF('<option value="%s">%s %s (%s)</option>',
-		  $p['pid'], $p['fname'], $p['lname'], $p['email']);
-	}
-
 	$msg_src = !$msg ? '' : sPrintF('<tr><td class="error tac" colspan="2">%s</td></tr>', $msg);
 	
 	$r = @$_GET['r'];
@@ -38,20 +29,7 @@ function outputPage($msg = '') {
 </table>
 </fieldset>
 </form>
-
-<form action="login" method="post">
-<input type="hidden" name="r" value="%1$s" />
-<input type="hidden" name="dev" value="true" />
-<fieldset class="center faded-bg" style="width:500px;">
-<legend>Dev-Only</legend>
-<table cellspacing="10" class="center">
-%2$s
-<tr><td><select name="pid"><option value="0">(None)</option>%3$s</select></td></tr>
-<tr><td><input type="submit" value="Login" /></td></tr>
-</table>
-</fieldset>
-</form>
-', $r, $msg_src, $pids_html);
+', $r, $msg_src);
 	
 	mp($src);
 }
@@ -61,27 +39,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	$r = @$_POST['r'];
 	
-	if (@$_POST['dev']) {
-		$pid = $_POST['pid'];
+	$username = $_POST['user'];
+	$password = encodePassword($_POST['pass']);
+	
+	$res = $db->query($sql = 'SELECT `pid`, `password` FROM `players`
+	  WHERE `firstlogints` IS NOT NULL AND `username`=' . s($username));
+	if (!$res) {
+		error($res);
+	}
+	$p = $res->fetch_assoc();
+	
+	if (!$p || $p['password'] != $password) {
+		
+		outputPage('Invalid username or password.');
+		
 	} else {
-		
-		$username = $_POST['user'];
-		$password = encodePassword($_POST['pass']);
-		
-		$res = $db->query($sql = 'SELECT `pid`, `password` FROM `players`
-		  WHERE `firstlogints` IS NOT NULL AND `username`=' . s($username));
-		if (!$res) {
-			error($res);
-		}
-		$p = $res->fetch_assoc();
-		
-		if (!$p || $p['password'] != $password) {
-			
-			outputPage('Invalid username or password.');
-			
-		} else {
-			$pid = $p['pid'];
-		}
+		$pid = $p['pid'];
 	}
 	
 	$token = subStr(sha1($config['SALT'] . '-session-' . strFTime('%Y-%m-%d %H:%M:%S')), 15, 20);
