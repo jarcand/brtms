@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	setCurrUser($token);
 	
-	if (!$r || preg_match('#/(login|invitation)(?.*)$#', $r)) {
+	if (!$r || preg_match('#/(login|invitation)$#', parse_url($r, PHP_URL_PATH))) {
 		$r = $config['ROOT'] . '/';
 	}
 	
