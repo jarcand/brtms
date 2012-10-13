@@ -59,13 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	$token = subStr(sha1($config['SALT'] . '-session-' . strFTime('%Y-%m-%d %H:%M:%S')), 15, 20);
 	
-	if (!$db->query($sql = 'UPDATE `players` SET `lastlogints`=NOW(), `token`=' . s($token) . ' WHERE `pid`=' . s($pid))) {
+	if (!$db->query($sql = 'UPDATE `players`
+	  SET `lastlogints`=NOW(), `token`=' . s($token) . '
+	  WHERE `pid`=' . s($pid))) {
 		error($sql);
 	}
 	
 	setCurrUser($token);
 	
-	if (!$r || preg_match('#/login$#', $r)) {
+	if (!$r || preg_match('#/(login|invitation)(?.*)$#', $r)) {
 		$r = $config['ROOT'] . '/';
 	}
 	
