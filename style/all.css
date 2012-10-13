@@ -298,7 +298,7 @@ table.tac th {
 .crowd .c31,
 .crowd .c32,
 .crowd .c33 {
-	background-color : #9b9;
+	background-color : #acbac0;
 }
 
 .major .c11,
@@ -310,7 +310,7 @@ table.tac th {
 .major .c31,
 .major .c32,
 .major .c33 {
-	background-color : #b99;
+	background-color : #bac0ac;
 }
 
 .tour .c11 {
@@ -438,11 +438,11 @@ table.tac th {
 
 .tour .l1,
 .tour .l2 {
-	color : deepskyblue;
+	color : #ff4411;
 	font-size : 15px;
 	margin : 0 0 3px;
 	padding : 0 10px;
-	text-shadow : 1px 1px #222, 0 0 3px #bbb;
+	text-shadow : 0px 1px #444, 0 0 3px #bbb;
 }
 
 .tour .thumb {
@@ -528,6 +528,7 @@ table.tac th {
 #seating .rvd input,
 #seating .vac2 input {
 	visibility : hidden;
+
 }
 
 #seating .p1 th {

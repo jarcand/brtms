@@ -103,6 +103,10 @@ function loadMyTeams() {
 			$('.tour.major .underlim').show();
 		}
 		$('#registration-overview').html(src);
+		var tp = parseInt($('#registration-overview').css('top'));
+		$(window).scroll(function() {
+			$('#registration-overview').css('top', Math.max(tp - $(window).scrollTop(), 50));
+		});
 		major_limit = data.limit;
 	}).fail(function(jqSHR, textStatus) {
 		alert(textStatus); //TODO
