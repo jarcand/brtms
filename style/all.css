@@ -243,6 +243,56 @@ table.tac th {
 	top : -20px;
 }
 
+.tile {
+	background-color : silver;
+	border : 2px solid black;
+	display : inline-block;
+	font-family : Calibri, Arial, sans-serif;
+	font-size : 20pt;
+	font-weight : bold;
+	height : 70px;
+	margin : 6px;
+	padding : 15px 0;
+	text-align : center;
+	vertical-align : middle;
+	width : 120px;
+}
+
+.tile span {
+	display : block;
+	font-size : 60%;
+	font-weight : normal;
+}
+
+.tile.blue {
+	background-color : #ddf;
+	border-color : #00f;
+	color : #00f;
+}
+
+.tile.green {
+	background-color : #dfd;
+	border-color : #070;
+	color : #070;
+}
+
+.tile.orange {
+	background-color : #fed;
+	border-color : #fa0;
+	color : #fa0;
+}
+
+.tile.red {
+	background-color : #fdd;
+	border-color : #f00;
+	color : #f00;
+}
+
+.tile.yellow {
+	background-color : #ffd;
+	border-color : #bb0;
+	color : #bb0;
+}
 #non-overview-wrapper {
 	margin-left : 130px;
 }
@@ -323,7 +373,7 @@ table.tac th {
 .tour .c12 {
 	border : solid black;
 	border-width : 2px 0 0 0;
-	width : 570px;
+	width : 580px;
 }
 
 .tour .c13 {

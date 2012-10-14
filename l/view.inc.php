@@ -2,6 +2,12 @@
 
 require_once dirname(__FILE__) . '/session.inc.php';
 
+function mt($title, $value, $color = '', $title2 = '') {
+	return sPrintF('<div class="tile %1$s"><span>%2$s</span> %3$s '
+	  . '<span>%4$s</span></div>',
+	  $color, $title, $value, $title2);
+}
+
 function mp($main_body) {
 	global $config, $_p;
 	

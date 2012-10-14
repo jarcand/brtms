@@ -6,6 +6,38 @@ require_once dirname(__FILE__) . '/../l/view.inc.php';
 
 requireAdminSession();
 
+$src = '<h1>Players List Overview</h1>';
+
+$res = $db->query('SELECT
+  (SELECT COUNT(*) FROM `players`) AS `total`,
+  (SELECT COUNT(*) FROM `players` WHERE `firstlogints` IS NOT NULL) AS `signups`,
+  (SELECT COUNT(*) FROM `players` WHERE `invitedts` IS NULL) AS `notinvited`,
+  (SELECT COUNT(*) FROM `players` WHERE `invitedts` > DATE_SUB(NOW(), INTERVAL 1 HOUR)) AS `lasthour`,
+  (SELECT COUNT(*) FROM `tournament_players`
+    INNER JOIN `tournaments` USING (`tid`)
+    WHERE `major`=1) AS `joined_major`,
+  (SELECT COUNT(*) FROM `tournament_players`
+    INNER JOIN `tournaments` USING (`tid`)
+    WHERE `major`=0) AS `joined_crowd`,
+  (SELECT COUNT(*) FROM `tournaments` WHERE `major`=0) AS `tours_crowd`,
+  (SELECT COUNT(*) FROM `tournaments` WHERE `published`=0) AS `tours_unpublished`
+  FROM DUAL');
+$stats = $res->fetch_assoc();
+
+$src .= '<div class="center">';
+$src .= mt('Total Players', $stats['total'], 'yellow');
+$src .= mt('Signed Up', $stats['signups'], 'green');
+$src .= mt('Not Invited', $stats['notinvited'], 'red');
+$src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
+$src .= '</div>';
+$src .= '<div class="center">';
+$src .= mt('Joined Majors', $stats['joined_major'], 'blue');
+$src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
+$src .= mt('Tours Crowds', $stats['tours_crowd'], 'green');
+$src .= mt('Unpublished', $stats['tours_unpublished'], 'red');
+$src .= '</div>';
+
+
 $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedts`, `lastlogints`,
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
     INNER JOIN `tournament_players` `tp` USING (`tid`)
@@ -17,7 +49,7 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedt
     WHERE `tp`.`pid`=`p`.`pid`) AS `teams`
   FROM `players` `p`');
 
-$src = '<table cellspacing="0" class="border">
+$src .= '<table cellspacing="0" class="border">
 <tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Invited</th><th>Last Login</th></tr>
 ';
 
