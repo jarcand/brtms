@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/l/view.inc.php';
 
 mp('<h1>Players Portal</h1>
 
-<p>Welcomem to the Players Portal.  It is through this portal that registered Battle Royale players can <a href="${ROOT}/tournaments">join tournaments</a>, <a href="${ROOT}/tournaments">create new tournaments</a>, and <a href="${ROOT}/seats">choose their seats</a>.</p>
+<p>Welcome to the Players Portal.  It is through this portal that registered Battle Royale players can <a href="${ROOT}/tournaments">join tournaments</a>, <a href="${ROOT}/tournaments">create new tournaments</a>, and <a href="${ROOT}/seats">choose their seats</a>.</p>
 <p>New this year for Battle Royale VI, we are trying a new tournaments mechanism: we have Major Tournaments, and Crowdsourced Tournaments.</p>
 
 <h2>Major Tournaments</h2>

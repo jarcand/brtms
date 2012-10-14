@@ -38,7 +38,7 @@ $src = sPrintF('
 <p>Hello %1$s %2$s,</p>
 <p>Please complete the following form to complete creating your player account.</p>
 <p><strong>Note:</strong> Please double-check your email address because it is difficult to change it later.
-  If you have any difficulties, please contact <a href="mailto:jeffrey&#64;battleroyale.ca">Jeffrey</a> for assistance.</p>
+  If you have any difficulties, please contact <a href="mailto:accounts&#64;battleroyale.ca">Accounts</a> for assistance.</p>
 <p>Thanks,<br />
   Battle Royale VI Organizers</p>
 </fieldset>

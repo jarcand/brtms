@@ -592,13 +592,15 @@ table.tac th {
 
 .error {
 	color : red;
+	margin-top : 0;
 }
 
 fieldset {
 	background-color : #e8e8e8;
 }
 
-input.invalid {
+input.invalid,
+textarea.invalid {
 	background-color : #fdd;
 	border-color : red;
 }

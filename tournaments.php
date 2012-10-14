@@ -41,6 +41,7 @@ if ($_p['pid']) {
 	<option>21</option><option>22</option><option>23</option><option>24</option><option>25</option>
 	</select></td></tr>
 <tr><td>Notes:</td><td><textarea name="notes" cols="50" rows="2"></textarea></td></tr>
+<tr><td colspan="2"><strong>Note:</strong> For the moment, you cannot directly edit your tournament, so please double-check your inputs.  Edit feature is coming soon!</td></tr>
 <tr><td></td><td><input type="submit" value="Create Tournament" /></td></tr>
 </table>
 </form>

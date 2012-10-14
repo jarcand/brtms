@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		  || $ticket == 'Regular Ticket - 2-3 Major Tournaments') {
 			$credits = 3;
 		} else if ($ticket == 'Early Bird Ticket - 4+ Major Tournaments'
+		  || $ticket == 'Volunteer Ticket - 4+ Major Tournaments'
 		  || $ticket == 'Regular Ticket - 4+ Major Tournaments') {
 			$credits = 200;
 		}
@@ -50,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		  || $ticket == 'Early Bird Ticket - 2-3 Major Tournaments'
 		  || $ticket == 'Early Bird Ticket - 4+ Major Tournaments') {
 			$early = 1;
+		} else if ($ticket == 'Volunteer Ticket - 4+ Major Tournaments') {
+			$early = 2;
 		}
 		
 		$fields = array();

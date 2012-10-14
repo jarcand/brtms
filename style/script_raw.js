@@ -131,6 +131,34 @@ function createTournament(frm) {
 		alert('You need to login or purchase a BR6 ticket!');
 		return false;
 	}
+	
+	$(frm).find('input, textarea').removeClass('invalid');
+	$(frm).find('p.error').remove();
+	
+	var error = false;
+	if (frm.desc.value.trim().length < 3) {
+		frm.desc.focus();
+		$(frm.desc).addClass('invalid');
+		$(frm.desc).after('<p class="error">Please provide a description of the tournament.</p>');
+		error = true;
+	}
+	if (frm.game.value.trim().length < 3) {
+		frm.game.focus();
+		$(frm.game).addClass('invalid');
+		$(frm.game).after('<p class="error">Please specify the game that the tournament is based on.</p>');
+		error = true;
+	}
+	if (frm.tname.value.trim().length < 3) {
+		frm.tname.focus();
+		$(frm.tname).addClass('invalid');
+		$(frm.tname).after('<p class="error">Please specify a longer tournament name.</p>');
+		error = true;
+	}
+	if (error) {
+		$(frm.subbtn).after('<p class="error">There were errors in your submission.</p>');
+		return false;
+	}
+	
 	$.ajax({
 	  url: '${ROOT}/a/createtournament',
 	  type: 'POST',
