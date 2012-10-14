@@ -557,9 +557,10 @@ table.tac th {
 }
 
 .seating-chart .rvd {
-	background-color : gray !important;
+	background-color : silver !important;
 	background-image : none !important;
 	cursor : help;
+	outline : 1px solid gray;
 }
 
 .seating-chart .vac {
