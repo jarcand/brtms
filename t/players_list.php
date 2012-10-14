@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '/../l/view.inc.php';
 
 requireAdminSession();
 
-$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedts`,
+$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedts`, `lastlogints`,
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
     INNER JOIN `tournament_players` `tp` USING (`tid`)
     WHERE `major`=1 AND `tp`.`pid`=`p`.`pid`) AS `tours_major`,
@@ -18,7 +18,7 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedt
   FROM `players` `p`');
 
 $src = '<table cellspacing="0" class="border">
-<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Invited</th></tr>
+<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Invited</th><th>Last Login</th></tr>
 ';
 
 while ($p = $res->fetch_assoc()) {
