@@ -11,6 +11,7 @@ $src = '<h1>Players List Overview</h1>';
 $res = $db->query('SELECT
   (SELECT COUNT(*) FROM `players`) AS `total`,
   (SELECT COUNT(*) FROM `players` WHERE `firstlogints` IS NOT NULL) AS `signups`,
+  (SELECT COUNT(*) FROM `players` WHERE `seat` IS NOT NULL) AS `seated`,
   (SELECT COUNT(*) FROM `players` WHERE `invitedts` IS NULL) AS `notinvited`,
   (SELECT COUNT(*) FROM `players` WHERE `invitedts` > DATE_SUB(NOW(), INTERVAL 1 HOUR)) AS `lasthour`,
   (SELECT COUNT(*) FROM `tournament_players`
@@ -27,6 +28,7 @@ $stats = $res->fetch_assoc();
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
 $src .= mt('Signed Up', $stats['signups'], 'green');
+$src .= mt('Seated', $stats['seated'], 'green');
 $src .= mt('Not Invited', $stats['notinvited'], 'red');
 $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
