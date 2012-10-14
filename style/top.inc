@@ -38,6 +38,7 @@ ${CURR_USER}
 <li><a href="${ROOT}/">Home</a></li>
 <li><a href="${ROOT}/tournaments">Tournaments</a></li>
 <li><a href="${ROOT}/seats">Seats</a></li>
+<li><a href="http://www.battleroyale.ca/br6/">--Main Website--</a></li>
 </ul>
 </div>
 <div id="page-content-wide">
