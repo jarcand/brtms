@@ -12,16 +12,16 @@
 <link href="${ROOT}/style/all.css" media="all" rel="stylesheet" type="text/css" />
 <link href="${ROOT}/style/screen.css" media="screen" rel="stylesheet" type="text/css" />
 <link href="${ROOT}/style/print.css" media="print" rel="stylesheet" type="text/css" />
-<!--script type="text/javascript">
+<script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-29048176-1']);
+  _gaq.push(['_setAccount', 'UA-18375354-4']);
   _gaq.push(['_trackPageview']);
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-</script-->
+</script>
 <script type="text/javascript" src="${ROOT}/style/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="${ROOT}/style/jquery.bpopup-0.7.0.min.js"></script>
 <script type="text/javascript" src="${ROOT}/style/script.js"></script>
