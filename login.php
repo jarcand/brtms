@@ -31,7 +31,7 @@ function outputPage($msg = '') {
 </table>
 </fieldset>
 </form>
-', $r, $msg_src, $user);
+', $r, $msg_src, htmlEntities($user));
 	
 	mp($src);
 }
