@@ -29,9 +29,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$keys['mobile']		= array_search('Mobile Phone', $headers);
 	$keys['gender']		= array_search('Gender', $headers);
 	
-	$count = 0;
+	$c_inserts = 0;
+	$c_skips = 0;
 	foreach ($lines as $line) {
 		$parts = parse_line($line);
+		
+		$res = $db->query($sql = sPrintF('SELECT COUNT(*) AS `c` FROM `players`
+		  WHERE `orderno`=%1$s AND `attendeeno`=%2$s
+		  ', s($parts[$keys['orderno']]), s($parts[$keys['attendeeno']])));
+		$row = $res->fetch_assoc();
+		
+		if ($row['c'] != '0') {
+			$c_skips++;
+			continue;
+		}
 		
 		$ticket = $parts[$keys['ticket']];
 		$credits = 0;
@@ -78,12 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (!$db->query($sql = 'INSERT INTO `players` SET ' . implode(', ', $sqlp))) {
 			error($sql);
 		}
-		$count++;
+		$c_inserts++;
 	}
 	
 	
 	$src = sPrintF('<h1>Import Players: Results</h1>
-<p>Successfully imported %s players.</p>', $count);
+<p>Successfully imported %s players, skipped %2$s existing players.</p>', $c_inserts, $c_skips);
 	
 	mp($src);
 	
@@ -91,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	$src = '<h1>Import Players</h1>
 
-<form action="players_import" method="post">
-<textarea name="csv" cols="80" rows="15">
+<form action="#" method="post">
+<textarea name="csv" cols="120" rows="25">
 </textarea>
 <p><input type="submit" value="Import" /></p>
 </form>
