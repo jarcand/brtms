@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../l/db.inc.php';
+require_once dirname(__FILE__) . '/../l/session.inc.php';
 
 if (!isSet($tids_str)) {
 	$tids_str = @$_GET['tids'];
@@ -11,7 +12,7 @@ if (!isSet($ret)) {
 }
 
 $cond1 = '(`published`=1 OR `owner_pid`=' . s($_p['pid']) . ')';
-if ($_p['pid'] == 1) {
+if ($_p['pid'] == '1') {
 	$cond1 = '1';
 }
 
@@ -25,7 +26,7 @@ if ($tids_str != '') {
 	$cond2 = sPrintF(' AND `tid` IN (%s)', implode(',', $s_tids));
 }
 
-$res = $db->query('SELECT *,
+$res = $db->query('SELECT `tid`, `shortcode`, `name`, `major`, `published`, `game`, `desc`, `prizes`,
   (SELECT `dname` FROM `players` `p` WHERE `p`.`pid`=`t`.`owner_pid`) AS `organizer`,
   (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `players`,
   (SELECT COUNT(`gid`) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `teams`
