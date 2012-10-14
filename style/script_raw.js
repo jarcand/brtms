@@ -1,5 +1,7 @@
 function genTournament(t, detailed) {
-	var players_src = 'Players: ' + t.players + (t.teamsize > 1 ? ', Teams: <em>Coming Soon</em>' /*+ t.teams*/ : '');
+	var players_src = 'Players: ' + t.players
+	  + (t.teamsize > 1 ? ', Teams: <em>Coming Soon</em>' /*+ t.teams*/ : '')
+	  + (t.published ? ', <em>Awaiting Approval</em>' : '');
 	if ($('#tour' + t.tid).length) {
 		$('#tour' + t.tid + ' .l2').each(function() {$(this).html(players_src);});
 		return '';
