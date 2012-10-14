@@ -7,29 +7,42 @@ function genTournament(t, detailed) {
 		return '';
 	}
 	
-	src1 = '<table cellpadding="0" cellspacing="0"><tr><td><img class="thumb" src="${ROOT}/imgs/game-'
-          + (t.shortcode || 'default') + '.png" /></td><td><h2><a href="${ROOT}/tournament/' + (t.shortcode || t.tid)
-	  + '">' + t.name + '</a></h2>'
-	  + '<p class="l1">' + (t.major == '1' ? 'Major Tournament' : 'Crowdsourced Tournament') + ' organized by ' + t.organizer + '</p>'
-	  + '<p class="l2">' + players_src + '</p></td></tr></table>';
-	src2 = '<div class="join"><p class="underlim"><a href="#" onclick="return joinTournament(' + t.tid + ');">JOIN</a></p>'
-	  + '<p class="overlim" title="A.K.A. You have reached the maximum Major Tournaments for your ticket type.">0 CREDITS,<br /> INSERT<br /> TOKEN</p></div>'
-	  + '<p class="joined">JOINED <a href="#" onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>';
+	src1 = '<table cellpadding="0" cellspacing="0"><tr><td>'
+	  + '<img class="thumb" src="${ROOT}/imgs/game-'
+          + (t.shortcode || 'default')
+          + '.png" /></td><td><h2><a href="${ROOT}/tournament/'
+          + (t.shortcode || t.tid) + '">' + t.name + '</a></h2><p class="l1">'
+	  + (t.major == '1' ? 'Major Tournament' : 'Crowdsourced Tournament')
+	  + ' by ' + t.organizer + '</p><p class="l2">' + players_src
+	  + '</p></td></tr></table>';
+	src2 = '<div class="join"><p class="underlim"><a href="#" '
+	  + 'onclick="return joinTournament(' + t.tid + ');">JOIN</a></p>'
+	  + '<p class="overlim" title="A.K.A. You have reached the maximum '
+	  + 'Major Tournaments for your ticket type.">0 CREDITS,<br /> '
+	  + 'INSERT<br /> TOKEN</p></div>'
+	  + '<p class="joined">JOINED <a href="#" '
+	  + 'onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>';
 	src3 = '<h3>Description:</h3><p>' + t.desc + '</p>'
 	  + '<h3>Prizes:</h3><p>' + t.prizes + '</p>';
 	src4 = '';
 	
-	var src = '<table cellspacing="0" class="tour ' + (t.major == '1' ? 'major' : 'crowd') + '" id="tour' + t.tid + '">'
-	  + '<tr class="r1"><td class="c11"></td><td class="c12"></td><td class="c13"></td><td class="c14">'
+	var src = '<table cellspacing="0" class="tour '
+	  + (t.major == '1' ? 'major' : 'crowd') + '" id="tour' + t.tid + '">'
+	  + '<tr class="r1"><td class="c11"></td><td class="c12"></td>'
+	  + '<td class="c13"></td><td class="c14">'
 	  + '</td><td class="c15"></td></tr>'
-	  + '<tr class="r2"><td class="c21"></td><td class="c22">' + src1 + '</td><td class="c23"></td><td class="c24">' + src2
+	  + '<tr class="r2"><td class="c21"></td><td class="c22">' + src1
+	  + '</td><td class="c23"></td><td class="c24">' + src2
 	  + '</td><td class="c25"></td></tr>'
-	  + '<tr class="r3"><td class="c31"></td><td class="c32"></td><td class="c33"></td><td class="c34">'
+	  + '<tr class="r3"><td class="c31"></td><td class="c32"></td>'
+	  + '<td class="c33"></td><td class="c34">'
 	  + '</td><td class="c35"></td></tr>';
 	if (detailed) {
-		src += '<tr class="r4"><td class="c41"></td><td class="c42">' + src3 + '</td><td class="c43"></td><td class="c44">' + src4
+		src += '<tr class="r4"><td class="c41"></td><td class="c42">'
+		  + src3 + '</td><td class="c43"></td><td class="c44">' + src4
 		  + '</td><td class="c45"></td></tr>'
-		  + '<tr class="r5"><td class="c51"></td><td class="c52"></td><td class="c53"></td><td class="c54">'
+		  + '<tr class="r5"><td class="c51"></td><td class="c52"></td>'
+		  + '<td class="c53"></td><td class="c54">'
 		  + '</td><td class="c55"></td></tr>'
 	}
 	src += '</table>';
@@ -56,7 +69,8 @@ function showTournamentList(data, sts) {
 	}
 	$('#tournaments .loading').hide();
 	$('#tournaments').append(src);
-	$('.c11, .c12, .c13, .c21, .c22, .c23, .c31, .c32, .c33').css('cursor', 'pointer').click(function() {
+	$('.c11, .c12, .c13, .c21, .c22, .c23, .c31, .c32, .c33')
+	  .css('cursor', 'pointer').click(function() {
 		document.location = $(this).find('h2 a').attr('href');
 	});
 	loadMyTeams();
@@ -95,7 +109,8 @@ function loadMyTeams() {
 			}
 		}
 		var src = '<ul><li class="bg"><strong>Joined Tournaments</strong></li>'
-		 + '<li><big>' + major_c + ' of ' + data.limit_s + '</big><br /> Major Tournaments</li>'
+		 + '<li><big>' + major_c + ' of ' + data.limit_s
+		 + '</big><br /> Major Tournaments</li>'
 		 + '<li><big>' + crowd_c + '</big><br /> Crowdsourced Tournaments</li>'
 		 + '</ul>';
 		if (major_c >= data.limit) {
@@ -110,7 +125,8 @@ function loadMyTeams() {
 		if (!registrationOverviewScroll) {
 			registrationOverviewScroll = true;
 			$(window).scroll(function() {
-				$('#registration-overview').css('top', Math.max(tp - $(window).scrollTop(), 50));
+				$('#registration-overview').css('top',
+				  Math.max(tp - $(window).scrollTop(), 50));
 			});
 		}
 		major_limit = data.limit;
