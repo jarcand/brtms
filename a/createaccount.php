@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				error($sql);
 			}
 			
-			$ret = array('result' => 'success', 'redirect' => $config['ROOT'] . '/login');
+			$ret = array('result' => 'success', 'redirect' => $config['ROOT'] . '/login?user=' . $fields['username']);
 		}
 	}
 	

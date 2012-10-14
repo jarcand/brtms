@@ -15,6 +15,8 @@ function outputPage($msg = '') {
 		$r = $_SERVER['HTTP_REFERER'];
 	}
 	
+	$user = @$_GET['user'];
+	
 	$src = sPrintF('
 <form action="login" method="post">
 <input type="hidden" name="r" value="%1$s" />
@@ -23,13 +25,13 @@ function outputPage($msg = '') {
 <table cellspacing="10" class="center" style="margin-bottom:-10px;margin-top:-10px;">
 <col width="90" /><col />
 %2$s
-<tr><td>Username:</td><td><input type="text" name="user" /></td></tr>
+<tr><td>Username:</td><td><input type="text" name="user" value="%3$s" /></td></tr>
 <tr><td>Password:</td><td><input type="password" name="pass" /></td></tr>
 <tr><td></td><td><input type="submit" value="Login" /></td></tr>
 </table>
 </fieldset>
 </form>
-', $r, $msg_src);
+', $r, $msg_src, $user);
 	
 	mp($src);
 }
