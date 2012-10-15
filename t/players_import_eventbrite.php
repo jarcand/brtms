@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	
 	$src = sPrintF('<h1>Import Players: Results</h1>
-<p>Need to import %s players, skipped %2$s existing players.</p><pre>%3$s</pre>', $c_inserts, $c_skips, $d);
+<p>Successfully imported %s players, skipped %2$s existing players.</p><pre>%3$s</pre>', $c_inserts, $c_skips, $d);
 	
 	mp($src);
 	
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$src = '<h1>Import Players</h1>
 
 <form action="#" method="post">
-<p><input type="submit" value="Import from Event Brite" /></p>
+<p><input type="submit" value="Import from Eventbrite" /></p>
 </form>
 ';
 	

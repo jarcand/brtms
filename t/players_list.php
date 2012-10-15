@@ -39,6 +39,14 @@ $src .= mt('Tours Crowds', $stats['tours_crowd'], 'green');
 $src .= mt('Unpublished', $stats['tours_unpublished'], 'red');
 $src .= '</div>';
 
+$src .= '
+<div class="center faded-bg">
+<form action="players_import_eventbrite" method="post">
+<big><strong>Import from Eventbrite:</strong></big> <input type="submit" value="Import Now" />
+</form>
+</div>
+';
+
 
 $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedts`, `lastlogints`,
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
