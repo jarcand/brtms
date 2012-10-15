@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$early = 1;
 		} else if ($ticket_id == '14910690') {
 			$ticket = 'Early Bird Ticket - 4+ Major Tournaments';
-			$credits = 200;
+			$credits = 10;
 			$early = 1;
 		} else if ($ticket_id == '14910694') {
 			$ticket = 'Regular Ticket - 1 Major Tournament';
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$early = 0;
 		} else if ($ticket_id == '14910690') {
 			$ticket = 'Regular Ticket - 4+ Major Tournaments';
-			$credits = 200;
+			$credits = 10;
 			$early = 0;
 		}
 		
