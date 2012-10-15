@@ -145,7 +145,8 @@ table.border {
 	border : solid black !important;
 	border-radius : 0 !important;
 	border-width : 0 0 1px 1px !important;
-	margin : 1.5em 0;
+	margin-bottom : 1.5em;
+	margin-top : 1.5em;
 }
 
 table.border td,
@@ -161,10 +162,6 @@ table.border th {
 	text-align : center;
 }
 
-table.center {
-	margin : auto;
-}
-
 div.faded-bg,
 fieldset.faded-bg,
 p.faded-bg,
@@ -173,12 +170,9 @@ table.faded-bg th {
 	background-color : #f2f2f2;
 	border : 1px solid #fff;
 	border-radius : 10px;
-	padding : 14px;
-}
-
-fieldset.faded-bg {
 	margin-bottom : 1em;
 	margin-top : 1em;
+	padding : 14px;
 }
 
 fieldset.faded-bg legend {

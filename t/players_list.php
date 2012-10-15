@@ -6,6 +6,10 @@ require_once dirname(__FILE__) . '/../l/view.inc.php';
 
 requireAdminSession();
 
+function fd($ts) {
+	return !$ts ? '' : (subStr($ts, 8, 2) . '_' . subStr($ts, 11));
+}
+
 $src = '<h1>Players List Overview</h1>';
 
 $res = $db->query('SELECT
@@ -21,7 +25,8 @@ $res = $db->query('SELECT
     INNER JOIN `tournaments` USING (`tid`)
     WHERE `major`=0) AS `joined_crowd`,
   (SELECT COUNT(*) FROM `tournaments` WHERE `major`=0) AS `tours_crowd`,
-  (SELECT COUNT(*) FROM `tournaments` WHERE `published`=0) AS `tours_unpublished`
+  (SELECT COUNT(*) FROM `tournaments` WHERE `published`=0) AS `tours_unpublished`,
+  (SELECT `registeredts` FROM `players` ORDER BY `registeredts` DESC LIMIT 1) AS `last_registered`
   FROM DUAL');
 $stats = $res->fetch_assoc();
 
@@ -35,20 +40,23 @@ $src .= '</div>';
 $src .= '<div class="center">';
 $src .= mt('Joined Majors', $stats['joined_major'], 'blue');
 $src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
-$src .= mt('Tours Crowds', $stats['tours_crowd'], 'green');
+$src .= mt('Crowd Tours', $stats['tours_crowd'], 'green');
 $src .= mt('Unpublished', $stats['tours_unpublished'], 'red');
 $src .= '</div>';
 
-$src .= '
-<div class="center faded-bg">
+$diff = time() - strToTime($stats['last_registered']);
+
+$src .= sPrintF('
+<div class="center faded-bg tac">
 <form action="players_import_eventbrite" method="post">
-<big><strong>Import from Eventbrite:</strong></big> <input type="submit" value="Import Now" />
+<big><strong>Import from Eventbrite:</strong></big> <input type="submit" value="Import Now" /><br />
+Last purchase made %1$.1f hours ago.
 </form>
 </div>
-';
+', $diff / 3600);
 
 
-$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedts`, `lastlogints`,
+$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedts`, `firstlogints`, `lastlogints`,
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
     INNER JOIN `tournament_players` `tp` USING (`tid`)
     WHERE `major`=1 AND `tp`.`pid`=`p`.`pid`) AS `tours_major`,
@@ -59,17 +67,21 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedt
     WHERE `tp`.`pid`=`p`.`pid`) AS `teams`
   FROM `players` `p`');
 
-$src .= '<table cellspacing="0" class="border">
-<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Invited</th><th>Last Login</th></tr>
+$src .= '<table cellspacing="0" class="border center">
 ';
+$ths = '<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Invited</th><th>First Login</th></tr>';
 
+$i = 0;
 while ($p = $res->fetch_assoc()) {
-	$inv_src = $p['invitedts'];
+	if (($i++ % 25) == 0) {
+		$src .= $ths;
+	}
+	$inv_src = fd($p['invitedts']);
 	if (!$inv_src) {
 		$inv_src = sPrintF('<a href="sendinvite?pid=%1$s">Send Invite</a>', $p['pid']);
 	}
 	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
-', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], $p['email'], $inv_src, $p['lastlogints']);
+', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], $p['email'], $inv_src, fd($p['firstlogints']));
 }
 
 $src .= '</table>';
