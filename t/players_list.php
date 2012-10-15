@@ -40,6 +40,8 @@ $res = $db->query('SELECT
   FROM DUAL');
 $stats = $res->fetch_assoc();
 
+$prize_budget = $stats['tickets_1cred'] * 10 + $stats['tickets_3cred'] * 15 + $stats['tickets_10cred'] * 25;
+
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
 $src .= mt('Signed Up', $stats['signups'], 'green');
@@ -49,6 +51,7 @@ $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
 $src .= '<div class="center">';
 $src .= mt('Tickets', $stats['tickets_1cred'] . '/' . $stats['tickets_3cred'] . '/' . $stats['tickets_10cred'], 'yellow', 'of 1/2-3/4+');
+$src .= mt('Prize Budget', $prize_budget . '$', 'orange', '(estimated)');
 $src .= mt('Joined Majors', $stats['joined_major'], 'blue', 'out of ' . $stats['credits_major']);
 $src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
 $src .= mt('Crowd Tours', $stats['tours_crowd'], 'green');
