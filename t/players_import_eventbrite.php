@@ -46,6 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 	}
 	
+	$stmt->close();
+	
 	$d = '';
 	$c_inserts = 0;
 	foreach ($to_add as $att) {
