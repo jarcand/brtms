@@ -20,7 +20,10 @@ $res = $db->query('SELECT
   (SELECT COUNT(*) FROM `players` WHERE `invitedts` > DATE_SUB(NOW(), INTERVAL 1 HOUR)) AS `lasthour`,
   (SELECT COUNT(*) FROM `tournament_players`
     INNER JOIN `tournaments` USING (`tid`)
-    WHERE `major`=1) AS `joined_major`,
+    INNER JOIN `players` USING (`pid`)
+    WHERE `major`=1 AND `early`!=2) AS `joined_major`,
+  (SELECT SUM(`credits`) FROM `players`
+    WHERE `early`!=2) AS `credits_major`,
   (SELECT COUNT(*) FROM `tournament_players`
     INNER JOIN `tournaments` USING (`tid`)
     WHERE `major`=0) AS `joined_crowd`,
@@ -38,7 +41,7 @@ $src .= mt('Not Invited', $stats['notinvited'], 'red');
 $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
 $src .= '<div class="center">';
-$src .= mt('Joined Majors', $stats['joined_major'], 'blue');
+$src .= mt('Joined Majors', $stats['joined_major'], 'blue', 'out of ' . $stats['credits_major']);
 $src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
 $src .= mt('Crowd Tours', $stats['tours_crowd'], 'green');
 $src .= mt('Unpublished', $stats['tours_unpublished'], 'red');
