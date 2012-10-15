@@ -71,7 +71,7 @@ function showTournamentList(data, sts) {
 	$('#tournaments').append(src);
 	$('.c11, .c12, .c13, .c21, .c22, .c23, .c31, .c32, .c33')
 	  .css('cursor', 'pointer').click(function() {
-		document.location = $(this).find('h2 a').attr('href');
+		document.location = $(this).parent().parent().find('h2 a').attr('href');
 	});
 	loadMyTeams();
 }
