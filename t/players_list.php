@@ -53,11 +53,10 @@ $src .= '</div>';
 $src .= '<div class="center">';
 $src .= mt('Tickets', $stats['tickets_1cred'] . '/' . $stats['tickets_3cred']
   . '/' . $stats['tickets_10cred'], 'yellow', 'of 1/2-3/4+');
-$src .= mt('Prize Budget', $prize_budget1 . '$', 'orange', '(low estimate)');
-$src .= mt('Prize Budget', $prize_budget2 . '$', 'orange', '(high estimate)');
+$src .= mt('Prize Budget', $prize_budget1 . '$', 'orange', 'up to ' . $prize_budget2 . '$');
 $src .= mt('Joined Majors', $stats['joined_major'], 'blue', 'out of ' . $stats['credits_major']);
-$src .= mt('Prize per Join', $prize_budget1 / $stats['joined_major'], 'blue',
-  'up to ' . ($prize_budget2 / $stats['joined_major']) . '$');
+$src .= mt('Prize per Join', round($prize_budget1 / $stats['joined_major'], 2), 'blue',
+  'up to ' . round($prize_budget2 / $stats['joined_major'], 2) . '$');
 $src .= '</div>';
 $src .= '<div class="center">';
 $src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
