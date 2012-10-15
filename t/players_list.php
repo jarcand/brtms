@@ -18,6 +18,13 @@ $res = $db->query('SELECT
   (SELECT COUNT(*) FROM `players` WHERE `seat` IS NOT NULL) AS `seated`,
   (SELECT COUNT(*) FROM `players` WHERE `invitedts` IS NULL) AS `notinvited`,
   (SELECT COUNT(*) FROM `players` WHERE `invitedts` > DATE_SUB(NOW(), INTERVAL 1 HOUR)) AS `lasthour`,
+
+  (SELECT COUNT(*) FROM `players`
+    WHERE `early`!=2 AND `credits`=1) AS `tickets_1cred`,
+  (SELECT COUNT(*) FROM `players`
+    WHERE `early`!=2 AND `credits`=3) AS `tickets_3cred`,
+  (SELECT COUNT(*) FROM `players`
+    WHERE `early`!=2 AND `credits`=10) AS `tickets_10cred`,
   (SELECT COUNT(*) FROM `tournament_players`
     INNER JOIN `tournaments` USING (`tid`)
     INNER JOIN `players` USING (`pid`)
@@ -41,6 +48,7 @@ $src .= mt('Not Invited', $stats['notinvited'], 'red');
 $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
 $src .= '<div class="center">';
+$src .= mt('Tickets', $stats['tickets_1cred'] . '/' . $stats['tickets_3cred'] . '/' . $stats['tickets_10cred'], 'yellow', 'of 1/2-3/4+');
 $src .= mt('Joined Majors', $stats['joined_major'], 'blue', 'out of ' . $stats['credits_major']);
 $src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
 $src .= mt('Crowd Tours', $stats['tours_crowd'], 'green');
