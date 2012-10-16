@@ -32,6 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$c_inserts = 0;
 	$c_skips = 0;
 	foreach ($lines as $line) {
+		if ($line == '') {
+			continue;
+		}
+		
 		$parts = parse_line($line);
 		
 		$res = $db->query($sql = sPrintF('SELECT COUNT(*) AS `c` FROM `players`

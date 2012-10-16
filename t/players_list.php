@@ -45,8 +45,8 @@ $prize_budget2 = $stats['tickets_1cred'] * 10 + $stats['tickets_3cred'] * 15 + $
 
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
-$src .= mt('Signed Up', $stats['signups'], 'green');
-$src .= mt('Seated', $stats['seated'], 'green');
+$src .= mt('Signed Up', $stats['signups'], 'green', round($stats['signups'] / $stats['total'] * 100) . '%');
+$src .= mt('Seated', $stats['seated'], 'green', round($stats['seated'] / $stats['signups'] * 100) . '%');
 $src .= mt('Not Invited', $stats['notinvited'], 'red');
 $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
@@ -73,10 +73,10 @@ $src .= sPrintF('
 Last purchase made %1$.1f hours ago.
 </form>
 </div>
-', $diff / 3600);
+', ($diff / 3600) - 3);
 
 
-$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedts`, `firstlogints`, `lastlogints`,
+$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `registeredts`, `invitedts`, `firstlogints`, `lastlogints`,
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
     INNER JOIN `tournament_players` `tp` USING (`tid`)
     WHERE `major`=1 AND `tp`.`pid`=`p`.`pid`) AS `tours_major`,
@@ -89,7 +89,7 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `invitedt
 
 $src .= '<table cellspacing="0" class="border center">
 ';
-$ths = '<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Invited</th><th>First Login</th></tr>';
+$ths = '<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Registered</th><th>Invited</th><th>First Login</th></tr>';
 
 $i = 0;
 while ($p = $res->fetch_assoc()) {
@@ -100,8 +100,8 @@ while ($p = $res->fetch_assoc()) {
 	if (!$inv_src) {
 		$inv_src = sPrintF('<a href="sendinvite?pid=%1$s">Send Invite</a>', $p['pid']);
 	}
-	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
-', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], $p['email'], $inv_src, fd($p['firstlogints']));
+	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
+', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], $p['email'], fd($p['registeredts']), $inv_src, fd($p['firstlogints']));
 }
 
 $src .= '</table>';
