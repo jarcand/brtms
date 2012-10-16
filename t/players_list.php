@@ -45,8 +45,8 @@ $prize_budget2 = $stats['tickets_1cred'] * 10 + $stats['tickets_3cred'] * 15 + $
 
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
-$src .= mt('Signed Up', $stats['signups'], 'green', round($stats['signups'] / $stats['total'] * 100) . '%');
-$src .= mt('Seated', $stats['seated'], 'green', round($stats['seated'] / $stats['signups'] * 100) . '%');
+$src .= mt('Signed Up', $stats['signups'], 'green', 'equiv to ' . round($stats['signups'] / $stats['total'] * 100) . '%');
+$src .= mt('Seated', $stats['seated'], 'green', 'equiv to ' . round($stats['seated'] / $stats['signups'] * 100) . '%');
 $src .= mt('Not Invited', $stats['notinvited'], 'red');
 $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
