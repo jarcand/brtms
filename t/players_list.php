@@ -102,7 +102,7 @@ while ($p = $res->fetch_assoc()) {
 	}
 	$inv_src2 = fd($p['firstlogints']);
 	if (!$inv_src2) {
-		$inv_src2 = sPrintF('<a href="sendinvite?pid=%1$s">Send Invite Again</a>', $p['pid']);
+		$inv_src2 = sPrintF('<a href="sendinvite?pid=%1$s">Send Again</a>', $p['pid']);
 	}
 	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
 ', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], $p['email'], fd($p['registeredts']), $inv_src, $inv_src2);
