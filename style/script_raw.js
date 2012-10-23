@@ -9,7 +9,7 @@ function genTournament(t, detailed) {
 	
 	src1 = '<table cellpadding="0" cellspacing="0"><tr><td>'
 	  + '<img class="thumb" src="${ROOT}/imgs/game-'
-          + (t.shortcode || 'default')
+          + (t.major == '1' && t.shortcode || 'default')
           + '.png" /></td><td><h2><a href="${ROOT}/tournament/'
           + (t.shortcode || t.tid) + '">' + t.name + '</a></h2><p class="l1">'
 	  + (t.major == '1' ? 'Major Tournament' : 'Crowdsourced Tournament')
