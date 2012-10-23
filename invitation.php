@@ -69,5 +69,5 @@ $src = sPrintF('
 </div>
 ', $p['fname'], $p['lname'], $p['email'], $username, $p['dname'], $p['ticket'], $tok);
 
-mp($src);
+mp($src, 'Sign-Up Invitation');
 

@@ -72,5 +72,5 @@ $src .= sPrintF('
 
 $src .= '</div>';
 
-mp($src);
+mp($src, 'Player Profile');
 

@@ -8,10 +8,13 @@ function mt($title, $value, $color = '', $title2 = '') {
 	  $color, $title, $value, $title2);
 }
 
-function mp($main_body) {
+function mp($main_body, $subtitle = '') {
 	global $config, $_p;
 	
 	$title = 'Battle Royale VI - Players Portal';
+	if ($subtitle != '') {
+		$title .= ' - ' . $subtitle;
+	}
 	
 	$str = file_get_contents(dirname(__FILE__) . '/../style/top.inc');
 	$contents = str_replace('%%TITLE%%', $title, $str);

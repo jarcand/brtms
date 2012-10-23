@@ -51,5 +51,5 @@ if ($_p['pid']) {
 
 $src .= '</div>';
 
-mp($src);
+mp($src, 'Tournaments List');
 

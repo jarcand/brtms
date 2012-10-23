@@ -34,7 +34,7 @@ function outputPage($msg = '') {
 </form>
 ', $r, $msg_src, htmlEntities($user));
 	
-	mp($src);
+	mp($src, 'Login');
 }
 
 

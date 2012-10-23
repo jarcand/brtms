@@ -14,5 +14,5 @@ mp('<h1>Players Portal</h1>
 <p style="margin-left:20px;">These are tournaments that will be organized by players themselves. For example, many players will be running various Minecraft servers. These tournaments can be of very casual nature, or serious, but will be organized by the players themselves: it is up to them to arrange the schedules (avoiding conflicts with the Major Tournaments if they like), choose the rules, and make the bracketing. These tournaments are free to join, no matter which ticket type you have purchased. Initially, these tournaments will not have prizes provided by Battle Royale, but prizes will be assigned to the popular tournaments.</p>
 
 <p>To manage registrations to the tournaments, use the interface on the <a href="${ROOT}/tournaments">Tournaments page</a> to make your selections.</p>
-');
+', 'Home Dashboard');
 

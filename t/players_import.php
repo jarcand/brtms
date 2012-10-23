@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 } else {
 
-	$src = '<h1>Import Players</h1>
+	$src = '<h1>Import Players from CSV</h1>
 
 <form action="#" method="post">
 <textarea name="csv" cols="120" rows="25">
@@ -113,6 +113,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </form>
 ';
 	
-	mp($src);
+	mp($src, 'Import Players from CSV');
 }
 

@@ -102,5 +102,5 @@ if (isSet($_p)) {
 ';
 }
 
-mp($src);
+mp($src, 'Seating Plan');
 

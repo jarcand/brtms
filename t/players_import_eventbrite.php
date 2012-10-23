@@ -116,13 +116,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 } else {
 
-	$src = '<h1>Import Players</h1>
+	$src = '<h1>Import Players from Eventbrite</h1>
 
 <form action="#" method="post">
 <p><input type="submit" value="Import from Eventbrite" /></p>
 </form>
 ';
 	
-	mp($src);
+	mp($src, 'Import Players from Eventbrite');
 }
 

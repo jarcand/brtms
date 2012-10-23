@@ -10,7 +10,7 @@ $scode = @$_GET['scode'];
 
 if (!$tid) {
 	
-	$res = $db->query($sql = sPrintF('SELECT `tid` FROM `tournaments` WHERE `shortcode`=%1$s', s($scode)));
+	$res = $db->query($sql = sPrintF('SELECT `tid`, `name` FROM `tournaments` WHERE `shortcode`=%1$s', s($scode)));
 	if (!$res) {
 		error($sql);
 	}
@@ -62,5 +62,5 @@ if ($_p['pid']) {
 
 $src .= '</div>';
 
-mp($src);
+mp($src, 'Tournament: ' . $t['name']);
 

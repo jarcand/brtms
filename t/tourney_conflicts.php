@@ -48,7 +48,7 @@ foreach ($t1 as $pid => $tids) {
 }
 arSort($t2);
 
-$src = '<h1>Players Tournament Conflicts</h1>';
+$src = '<h1>Tournaments Potential Scheduling Conlfict Report</h1>';
 
 $src .= '<table>
 <tr><th>Freq</th><th>Tids</th></tr>';
@@ -90,5 +90,5 @@ foreach ($t3 as $s_tids => $count) {
 }
 $src .= '</table>';
 
-mp($src);
+mp($src, 'Tournaments Potential Scheduling Conlfict Report');
 

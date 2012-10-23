@@ -96,6 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 ', htmlEntities($to), $subject, htmlEntities($headers), $message, $p['invitedts']);
 	
-	mp($src);
+	mp($src, 'Send Sign-Up Invatation');
 }
 
