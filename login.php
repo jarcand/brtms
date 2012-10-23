@@ -26,7 +26,8 @@ function outputPage($msg = '') {
 <col width="90" /><col />
 %2$s
 <tr><td>Username:</td><td><input type="text" name="user" value="%3$s" /></td></tr>
-<tr><td>Password:</td><td><input type="password" name="pass" /></td></tr>
+<tr><td>Password:</td><td><input type="password" name="pass" /><br />
+ <small><em>Forgot password?  Contact <a href="mailto:accounts&#64;battleroyale.ca">Accounts</a> for assistance.</em></small></td></tr>
 <tr><td></td><td><input type="submit" value="Login" /></td></tr>
 </table>
 </fieldset>
