@@ -65,6 +65,7 @@ if (isSet($_p)) {
 
 <h1>Seating Plan</h1>
 <p>Choose your desired seat on the map below.  Your seat number will be used to determine which network port and power outlet you should use to setup your computer.</p>
+<p>You may hover over any seat with your cursor to see its detailed status.</p>
 
 <form action="#" onsubmit="return chooseSeat(this);">
 ', $seat_str);
@@ -85,6 +86,7 @@ if (isSet($_p)) {
 
 <h1>Seating Plan</h1>
 <p>You must login in order to choose your seat.</p>
+<p>You may hover over any seat with your cursor to see its status.</p>
 ';
 }
 
