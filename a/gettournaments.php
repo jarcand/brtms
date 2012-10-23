@@ -26,7 +26,7 @@ if ($tids_str != '') {
 	$cond2 = sPrintF(' AND `tid` IN (%s)', implode(',', $s_tids));
 }
 
-$res = $db->query('SELECT `tid`, `shortcode`, `name`, `major`, `published`, `game`, `desc`, `prizes`,
+$res = $db->query('SELECT `tid`, `shortcode`, `name`, `major`, `published`, `game`, `desc`, `prizes`, `teamsize`,
   (SELECT `dname` FROM `players` `p` WHERE `p`.`pid`=`t`.`owner_pid`) AS `organizer`,
   (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `players`,
   (SELECT COUNT(`gid`) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `teams`
