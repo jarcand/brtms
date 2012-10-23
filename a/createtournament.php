@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	$tid = $db->insert_id;
 	
-	$tids_str = $tid;
+	$tour = $tid;
 	$ret = array('result' => 'success');
 	
 	require_once 'gettournaments.php';
