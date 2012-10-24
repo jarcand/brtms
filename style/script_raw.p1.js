@@ -130,7 +130,34 @@ function showTournament(data, tourid) {
 	$('#tournamentContent').show();
 	$('#tournamentsListContent').hide();
 	$('#tournamentDynContent').html(src);
+	getTournamentDetails(t);
 	gtourid = tourid;
+}
+
+function getTournamentDetails(t) {
+	$.ajax({
+	  url: '${ROOT}/a/gettournamentdetails',
+	  type: 'GET',
+	  data: {
+	  	tid: t.tid
+	  },
+	  dataType: 'json'
+	}).done(function(data, sts) {
+		if (t.teamsize > 1) {
+			var src = '<h2>Teams</h2><ul>';
+			for (var i = 0; i < data.teams.length; i++) {
+				src += '<li><strong>' + data.teams[i].name + ':</strong> '
+				  + data.teams[i].members.join(', ') + '</li>';
+			}
+			src += '</ul>';
+			src += '<h2>Free Agents</h2><p>' + data.players.join(', ') + '</p>';
+		} else {
+			var src = '<h2>Players</h2><p>' + data.players.join(', ') + '</p>';
+		}
+		$('#tournamentDetails').html(src);
+	}).fail(function(jqSHR, textStatus) {
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+	});
 }
 
 var major_limit = 0;
