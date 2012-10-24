@@ -8,6 +8,24 @@ function mt($title, $value, $color = '', $title2 = '') {
 	  $color, $title, $value, $title2);
 }
 
+function mpb($main_body, $subtitle = '') {
+	global $config, $_p;
+	
+	$title = 'Battle Royale VI - Players Portal';
+	if ($subtitle != '') {
+		$title .= ' - ' . $subtitle;
+	}
+	
+	$str = file_get_contents(dirname(__FILE__) . '/../style/top-brief.inc');
+	$contents = str_replace('%%TITLE%%', $title, $str);
+	$contents .= $main_body;
+	$contents .= file_get_contents(dirname(__FILE__) . '/../style/bottom-brief.inc');
+	$contents = str_replace('${ROOT}', $config['ROOT'], $contents);
+	
+	echo $contents;
+	die;
+}
+
 function mp($main_body, $subtitle = '') {
 	global $config, $_p;
 	
@@ -22,16 +40,9 @@ function mp($main_body, $subtitle = '') {
 	$contents .= file_get_contents(dirname(__FILE__) . '/../style/bottom.inc');
 	
 	if ($_p) {
-		if ($_p['credits'] == 200) {
-			$limit = 'Unlimited';
-		} else if ($_p['credits'] == 1) {
-			$limit = '1 Major';
-		} else {
-			$limit = $_p['credits'] . ' Majors';
-		}
 		$user_html = sPrintF('<li><a href="${ROOT}/profile">%1$s</a></li>
 <li><a href="${ROOT}/logout">Logout</a></li>',
-		  $_p['dname'], $limit);
+		  $_p['dname']);
 	} else {
 		$user_html = '<li>Welcome Guest!</li>
 <li><a href="${ROOT}/login">Login</a></li>';

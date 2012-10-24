@@ -39,6 +39,35 @@ while ($t = $res->fetch_assoc()) {
 
 $ret['tournaments'] = $tournaments;
 
-header('Content-Type: application/json');
+if (isSession()) {
+	
+	$res = $db->query($sql = 'SELECT `tp`.`tid` AS `tp_tid`, `t`.`major` AS `t_major`, `g`.*
+	  FROM `tournament_players` `tp`
+	  INNER JOIN `tournaments` `t` USING (`tid`)
+	  LEFT JOIN `groups` `g` USING (`gid`)
+	  WHERE `pid`=' . s($_p['pid']));
+	if (!$res) {
+		error($sql);
+	}
+
+	$myteams = array();
+	while ($o = $res->fetch_assoc()) {
+		$myteams[$o['tp_tid']] = $o;
+	}
+
+	$limit_s = $_p['credits'];
+	if ($limit_s == '10') {
+		$limit_s = '<small>unlimited</small>';
+	}
+
+	$ret['myteams'] = $myteams;
+	$ret['limit'] = $_p['credits'];
+	$ret['limit_s'] = $limit_s;
+}
+
+if (!isSet($embedded) || !$embedded) {
+	header('Content-Type: application/json');
+}
 echo json_encode($ret);
+unSet($ret);
 

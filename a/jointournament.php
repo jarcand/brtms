@@ -60,8 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 	}
 	
-	header('Content-Type: application/json');
-	echo json_encode($ret);
+//	header('Content-Type: application/json');
+//	echo json_encode($ret);
+	require 'gettournaments.php';
 	
 } else {
 	http_response_code(400);

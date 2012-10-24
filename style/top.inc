@@ -4,10 +4,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>%%TITLE%%</title>
-<meta name="keywords" content="ieee communications society, ieee, comsoc, communications, telecommunications,
- wireless, optical, telecom, research, electronics, electrical engineering, networking, tutorials, conferences,
- fiber, standards, journals, magazines, books, education, ip, Network, LTE, RF, DySPAN" />
-<meta name="copyright" content="Copyright &copy; 2011 IEEE Communications Society" />
 <link href="${ROOT}/style/icon.ico" rel="shortcut icon" type="image/x-icon" />
 <link href="${ROOT}/style/all.css" media="all" rel="stylesheet" type="text/css" />
 <link href="${ROOT}/style/screen.css" media="screen" rel="stylesheet" type="text/css" />
@@ -36,7 +32,7 @@ ${CURR_USER}
 </ul>
 <ul>
 <li><a href="${ROOT}/">Home</a></li>
-<li><a href="${ROOT}/tournaments">Tournaments</a></li>
+<li><a href="${ROOT}/tournaments#">Tournaments</a></li>
 <li><a href="${ROOT}/seats">Seats</a></li>
 <li><a href="http://www.battleroyale.ca/br6/">--Main Website--</a></li>
 </ul>

@@ -11,6 +11,11 @@ function encodePassword($password) {
 	return sha1($config['SALT'] . '-password-' . $password);
 }
 
+function isSession() {
+	global $_p;
+	return isSet($_p);
+}
+
 function loadPlayer() {
 	global $db, $ses_token, $_p;
 	if ($ses_token) {
@@ -27,7 +32,7 @@ function loadPlayer() {
 
 function requireSession($type = 'html') {
 	global $config, $_p;
-	if (!isSet($_p)) {
+	if (!isSession()) {
 		
 		if ($type == 'json') {
 			header('Content-Type: application/json');
@@ -42,7 +47,7 @@ function requireSession($type = 'html') {
 
 function requireAdminSession($type = 'html') {
 	global $config, $_p;
-	if (!isSet($_p) || $_p['pid'] != 1) {
+	if (!isSession() || $_p['pid'] != 1) {
 		if ($type == 'json') {
 			header('Content-Type: application/json');
 			die('{"result":"error","errorType":"autha"}');

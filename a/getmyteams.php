@@ -28,6 +28,9 @@ $ret['myteams'] = $myteams;
 $ret['limit'] = $_p['credits'];
 $ret['limit_s'] = $limit_s;
 
-header('Content-Type: application/json');
+if (!isSet($embedded) || !$embedded) {
+	header('Content-Type: application/json');
+}
 echo json_encode($ret);
+unSet($ret);
 
