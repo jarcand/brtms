@@ -2,16 +2,23 @@ function genTournament(t, detailed) {
 	var players_src = 'Players: ' + t.players
 	  + (t.teamsize > 1 ? ', Teams: <em>Coming Soon</em>' /*+ t.teams*/ : '')
 	  + (t.published == '0' ? ', <em>Awaiting Approval</em>' : '');
+	if ($('#tour' + t.tid + 'det').length) {
+		$('#tour' + t.tid + 'det .l2').html(players_src);
+	}
 	if ($('#tour' + t.tid).length) {
-		$('#tour' + t.tid + ' .l2').each(function() {$(this).html(players_src);});
-		return '';
+		$('#tour' + t.tid + ' .l2').html(players_src);
+		if (!detailed) {
+			return '';
+		}
 	}
 	
 	src1 = '<table cellpadding="0" cellspacing="0"><tr><td>'
 	  + '<img class="thumb" src="${ROOT}/imgs/game-'
           + (t.major == '1' && t.shortcode || 'default')
-          + '.png" /></td><td><h2><a href="${ROOT}/tournament/'
-          + (t.shortcode || t.tid) + '">' + t.name + '</a></h2><p class="l1">'
+          + '.png" /></td><td><h2>'
+          + (!detailed ? '<a href="${ROOT}/tournaments#tournament/'
+          + (t.shortcode || t.tid) + '">' : '') + t.name + (!detailed ? '</a>' : '')
+          + '</h2><p class="l1">'
 	  + (t.major == '1' ? 'Major Tournament' : 'Crowdsourced Tournament')
 	  + ' by ' + t.organizer + '</p><p class="l2">' + players_src
 	  + '</p></td></tr></table>';
@@ -27,7 +34,8 @@ function genTournament(t, detailed) {
 	src4 = '';
 	
 	var src = '<table cellspacing="0" class="tour '
-	  + (t.major == '1' ? 'major' : 'crowd') + '" id="tour' + t.tid + '">'
+	  + (t.major == '1' ? 'major' : 'crowd') + '" id="tour' + t.tid
+	  + (detailed ? 'det' : '') + '">'
 	  + '<tr class="r1"><td class="c11"></td><td class="c12"></td>'
 	  + '<td class="c13"></td><td class="c14">'
 	  + '</td><td class="c15"></td></tr>'
@@ -50,90 +58,168 @@ function genTournament(t, detailed) {
 	return src;
 }
 
-function loadTournaments() {
-	var callback = tournament_list ? showTournamentList : showTournament;
-	$.ajax({
-	  url: '${ROOT}/a/gettournaments',
-	  type: 'GET',
-	  dataType: 'json'
-	}).done(callback
-	).fail(function(jqSHR, textStatus) {
-		alert(textStatus); //TODO
-	});
+var tournamentsPageInited = false;
+var titlebase = document.title;
+function tournamentsPageInit() {
+	if (!tournamentsPageInited) {
+		tournamentsPageInited = true;
+		$(window).hashchange(tournamentsPageInit);
+		var tp = parseInt($('#registration-overview').css('top'));
+		$(window).scroll(function() {
+			$('#registration-overview').css('top',
+			  Math.max(tp - $(document).scrollTop(), 50));
+		});
+	}
+	var hash = location.hash;
+	if (hash.match(/^#tournament[/]/i)) {
+		var tourid = hash.substr(12);
+		showTournament(preloadData, tourid);
+	} else {
+		showTournamentList(preloadData);
+	}
+	showMyTeams(preloadData);
 }
 
-function showTournamentList(data, sts) {
+var gtourid = '';
+function updateTournaments(data) {
+	preloadData = data;
+	if (gtourid) {
+		showTournament(data, gtourid);
+	} else {
+		showTournamentList(data);
+	}
+	showMyTeams(data);
+}
+
+function showTournamentList(data) {
 	var src = '';
 	for (var i = 0; i < data.tournaments.length; i++) {
 		src += genTournament(data.tournaments[i]);
 	}
-	$('#tournaments .loading').hide();
-	$('#tournaments').append(src);
+	document.title = titlebase + ' - Tournaments List';
+	$('#header1').html('Tournaments List');
+	$('#tournamentsListContent').show();
+	$('#tournamentContent').hide();
+	$('#tournamentsListDynContent').append(src);
 	$('.c11, .c12, .c13, .c21, .c22, .c23, .c31, .c32, .c33')
 	  .css('cursor', 'pointer').click(function() {
 		document.location = $(this).parent().parent().find('h2 a').attr('href');
 	});
-	loadMyTeams();
+	gtourid = '';
 }
 
-function showTournament(data, sts) {
-	var src = '';
+function showTournament(data, tourid) {
+	var t;
 	for (var i = 0; i < data.tournaments.length; i++) {
-		if (data.tournaments[i].tid == tid) {
-			src += genTournament(data.tournaments[i], true);
+		if (data.tournaments[i].tid == tourid
+		  || data.tournaments[i].shortcode == tourid) {
+			t = data.tournaments[i];
 		}
 	}
-	$('#tournaments .loading').hide();
-	$('#tournaments').append(src);
-	loadMyTeams();
+	if (!t) {
+		return;
+	}
+	var src = genTournament(t, true);
+	src += '<div id="tournamentDetails"></div>';
+	src += '<h2 class="dis">Discussion</h2><iframe id="disqusFrame" src="${ROOT}/disqus?tid='
+	  + t.tid + '"></iframe>';
+	
+	$(document).scrollTop(0);
+	document.title = titlebase + ' - Tournament: ' + t.name;
+	$('#header1').html('Tournament: ' + t.name);
+	$('#tournamentContent').show();
+	$('#tournamentsListContent').hide();
+	$('#tournamentDynContent').html(src);
+	gtourid = tourid;
 }
 
 var major_limit = 0;
-var registrationOverviewScroll = false;
-function loadMyTeams() {
-	if (!session) {
-		return;
+function showMyTeams(data) {
+	var major_c = 0, crowd_c = 0;
+	if (data.result != 'error') {
+		for (var tid in data.myteams) {
+			data.myteams[tid].t_major == '1' ? major_c++ : crowd_c++;
+			$('#tour' + tid + ' .join, #tour' + tid + 'det .join').hide();
+			$('#tour' + tid + ' .joined, #tour' + tid + 'det .joined').show();
+		}
 	}
-	
+	var src = '<ul><li class="bg"><strong>Joined Tournaments</strong></li>'
+	 + '<li><big>' + major_c + ' of ' + data.limit_s
+	 + '</big><br /> Major Tournaments</li>'
+	 + '<li><big>' + crowd_c + '</big><br /> Crowdsourced Tournaments</li>'
+	 + '</ul>';
+	if (major_c >= data.limit) {
+		$('.tour.major .underlim').hide();
+		$('.tour.major .overlim').show();
+	} else {
+		$('.tour.major .overlim').hide();
+		$('.tour.major .underlim').show();
+	}
+	$('#registration-overview').html(src);
+	major_limit = data.limit;
+}
+
+
+//-- [ Joining and Leaving Tournaments ] ---------------------------------------
+
+function joinTournament(tid) {
+	if (!session) {
+		alert('You need to login or purchase a BR6 ticket!');
+		return false;
+	}
 	$.ajax({
-	  url: '${ROOT}/a/getmyteams',
-	  type: 'GET',
+	  url: '${ROOT}/a/jointournament',
+	  type: 'POST',
+	  data: {
+	  	tid: tid
+	  },
 	  dataType: 'json'
 	}).done(function(data, sts) {
-		var major_c = 0, crowd_c = 0;
-		if (data.result != 'error') {
-			for (var tid in data.myteams) {
-				data.myteams[tid].t_major == '1' ? major_c++ : crowd_c++;
-				$('#tour' + tid + ' .join').hide();
-				$('#tour' + tid + ' .joined').show();
-			}
-		}
-		var src = '<ul><li class="bg"><strong>Joined Tournaments</strong></li>'
-		 + '<li><big>' + major_c + ' of ' + data.limit_s
-		 + '</big><br /> Major Tournaments</li>'
-		 + '<li><big>' + crowd_c + '</big><br /> Crowdsourced Tournaments</li>'
-		 + '</ul>';
-		if (major_c >= data.limit) {
-			$('.tour.major .underlim').hide();
-			$('.tour.major .overlim').show();
+		var src = '';
+		if (data.result == 'success') {
+			$('#tour' + tid + ' .join, #tour' + tid + 'det .join').hide();
+			$('#tour' + tid + ' .joined, #tour' + tid + 'det .joined').show();
+		} else if (data.result == 'error' && data.errorType == 'overlimit') {
+			alert('You have exceeded your limit of ' + major_limit + ' Major Tournaments.');
 		} else {
-			$('.tour.major .overlim').hide();
-			$('.tour.major .underlim').show();
+			alert(data.result + ': ' + data.errorType); //TODO
 		}
-		$('#registration-overview').html(src);
-		var tp = parseInt($('#registration-overview').css('top'));
-		if (!registrationOverviewScroll) {
-			registrationOverviewScroll = true;
-			$(window).scroll(function() {
-				$('#registration-overview').css('top',
-				  Math.max(tp - $(window).scrollTop(), 50));
-			});
-		}
-		major_limit = data.limit;
+		updateTournaments(data);
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus); //TODO
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
 	});
+	
+	return false;
 }
+
+function leaveTournament(tid) {
+	$.ajax({
+	  url: '${ROOT}/a/leavetournament',
+	  type: 'POST',
+	  data: {
+	  	tid: tid
+	  },
+	  dataType: 'json'
+	}).done(function(data, sts) {
+		var src = '';
+		if (data.result == 'success') {
+			$('#tour' + tid + ' .joined, #tour' + tid + 'det .joined').hide();
+			$('#tour' + tid + ' .overlim, #tour' + tid + 'det .overlim').hide();
+			$('#tour' + tid + ' .underlim, #tour' + tid + 'det .underlim').show();
+			$('#tour' + tid + ' .join, #tour' + tid + 'det .join').show();
+		} else {
+			alert(data.result + ': ' + data.errorType); //TODO
+		}
+		updateTournaments(data);
+	}).fail(function(jqSHR, textStatus) {
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+	});
+	
+	return false;
+}
+
+
+//-- [ Create Tournament ] -----------------------------------------------------
 
 var popup;
 function showCreate() {
@@ -205,60 +291,3 @@ function createTournament(frm) {
 	
 	return false;
 }
-
-function joinTournament(tid) {
-	if (!session) {
-		alert('You need to login or purchase a BR6 ticket!');
-		return false;
-	}
-	$.ajax({
-	  url: '${ROOT}/a/jointournament',
-	  type: 'POST',
-	  data: {
-	  	tid: tid
-	  },
-	  dataType: 'json'
-	}).done(function(data, sts) {
-		var src = '';
-		if (data.result == 'success') {
-			$('#tour' + tid + ' .join').hide();
-			$('#tour' + tid + ' .joined').show();
-		} else if (data.result == 'error' && data.errorType == 'overlimit') {
-			alert('You have exceeded your limit of ' + major_limit + ' Major Tournaments.');
-		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
-		}
-		loadTournaments();
-	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
-	});
-	
-	return false;
-}
-
-function leaveTournament(tid) {
-	$.ajax({
-	  url: '${ROOT}/a/leavetournament',
-	  type: 'POST',
-	  data: {
-	  	tid: tid
-	  },
-	  dataType: 'json'
-	}).done(function(data, sts) {
-		var src = '';
-		if (data.result == 'success') {
-			$('#tour' + tid + ' .joined').hide();
-			$('#tour' + tid + ' .overlim').hide();
-			$('#tour' + tid + ' .underlim').show();
-			$('#tour' + tid + ' .join').show();
-		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
-		}
-		loadTournaments();
-	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus); //TODO
-	});
-	
-	return false;
-}
-

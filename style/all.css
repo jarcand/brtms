@@ -367,7 +367,7 @@ table.tac th {
 .tour .c12 {
 	border : solid black;
 	border-width : 2px 0 0 0;
-	width : 580px;
+	width : 570px;
 }
 
 .tour .c13 {
@@ -621,9 +621,12 @@ table.tac th {
 	margin-top : 30px;
 }
 
-#disqus_thread {
+#disqusFrame {
 	background-color : #ddd;
+	border : 0;
+	height : 400px;
 	padding : 10px;
+	width : 100%;
 }
 
 

@@ -1,26 +1,23 @@
 <?php
 
+require_once dirname(__FILE__) . '/l/config.inc.php';
 require_once dirname(__FILE__) . '/l/session.inc.php';
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
-$src = sPrintF('
+$src = '
 <div id="registration-overview"></div>
 <div id="non-overview-wrapper">
-<h1>Tournaments List</h1>
+<h1 id="header1">Tournaments List</h1>
+<div id="tournamentsListContent">
 <p>Use the JOIN links to the right of each tournament to make your selection.  Based on your ticket type, you will have a limit to the number of Major Tournaments (top of the list) you may join, however you can join as many Crowdsourced Tournaments (bottom of list) as you like.  The lists are ordered with most popular tournaments first.</p>
 <p>If you would like to create a new tournament, you can use the link at the bottom of the page.  However, before creating a tournament, we ask that you review the existing list to avoid duplication.</p>
-<div id="tournaments"><h2 class="loading">Loading Tournament List&hellip;</h2></div>
-<script type="text/javascript">
-	var session = %1$s;
-	var tournament_list = true;
-	loadTournaments();
-</script>
-', $_p['pid'] ? 'true' : 'false');
+<div id="tournamentsListDynContent"></div>
+';
 
 if ($_p['pid']) {
 	$src .= sPrintF('
 
-<h2><a href="#" onclick="return showCreate();">Create a New Tournament</a></h2>
+<h2 id="createTournamentLink"><a href="#" onclick="return showCreate();">Create a New Tournament</a></h2>
 
 <div class="faded-bg" id="createForm" style="display:none;width:540px;">
 <input type="button" class="closeButton" value="X" onclick="popup.close();" />
@@ -49,7 +46,26 @@ if ($_p['pid']) {
 ', $_p['dname']);
 }
 
-$src .= '</div>';
+$src .= sPrintF('</div>
+<div id="tournamentContent">
+<p><a href="${ROOT}/tournaments#">&lt;&lt; Go back to full list</a></p>
+<div id="tournamentDynContent"></div>
+</div>
+</div>
 
-mp($src, 'Tournaments List');
+<script type="text/javascript">
+	var session = %1$s;
+	var preloadData = ', $_p['pid'] ? 'true' : 'false');
+
+$embedded = true;
+ob_start();
+require 'a/gettournaments.php';
+$src .= ob_get_clean();
+
+$src .= ';
+	tournamentsPageInit();
+</script>
+';
+
+mp($src);
 

@@ -20,6 +20,7 @@
 </script>
 <script type="text/javascript" src="${ROOT}/style/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="${ROOT}/style/jquery.bpopup-0.7.0.min.js"></script>
+<script type="text/javascript" src="${ROOT}/style/jquery.observehashchange-1.0.min.js"></script>
 <script type="text/javascript" src="${ROOT}/style/script.js"></script>
 </head>
 <body>
