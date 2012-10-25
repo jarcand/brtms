@@ -120,9 +120,14 @@ function showTournament(data, tourid) {
 		return;
 	}
 	var src = genTournament(t, true);
-	src += '<div id="tournamentDetails"></div>';
-	src += '<h2 class="dis">Discussion</h2><iframe id="disqusFrame" src="${ROOT}/disqus?tid='
-	  + t.tid + '"></iframe>';
+	if (session) {
+//		src += '<div id="tournamentDetails"><h2>Loading Players List&hellip;</h2></div>';
+		src += '<h2 class="dis">Discussion</h2><iframe id="disqusFrame" src="${ROOT}/disqus?tid='
+		  + t.tid + '"></iframe>';
+	} else {
+		src += '<h2>Login to view players lists and discussions</h2>'
+		  + '<ul><li><a href="${ROOT}/login">Login to Players Portal</a></li></ul>';
+	}
 	
 	$(document).scrollTop(0);
 	document.title = titlebase + ' - Tournament: ' + t.name;
@@ -130,11 +135,14 @@ function showTournament(data, tourid) {
 	$('#tournamentContent').show();
 	$('#tournamentsListContent').hide();
 	$('#tournamentDynContent').html(src);
-	getTournamentDetails(t);
+//	getTournamentDetails(t);
 	gtourid = tourid;
 }
 
 function getTournamentDetails(t) {
+	if (!session) {
+		return;
+	}
 	$.ajax({
 	  url: '${ROOT}/a/gettournamentdetails',
 	  type: 'GET',
@@ -143,17 +151,19 @@ function getTournamentDetails(t) {
 	  },
 	  dataType: 'json'
 	}).done(function(data, sts) {
+		var src = '';
 		if (t.teamsize > 1) {
-			var src = '<h2>Teams</h2><ul>';
+			src += '<h2>Teams</h2><ul>';
 			for (var i = 0; i < data.teams.length; i++) {
 				src += '<li><strong>' + data.teams[i].name + ':</strong> '
 				  + data.teams[i].members.join(', ') + '</li>';
 			}
 			src += '</ul>';
-			src += '<h2>Free Agents</h2><p>' + data.players.join(', ') + '</p>';
+			src += '<h2>Free Agents</h2>';
 		} else {
-			var src = '<h2>Players</h2><p>' + data.players.join(', ') + '</p>';
+			src += '<h2>Players</h2>';
 		}
+		src += '<ul class="inline"><li>' + data.players.join('</li><li>') + '</li></ul>';
 		$('#tournamentDetails').html(src);
 	}).fail(function(jqSHR, textStatus) {
 		alert(textStatus + ': ' + jqSHR.responseText); //TODO
@@ -162,6 +172,9 @@ function getTournamentDetails(t) {
 
 var major_limit = 0;
 function showMyTeams(data) {
+	if (!session) {
+		return;
+	}
 	var major_c = 0, crowd_c = 0;
 	if (data.result != 'error') {
 		for (var tid in data.myteams) {

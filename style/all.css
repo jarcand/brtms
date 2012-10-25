@@ -122,6 +122,27 @@ input {
 	font-size : 11pt;
 }
 
+ol.inline,
+ul.inline {
+	margin-left : 20px;
+	padding-left : 0;
+}
+
+ol.inline li,
+ul.inline li {
+	display : inline-block;
+	margin-left : 0;
+	padding-left : 5px;
+}
+
+ol.inline li:before,
+ul.inline li:before {
+	color : #003;
+	content : "\2023";
+	font-size : 20px;
+	line-height : 15px;
+}
+
 ol.spaced li,
 ul.spaced li {
 	margin : 0.8em 0;

@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 
-requireSession();
+requireSession('json');
 
 $tid = @$_GET['tid'];
 
