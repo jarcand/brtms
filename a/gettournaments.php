@@ -24,7 +24,8 @@ if ($tour != '') {
 $res = $db->query($sql = 'SELECT `tid`, `shortcode`, `name`, `major`, `published`, `game`, `desc`, `prizes`, `teamsize`,
   (SELECT `dname` FROM `players` `p` WHERE `p`.`pid`=`t`.`owner_pid`) AS `organizer`,
   (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `players`,
-  (SELECT COUNT(`gid`) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `teams`
+  (SELECT COUNT(`gid`) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `teams`,
+  (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid` AND `tp`.`pid`=' . s($_p['pid']) . ') AS `joined`
   FROM `tournaments` `t`
   WHERE ' . $cond1 . $cond2 . '
   ORDER BY `major` DESC, `players` DESC');

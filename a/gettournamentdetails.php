@@ -25,23 +25,31 @@ while ($p = $res->fetch_assoc()) {
 $ret = array();
 $ret['players'] = $players;
 
-$res = $db->query($sql = sPrintF('SELECT `gid`, `name`, `open`
+$res = $db->query($sql = sPrintF('SELECT `gid`, `g`.`name`, `open`, `teamsize`,
+  (`leader_pid`=%2$s) AS `is_leader`
   FROM `groups` `g`
+  INNER JOIN `tournaments` USING (`tid`)
   WHERE `tid`=%1$s
-  ORDER BY `name` ASC
-  ', s($tid)));
+  ORDER BY `is_leader` DESC, `name` ASC
+  ', s($tid), s($_p['pid'])));
 if (!$res) {
 	error($sql);
 }
 
 $groups = array();
 while ($g = $res->fetch_assoc()) {
-	$groups[$g['gid']] = array('name' => $g['name']);
+	$groups[$g['gid']] = array(
+	  'gid' => $g['gid'],
+	  'name' => $g['name'],
+	  'open' => $g['open'],
+	  'teamsize' => $g['teamsize'],
+	  'is_leader' => $g['is_leader'] == '1',
+	);
 }
 
 foreach ($groups as $gid => $group) {
 	
-	$res = $db->query($sql = sPrintF('SELECT `dname`
+	$res = $db->query($sql = sPrintF('SELECT `pid`, `dname`
 	  FROM `players` `p`
 	  INNER JOIN `tournament_players` USING (`pid`)
 	  WHERE `tid`=%1$s AND `gid`=%2$s
@@ -53,7 +61,17 @@ foreach ($groups as $gid => $group) {
 
 	$members = array();
 	while ($p = $res->fetch_assoc()) {
-		$members[] = $p['dname'];
+		$you = $p['pid'] == $_p['pid'];
+		$members[] = !$groups[$gid]['is_leader']
+		  ? $p['dname']
+		  : array(
+		    'dname' => $p['dname'],
+		    'pid' => $p['pid'],
+		    'you' => $you,
+		  );
+		if ($you) {
+			$groups[$gid]['inteam'] = true;
+		}
 	}
 	
 	$groups[$gid]['members'] = $members;
