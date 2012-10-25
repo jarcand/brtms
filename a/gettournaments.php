@@ -56,7 +56,7 @@ if (isSession()) {
 	}
 
 	$limit_s = $_p['credits'];
-	if ($limit_s == '10') {
+	if (((int) $limit_s) >= 10) {
 		$limit_s = '<small>unlimited</small>';
 	}
 
