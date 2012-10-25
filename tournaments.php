@@ -39,10 +39,28 @@ if ($_p['pid']) {
 	</select></td></tr>
 <tr><td>Notes:</td><td><textarea name="notes" cols="50" rows="2"></textarea></td></tr>
 <tr><td colspan="2"><strong>Note:</strong> For the moment, you cannot directly edit your tournament, so please double-check your inputs.  Edit feature is coming soon!</td></tr>
-<tr><td></td><td><input type="submit" value="Create Tournament" /></td></tr>
+<tr><td></td><td><input name="subbtn" type="submit" value="Create Tournament" /></td></tr>
 </table>
 </form>
 </div>
+
+<div class="faded-bg" id="createTeamForm" style="display:none;width:540px;">
+<input type="button" class="closeButton" value="X" onclick="popup2.close();" />
+<h2>Create a new Team</h2>
+<form action="#" onsubmit="return createTeam(this);">
+<table cellspacing="10">
+<col width="100" /><col width="350" />
+<tr><td>Tournament:</td><td><input type="hidden" name="tid" /><input type="text" name="tournament" size="40" readonly="readonly" /></td></tr>
+<tr><td>Leader:</td><td>you, %1$s</td></tr>
+<tr><td>Team Name:</td><td><input type="text" name="tname" size="40" /></td></tr>
+<tr><td>Looking for Free Agents?</td><td><select name="open"><option>Yes</option><option>No</option></select></td></tr>
+<tr><td>Notes:</td><td><textarea name="notes" cols="50" rows="2"></textarea></td></tr>
+<tr><td colspan="2"><strong>Note:</strong> For the moment, you cannot directly edit your team name or options, so please double-check your inputs.  Edit feature is coming soon!</td></tr>
+<tr><td></td><td><input name="subbtn" type="submit" value="Create Team" /></td></tr>
+</table>
+</form>
+</div>
+
 ', $_p['dname']);
 }
 
