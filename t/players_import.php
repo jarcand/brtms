@@ -57,9 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		  || $ticket == 'Regular Ticket - 2-3 Major Tournaments') {
 			$credits = 3;
 		} else if ($ticket == 'Early Bird Ticket - 4+ Major Tournaments'
-		  || $ticket == 'Volunteer Ticket - 4+ Major Tournaments'
 		  || $ticket == 'Regular Ticket - 4+ Major Tournaments') {
 			$credits = 10;
+		} else if ($ticket == 'Volunteer Ticket - 4+ Major Tournaments') {
+			$credits = 20;
 		}
 		$early = 0;
 		if ($ticket == 'Early Bird Ticket - 1 Major Tournament'
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$fields['early']	= $early;
 		$fields['dname']	= $parts[$keys['fname']] . ' ' . $parts[$keys['lname']];
 		$fields['email']	= $parts[$keys['email']];
-		$fields['registeredts']	= strFTime('%Y-%m-%d %H:%M:%S', strToTime($parts[$keys['date']]));
+		$fields['registeredts']	= strFTime('%Y-%m-%d %H:%M:%S', strToTime($parts[$keys['date']] . ' EST'));
 		$fields['attendeeno']	= $parts[$keys['attendeeno']];
 		$fields['lname']	= $parts[$keys['lname']];
 		$fields['fname']	= $parts[$keys['fname']];

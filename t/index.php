@@ -45,8 +45,8 @@ $prize_budget2 = $stats['tickets_1cred'] * 10 + $stats['tickets_3cred'] * 15 + $
 
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
-$src .= mt('Signed Up', $stats['signups'], 'green', 'equiv to ' . round($stats['signups'] / $stats['total'] * 100) . '%');
-$src .= mt('Seated', $stats['seated'], 'green', 'equiv to ' . round($stats['seated'] / $stats['signups'] * 100) . '%');
+$src .= mt('Signed Up', $stats['signups'], 'green', sPrintF('equiv to %d%%', $stats['signups'] / $stats['total'] * 100));
+$src .= mt('Seated', $stats['seated'], 'green', sPrintF('equiv to %d%%', $stats['seated'] / $stats['signups'] * 100));
 $src .= mt('Not Invited', $stats['notinvited'], 'red');
 $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
@@ -55,8 +55,8 @@ $src .= mt('Tickets', $stats['tickets_1cred'] . '/' . $stats['tickets_3cred']
   . '/' . $stats['tickets_10cred'], 'yellow', 'of 1/2-3/4+');
 $src .= mt('Prize Budget', $prize_budget1 . '$', 'orange', 'up to ' . $prize_budget2 . '$');
 $src .= mt('Joined Majors', $stats['joined_major'], 'blue', 'out of ' . $stats['credits_major']);
-$src .= mt('Prize per Join', round($prize_budget1 / $stats['joined_major'], 2) . '$', 'blue',
-  'up to ' . round($prize_budget2 / $stats['joined_major'], 2) . '$');
+$src .= mt('Prize per Join', sPrintF('%.2f$', $prize_budget1 / $stats['joined_major'], 2), 'blue',
+  sPrintF('up to %.2f$', $prize_budget2 / $stats['joined_major'], 2));
 $src .= '</div>';
 $src .= '<div class="center">';
 $src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
@@ -64,7 +64,8 @@ $src .= mt('Crowd Tours', $stats['tours_crowd'], 'green');
 $src .= mt('Unpublished', $stats['tours_unpublished'], 'red');
 $src .= '</div>';
 
-$diff = time() - strToTime($stats['last_registered']);
+date_default_timezone_set('America/Montreal');
+$diff = time() - strToTime($stats['last_registered'] . ' EST');
 
 $src .= sPrintF('
 <div class="center faded-bg tac">
@@ -73,23 +74,18 @@ $src .= sPrintF('
 Last purchase made %1$.1f hours ago.
 </form>
 </div>
-', ($diff / 3600) - 3);
+<p class="tac"><a href="players_list">See full players list</a></p>
+', $diff / 3600);
 
 
-$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `registeredts`, `invitedts`, `firstlogints`, `lastlogints`,
-  (SELECT COUNT(`tid`) FROM `tournaments` `t`
-    INNER JOIN `tournament_players` `tp` USING (`tid`)
-    WHERE `major`=1 AND `tp`.`pid`=`p`.`pid`) AS `tours_major`,
-  (SELECT COUNT(`tid`) FROM `tournaments` `t`
-    INNER JOIN `tournament_players` `tp` USING (`tid`)
-    WHERE `major`=0 AND `tp`.`pid`=`p`.`pid`) AS `tours_crowd`,
-  (SELECT COUNT(`gid`) FROM `tournament_players` `tp`
-    WHERE `tp`.`pid`=`p`.`pid`) AS `teams`
-  FROM `players` `p`');
+$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `registeredts`, `invitedts`, `firstlogints`, `lastlogints`
+  FROM `players` `p`
+  WHERE `firstlogints` IS NULL
+  ORDER BY `credits`, `pid`');
 
 $src .= '<table cellspacing="0" class="border center">
 ';
-$ths = '<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Registered</th><th>Invited</th><th>First Login</th></tr>';
+$ths = '<tr><th>#</th><th>Name</th><th>Credits</th><th>Email</th><th>Registered</th><th>Invited</th><th>First Login</th></tr>';
 
 $i = 0;
 while ($p = $res->fetch_assoc()) {
@@ -104,8 +100,8 @@ while ($p = $res->fetch_assoc()) {
 	if (!$inv_src2 && strToTime($p['invitedts']) < strToTime('-3 days')) {
 		$inv_src2 = sPrintF('<a href="sendinvite?pid=%1$s">Send Again</a>', $p['pid']);
 	}
-	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
-', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], $p['email'], fd($p['registeredts']), $inv_src, $inv_src2);
+	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
+', $p['pid'], $p['fname'], $p['lname'], $p['credits'], $p['email'], fd($p['registeredts']), $inv_src, $inv_src2);
 }
 
 $src .= '</table>';

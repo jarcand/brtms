@@ -24,13 +24,14 @@ $stats = $res->fetch_assoc();
 
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
-$src .= mt('Signed Up', $stats['signups'], 'green', 'equiv to ' . round($stats['signups'] / $stats['total'] * 100) . '%');
-$src .= mt('Seated', $stats['seated'], 'green', 'equiv to ' . round($stats['seated'] / $stats['signups'] * 100) . '%');
+$src .= mt('Signed Up', $stats['signups'], 'green', sPrintF('equiv to %d%%', $stats['signups'] / $stats['total'] * 100));
+$src .= mt('Seated', $stats['seated'], 'green', sPrintF('equiv to %d%%', $stats['seated'] / $stats['signups'] * 100));
 $src .= mt('Not Invited', $stats['notinvited'], 'red');
 $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= '</div>';
 
-$diff = time() - strToTime($stats['last_registered']);
+date_default_timezone_set('America/Montreal');
+$diff = time() - strToTime($stats['last_registered'] . ' EST');
 
 $src .= sPrintF('
 <div class="center faded-bg tac">
@@ -39,10 +40,10 @@ $src .= sPrintF('
 Last purchase made %1$.1f hours ago.
 </form>
 </div>
-', ($diff / 3600) - 3);
+', $diff / 3600);
 
 
-$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `registeredts`, `invitedts`, `firstlogints`, `lastlogints`,
+$res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `registeredts`, `invitedts`, `firstlogints`, `lastlogints`,
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
     INNER JOIN `tournament_players` `tp` USING (`tid`)
     WHERE `major`=1 AND `tp`.`pid`=`p`.`pid`) AS `tours_major`,
@@ -51,11 +52,12 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `register
     WHERE `major`=0 AND `tp`.`pid`=`p`.`pid`) AS `tours_crowd`,
   (SELECT COUNT(`gid`) FROM `tournament_players` `tp`
     WHERE `tp`.`pid`=`p`.`pid`) AS `teams`
-  FROM `players` `p`');
+  FROM `players` `p`
+  ORDER BY `tours_major`, `credits`, `tours_crowd`, `firstlogints`');
 
 $src .= '<table cellspacing="0" class="border center">
 ';
-$ths = '<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Email</th><th>Registered</th><th>Invited</th><th>First Login</th></tr>';
+$ths = '<tr><th>#</th><th>Name</th><th>Major</th><th>Crowd</th><th>Teams</th><th>Registered</th><th>Invited</th><th>First Login</th><th>Last Login</th></tr>';
 
 $i = 0;
 while ($p = $res->fetch_assoc()) {
@@ -70,8 +72,12 @@ while ($p = $res->fetch_assoc()) {
 	if (!$inv_src2 && strToTime($p['invitedts']) < strToTime('-3 days')) {
 		$inv_src2 = sPrintF('<a href="sendinvite?pid=%1$s">Send Again</a>', $p['pid']);
 	}
+	$last_login = fd($p['lastlogints']);
+	if ((strToTime($p['lastlogints']) - strToTime($p['firstlogints'])) < 60) {
+		$last_login = '--';
+	}
 	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
-', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], $p['email'], fd($p['registeredts']), $inv_src, $inv_src2);
+', $p['pid'], $p['fname'], $p['lname'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], fd($p['registeredts']), $inv_src, $inv_src2, $last_login);
 }
 
 $src .= '</table>';
