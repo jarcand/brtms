@@ -692,6 +692,11 @@ table.tac th {
 	width : 100%;
 }
 
+#tournamentDetails.highlight {
+	border : 2px dashed red;
+	padding : 0 10px;
+}
+
 
 /*--[ Page specific styles ]--------------------------------------------------*/
 

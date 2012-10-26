@@ -29,7 +29,8 @@ function genTournament(t, detailed) {
 	  + 'INSERT<br /> TOKEN</p></div>'
 	  + '<div class="joined"><p>JOINED <a href="#" '
 	  + 'onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>'
-	  + (t.teamsize <= 1 ? '' : '<p class="teamaction"><span>Team Selected</span><a href="' + href + '">Join a Team</a></p>')
+	  + (t.teamsize <= 1 ? '' : '<p class="teamaction"><span>Team Selected</span><a href="' + href
+	    + '/jointeam">Join a Team</a></p>')
 	  + '</div>';
 	var src3 = '<h3>Description:</h3><p>' + t.desc + '</p>'
 	  + '<h3>Prizes:</h3><p>' + t.prizes + '</p>';
@@ -73,11 +74,20 @@ function tournamentsPageInit() {
 		});
 	}
 	var hash = location.hash;
+	var jointeamHighlight = false;
 	if (hash.match(/^#tournament[/]/i)) {
-		var tourid = hash.substr(12);
-		showTournament(preloadData, tourid);
+		var m = new RegExp('^#tournament[/]([^/]+)([/](.*))?$', 'i').exec(hash);
+		if (m[3] == 'jointeam') {
+			jointeamHighlight = true;
+		}
+		showTournament(preloadData, m[1]);
 	} else {
 		showTournamentList(preloadData);
+	}
+	if (jointeamHighlight) {
+		$('#tournamentDetails').addClass('highlight');
+	} else {
+		$('#tournamentDetails').removeClass('highlight');
 	}
 	showMyTeams(preloadData);
 }
@@ -172,6 +182,9 @@ function getTournamentDetails(t) {
 		for (var i = 0; i < data.players.length; i++) {
 			src += '<li' + (data.players[i].you ? ' class="you"' : '') + '>'
 			  + data.players[i].dname + '</li>';
+		}
+		if (data.players.length == 0) {
+			src += '<li><em>No free agents</em></li>';
 		}
 		src += '</ul>';
 		$('#tournamentDetails').html(src);
