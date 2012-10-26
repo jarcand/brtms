@@ -7,7 +7,7 @@ requireSession('json');
 
 $tid = @$_GET['tid'];
 
-$res = $db->query($sql = sPrintF('SELECT `dname`
+$res = $db->query($sql = sPrintF('SELECT `pid`, `dname`
   FROM `players` `p`
   INNER JOIN `tournament_players` USING (`pid`)
   WHERE `tid`=%1$s AND `gid` IS NULL
@@ -19,7 +19,10 @@ if (!$res) {
 
 $players = array();
 while ($p = $res->fetch_assoc()) {
-	$players[] = $p['dname'];
+	$players[] = array(
+	  'dname' => $p['dname'],
+	  'you' => $p['pid'] == $_p['pid'],
+	);
 }
 
 $ret = array();

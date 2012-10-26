@@ -153,57 +153,65 @@ function getTournamentDetails(t) {
 	}).done(function(data, sts) {
 		var src = '';
 		if (t.teamsize > 1) {
-			var inteam = false;
-			src += '<h2>Teams</h2><ul>';
+			src += '<h2>Teams</h2><dl class="teams">';
 			for (var i = 0; i < data.teams.length; i++) {
-				var team = data.teams[i];
-				if (team.is_leader == '1') {
-					inteam = true;
-					src += '<li><strong>' + team.name + ' (your team)</strong>'
-					  + ' &ndash; <a href="#" onclick="return deleteTeam('
-					  + team.gid + ');">Delete Team</a><ul>';
-					for (var j = 0; j < team.members.length; j++) {
-						src += '<li>' + team.members[j].dname
-						  + (!team.members[j].you ? ' &ndash; <a href="#" onclick="return removeTeamPlayer('
-						    + team.gid + ',' + team.members[j].pid + ');">Remove Player</a>'
-						    : '')
-						  + '</li>';
-					}
-					src += '</ul></li>';
-				} else {
-					src += '<li><strong>' + team.name + ':</strong> '
-					  + team.members.join(', ');
-					if (team.teamsize > team.members.length) {
-						src += ', <em>' + (team.teamsize - team.members.length) + ' vacant spots '
-						    + (team.open == '1' ? 'and looking' : 'but NOT looking')
-						    + ' for free agents</em>';
-						if (t.joined == '1' && !inteam && !team.inteam) {
-							src += ' &ndash; <a href="#" onclick="return joinTeam(' + team.gid
-							    + ');">Join Team</a>';
-						}
-					}
-					if (team.inteam) {
-						inteam = true;
-						src += ' &ndash; <a href="#" onclick="return removeTeamPlayer(' + team.gid
-						    + ',\'me\');">Leave Team</a>';
-					}
-					src += '</li>';
-				}
+				src += genTeam(data.teams[i], t.joined, data.inteam);
 			}
-			if (!inteam && t.joined == '1') {
-				src += '<li><a href="#" onclick="return showCreateTeam(' + t.tid + ',\'' + t.name
-				  + '\');">Create a New Team</a></li>';
+			if (!data.inteam && t.joined == '1') {
+				src += '<dt><a href="#" onclick="return showCreateTeam(' + t.tid
+				  + ',\'' + t.name + '\');">Create a New Team</a></dt>';
 			}
-			src += '</ul>';
+			src += '</dl>';
 			src += '<h2>Free Agents</h2>';
 		} else {
 			src += '<h2>Players</h2>';
 		}
-		src += '<ul class="inline"><li>' + data.players.join('</li><li>') + '</li></ul>';
+		src += '<ul class="inline">';
+		for (var i = 0; i < data.players.length; i++) {
+			src += '<li' + (data.players[i].you ? ' class="you"' : '') + '>'
+			  + data.players[i].dname + '</li>';
+		}
+		src += '</ul>';
 		$('#tournamentDetails').html(src);
 	}).fail(function(jqSHR, textStatus) {
 		alert(textStatus + ': ' + jqSHR.responseText); //TODO
 	});
+}
+
+function genTeam(team, t_joined, t_inteam) {
+	var is_leader = team.is_leader == '1'
+	var src = '<dt><strong>Team ' + team.name + (team.is_leader ? ' (your team)' : '') + '</strong>';
+	if (team.teamsize > team.members.length) {
+		src += ' &ndash; ' + (team.open == '1' ? 'OPEN team' : 'Closed team');
+		if (t_joined == '1' && !t_inteam) {
+			src += ' &ndash; <a href="#" onclick="return joinTeam(' + team.gid
+			    + ');">Join Team</a>';
+		}
+		if (team.open != '1') {
+			src += ' (Only if you know the team)';
+		}
+	}
+	if (is_leader) {
+		src += ' &ndash; <a href="#" onclick="return deleteTeam('
+		  + team.gid + ');">Delete Team</a>';
+	}
+	src += '</dt>';
+	for (var j = 0; j < team.members.length; j++) {
+		var removeLink = !is_leader ? ''
+		  : ' <small><a href="#" onclick="return removeTeamPlayer('
+		  + team.gid + ',' + team.members[j].pid + ');">[Remove]</a></small>'
+		src += '<dd' + (team.members[j].you ? ' class="you"' : '') + '>' + team.members[j].dname
+		  + (team.members[j].you ? ' <small>[You]</small>' : removeLink)
+		  + '</dd>';
+	}
+	if (team.teamsize > team.members.length) {
+		src += '<dd><em>' + (team.teamsize - team.members.length) + ' vacant spots</em></dd>';
+	}
+	if (!is_leader && team.inteam) {
+		src += ' &ndash; <a href="#" onclick="return removeTeamPlayer(' + team.gid
+		    + ',\'me\');">Leave Team</a>';
+	}
+	return src;
 }
 
 var major_limit = 0;
