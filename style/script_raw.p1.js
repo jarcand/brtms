@@ -184,7 +184,7 @@ function getTournamentDetails(t) {
 			  + data.players[i].dname + '</li>';
 		}
 		if (data.players.length == 0) {
-			src += '<li><em>No free agents</em></li>';
+			src += '<li class="info"><em>No free agents</em></li>';
 		}
 		src += '</ul>';
 		$('#tournamentDetails').html(src);
@@ -220,7 +220,8 @@ function genTeam(team, t_joined, t_inteam) {
 		  + '</dd>';
 	}
 	if (team.teamsize > team.members.length) {
-		src += '<dd><em>' + (team.teamsize - team.members.length) + ' vacant spots</em></dd>';
+		var vac = team.teamsize - team.members.length;
+		src += '<dd class="info"><em>' + vac + ' vacant spot' + (vac != 1 ? 's' : '') + '</em></dd>';
 	}
 	if (!is_leader && team.inteam) {
 		src += ' &ndash; <a href="#" onclick="return removeTeamPlayer(' + team.gid

@@ -111,6 +111,10 @@ dl.teams dd {
 	padding : 1px 5px;
 }
 
+dl.teams dd.info {
+	background-color : transparent;
+}
+
 dl.teams dt {
 	background-color : silver;
 	border-bottom : 1px dashed gray;
