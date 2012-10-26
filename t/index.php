@@ -36,7 +36,8 @@ $res = $db->query('SELECT
     WHERE `major`=0) AS `joined_crowd`,
   (SELECT COUNT(*) FROM `tournaments` WHERE `major`=0) AS `tours_crowd`,
   (SELECT COUNT(*) FROM `tournaments` WHERE `published`=0) AS `tours_unpublished`,
-  (SELECT `registeredts` FROM `players` ORDER BY `registeredts` DESC LIMIT 1) AS `last_registered`
+  (SELECT `registeredts` FROM `players` ORDER BY `registeredts` DESC LIMIT 1) AS `last_registered`,
+  (SELECT COUNT(DISTINCT `gid`) FROM `tournament_players`) AS `total_teams`
   FROM DUAL');
 $stats = $res->fetch_assoc();
 
@@ -62,6 +63,7 @@ $src .= '<div class="center">';
 $src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
 $src .= mt('Crowd Tours', $stats['tours_crowd'], 'green');
 $src .= mt('Unpublished', $stats['tours_unpublished'], 'red');
+$src .= mt('Total Teams', $stats['total_teams'], 'green');
 $src .= '</div>';
 
 date_default_timezone_set('America/Montreal');
