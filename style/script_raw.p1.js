@@ -12,26 +12,28 @@ function genTournament(t, detailed) {
 		}
 	}
 	
-	src1 = '<table cellpadding="0" cellspacing="0"><tr><td>'
+	var href = '${ROOT}/tournaments#tournament/' + (t.shortcode || t.tid);
+	var src1 = '<table cellpadding="0" cellspacing="0"><tr><td>'
 	  + '<img class="thumb" src="${ROOT}/imgs/game-'
           + (t.major == '1' && t.shortcode || 'default')
           + '.png" /></td><td><h2>'
-          + (!detailed ? '<a href="${ROOT}/tournaments#tournament/'
-          + (t.shortcode || t.tid) + '">' : '') + t.name + (!detailed ? '</a>' : '')
+          + (!detailed ? '<a href="' + href + '">' : '') + t.name + (!detailed ? '</a>' : '')
           + '</h2><p class="l1">'
 	  + (t.major == '1' ? 'Major Tournament' : 'Crowdsourced Tournament')
 	  + ' by ' + t.organizer + '</p><p class="l2">' + players_src
 	  + '</p></td></tr></table>';
-	src2 = '<div class="join"><p class="underlim"><a href="#" '
+	var src2 = '<div class="join"><p class="underlim"><a href="#" '
 	  + 'onclick="return joinTournament(' + t.tid + ');">JOIN</a></p>'
 	  + '<p class="overlim" title="A.K.A. You have reached the maximum '
 	  + 'Major Tournaments for your ticket type.">0 CREDITS,<br /> '
 	  + 'INSERT<br /> TOKEN</p></div>'
-	  + '<p class="joined">JOINED <a href="#" '
-	  + 'onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>';
-	src3 = '<h3>Description:</h3><p>' + t.desc + '</p>'
+	  + '<div class="joined"><p>JOINED <a href="#" '
+	  + 'onclick="return leaveTournament(' + t.tid + ');">LEAVE</a></p>'
+	  + (t.teamsize <= 1 ? '' : '<p class="teamaction"><span>Team Selected</span><a href="' + href + '">Join a Team</a></p>')
+	  + '</div>';
+	var src3 = '<h3>Description:</h3><p>' + t.desc + '</p>'
 	  + '<h3>Prizes:</h3><p>' + t.prizes + '</p>';
-	src4 = '';
+	var src4 = '';
 	
 	var src = '<table cellspacing="0" class="tour '
 	  + (t.major == '1' ? 'major' : 'crowd') + '" id="tour' + t.tid
@@ -222,9 +224,16 @@ function showMyTeams(data) {
 	var major_c = 0, crowd_c = 0;
 	if (data.result != 'error') {
 		for (var tid in data.myteams) {
-			data.myteams[tid].t_major == '1' ? major_c++ : crowd_c++;
+			data.myteams[tid].major == '1' ? major_c++ : crowd_c++;
 			$('#tour' + tid + ' .join, #tour' + tid + 'det .join').hide();
 			$('#tour' + tid + ' .joined, #tour' + tid + 'det .joined').show();
+			if (data.myteams[tid].gid) {
+				$('#tour' + tid + ' .teamaction a, #tour' + tid + 'det .teamaction a').hide();
+				$('#tour' + tid + ' .teamaction span, #tour' + tid + 'det .teamaction span').show();
+			} else {
+				$('#tour' + tid + ' .teamaction a, #tour' + tid + 'det .teamaction a').show();
+				$('#tour' + tid + ' .teamaction span, #tour' + tid + 'det .teamaction span').hide();
+			}
 		}
 	}
 	var src = '<ul><li class="bg"><strong>Joined Tournaments</strong></li>'
@@ -241,6 +250,17 @@ function showMyTeams(data) {
 	}
 	$('#registration-overview').html(src);
 	major_limit = data.limit;
+}
+
+function reloadTournaments() {
+	$.ajax({
+	  url: '${ROOT}/a/gettournaments',
+	  type: 'POST',
+	  dataType: 'json'
+	}).done(updateTournaments
+	).fail(function(jqSHR, textStatus) {
+		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+	});
 }
 
 
@@ -429,7 +449,7 @@ function createTeam(frm) {
 	}).done(function(data, sts) {
 		var src = '';
 		if (data.result == 'success') {
-			updateTournaments(preloadData);
+			reloadTournaments();
 		}
 		if (popup2 && popup2.close) {
 			popup2.close();
@@ -455,7 +475,7 @@ function deleteTeam(gid) {
 	  dataType: 'json'
 	}).done(function(data, sts) {
 		if (data.result == 'success') {
-			updateTournaments(preloadData);
+			reloadTournaments();
 		} else {
 			alert(data.result + ': ' + data.errorType); //TODO
 		}
@@ -480,7 +500,7 @@ function joinTeam(gid) {
 	  dataType: 'json'
 	}).done(function(data, sts) {
 		if (data.result == 'success') {
-			updateTournaments(preloadData);
+			reloadTournaments();
 		} else {
 			alert(data.result + ': ' + data.errorType); //TODO
 		}
@@ -506,7 +526,7 @@ function removeTeamPlayer(gid, pid) {
 	  dataType: 'json'
 	}).done(function(data, sts) {
 		if (data.result == 'success') {
-			updateTournaments(preloadData);
+			reloadTournaments();
 		} else {
 			alert(data.result + ': ' + data.errorType); //TODO
 		}

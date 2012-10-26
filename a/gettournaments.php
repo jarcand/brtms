@@ -42,10 +42,9 @@ $ret['tournaments'] = $tournaments;
 
 if (isSession()) {
 	
-	$res = $db->query($sql = 'SELECT `tp`.`tid` AS `tp_tid`, `t`.`major` AS `t_major`, `g`.*
+	$res = $db->query($sql = 'SELECT `tid`, `major`, `gid`
 	  FROM `tournament_players` `tp`
 	  INNER JOIN `tournaments` `t` USING (`tid`)
-	  LEFT JOIN `groups` `g` USING (`gid`)
 	  WHERE `pid`=' . s($_p['pid']));
 	if (!$res) {
 		error($sql);
@@ -53,7 +52,7 @@ if (isSession()) {
 
 	$myteams = array();
 	while ($o = $res->fetch_assoc()) {
-		$myteams[$o['tp_tid']] = $o;
+		$myteams[$o['tid']] = $o;
 	}
 
 	$limit_s = $_p['credits'];

@@ -518,7 +518,7 @@ table.tac th {
 	color : green;
 	display : none;
 	font-size : 30px;
-	margin : 20px 20px;
+	margin : 10px 20px;
 	text-align : center;
 }
 
@@ -526,6 +526,21 @@ table.tac th {
 	display : block;
 	font-size : 15px;
 	
+}
+
+.tour .joined p {
+	margin : 0;
+}
+
+.tour .teamaction a {
+	color : red;
+	font-weight : bold;
+	letter-spacing : 1px;
+}
+
+.tour .teamaction span {
+	display : none;
+	font-size : 12pt;
 }
 
 .tour .l1,
