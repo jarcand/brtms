@@ -1,3 +1,5 @@
+var debug = false;
+
 function genTournament(t, detailed) {
 	var players_src = 'Players: ' + t.players
 	  + (t.teamsize > 1 ? ', Teams: ' + t.teams + ', Free Agents: ' + t.freeagents : '')
@@ -192,7 +194,7 @@ function getTournamentDetails(t) {
 		src += '</ul>';
 		$('#tournamentDetails').html(src);
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 }
 
@@ -276,7 +278,7 @@ function reloadTournaments() {
 	  dataType: 'json'
 	}).done(updateTournaments
 	).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 }
 
@@ -285,7 +287,7 @@ function reloadTournaments() {
 
 function joinTournament(tid) {
 	if (!session) {
-		alert('You need to login or purchase a BR6 ticket!');
+		alert('You need to login or purchase a Battle Royale VI ticket!');
 		return false;
 	}
 	$.ajax({
@@ -303,11 +305,11 @@ function joinTournament(tid) {
 		} else if (data.result == 'error' && data.errorType == 'overlimit') {
 			alert('You have exceeded your limit of ' + major_limit + ' Major Tournaments.');
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 		updateTournaments(data);
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -329,11 +331,11 @@ function leaveTournament(tid) {
 			$('#tour' + tid + ' .underlim, #tour' + tid + 'det .underlim').show();
 			$('#tour' + tid + ' .join, #tour' + tid + 'det .join').show();
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 		updateTournaments(data);
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -355,7 +357,6 @@ function showCreate() {
 
 function createTournament(frm) {
 	if (!session) {
-		alert('You need to login or purchase a BR6 ticket!');
 		return false;
 	}
 	
@@ -410,7 +411,7 @@ function createTournament(frm) {
 		}
 		joinTournament(data.tournaments[0].tid);
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -433,7 +434,6 @@ function showCreateTeam(tid, tname) {
 
 function createTeam(frm) {
 	if (!session) {
-		alert('You need to login or purchase a BR6 ticket!');
 		return false;
 	}
 	
@@ -472,7 +472,7 @@ function createTeam(frm) {
 			popup2.close();
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -494,10 +494,10 @@ function deleteTeam(gid) {
 		if (data.result == 'success') {
 			reloadTournaments();
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -519,10 +519,10 @@ function joinTeam(gid) {
 		if (data.result == 'success') {
 			reloadTournaments();
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -545,10 +545,10 @@ function removeTeamPlayer(gid, pid) {
 		if (data.result == 'success') {
 			reloadTournaments();
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;

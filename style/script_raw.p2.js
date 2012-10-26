@@ -64,13 +64,13 @@ function createAccount(frm) {
 				$(frm.user).addClass('invalid');
 				$(frm.user).after('<p class="error">That username is already in use.</p>');
 			} else {
-				alert(data.result + ': ' + data.errorType); //TODO
+				debug && alert(data.result + ': ' + data.errorType);
 			}
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -110,13 +110,13 @@ function updateDname(frm) {
 				$(frm.dname).addClass('invalid');
 				$(frm.dname).after('<p class="error">That display name is already in use.</p>');
 			} else {
-				alert(data.result + ': ' + data.errorType); //TODO
+				debug && alert(data.result + ': ' + data.errorType);
 			}
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -145,10 +145,10 @@ function chooseSeat(frm) {
 			$(frm).find('input').attr('readonly', 'readonly');
 			document.location.reload();
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
@@ -167,10 +167,10 @@ function releaseSeat() {
 		if (data.result == 'success') {
 			document.location.reload();
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 }
 
@@ -216,10 +216,10 @@ function changePassword(frm) {
 			$(frm.curpwd).after('<p class="error">The password you entered does not match our records.</p>');
 			$(frm.subbtn).after('<p class="error">There were errors in your submission.</p>');
 		} else {
-			alert(data.result + ': ' + data.errorType); //TODO
+			debug && alert(data.result + ': ' + data.errorType);
 		}
 	}).fail(function(jqSHR, textStatus) {
-		alert(textStatus + ': ' + jqSHR.responseText); //TODO
+		debug && alert(textStatus + ': ' + jqSHR.responseText);
 	});
 	
 	return false;
