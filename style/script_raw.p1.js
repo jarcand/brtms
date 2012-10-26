@@ -1,6 +1,6 @@
 function genTournament(t, detailed) {
 	var players_src = 'Players: ' + t.players
-	  + (t.teamsize > 1 ? ', Teams: ' + t.teams : '')
+	  + (t.teamsize > 1 ? ', Teams: ' + t.teams + ', Free Agents: ' + t.freeagents : '')
 	  + (t.published == '0' ? ', <em>Awaiting Approval</em>' : '');
 	if ($('#tour' + t.tid + 'det').length) {
 		$('#tour' + t.tid + 'det .l2').html(players_src);

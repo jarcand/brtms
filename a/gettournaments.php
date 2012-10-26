@@ -25,6 +25,7 @@ $res = $db->query($sql = 'SELECT `tid`, `shortcode`, `name`, `major`, `published
   (SELECT `dname` FROM `players` `p` WHERE `p`.`pid`=`t`.`owner_pid`) AS `organizer`,
   (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `players`,
   (SELECT COUNT(DISTINCT `gid`) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid`) AS `teams`,
+  (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid` AND `gid` IS NULL) AS `freeagents`,
   (SELECT COUNT(*) FROM `tournament_players` `tp` WHERE `tp`.`tid`=`t`.`tid` AND `tp`.`pid`=' . s($_p['pid']) . ') AS `joined`
   FROM `tournaments` `t`
   WHERE ' . $cond1 . $cond2 . '
