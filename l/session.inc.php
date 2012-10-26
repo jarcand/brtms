@@ -41,6 +41,7 @@ function requireSession($type = 'html') {
 		} else if ($type == 'html') {
 			$parts = parse_url($_SERVER['REQUEST_URI']);
 			header('Location: ' . $config['ROOT'] . '/login?r=' . $parts['path']);
+			die;
 		}
 	}
 }
@@ -54,6 +55,7 @@ function requireAdminSession($type = 'html') {
 			
 		} else if ($type == 'html') {
 			header('Location: ' . $config['ROOT'] . '/');
+			die;
 		}
 	}
 }
