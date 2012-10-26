@@ -47,6 +47,7 @@ while ($g = $res->fetch_assoc()) {
 	);
 }
 
+$inteam = false;
 foreach ($groups as $gid => $group) {
 	
 	$res = $db->query($sql = sPrintF('SELECT `pid`, `dname`
@@ -62,15 +63,18 @@ foreach ($groups as $gid => $group) {
 	$members = array();
 	while ($p = $res->fetch_assoc()) {
 		$you = $p['pid'] == $_p['pid'];
-		$members[] = !$groups[$gid]['is_leader']
-		  ? $p['dname']
-		  : array(
-		    'dname' => $p['dname'],
-		    'pid' => $p['pid'],
-		    'you' => $you,
-		  );
+		$member = array(
+		  'dname' => $p['dname'],
+		  'pid' => $p['pid'],
+		  'you' => $you,
+		);
+		if (!$groups[$gid]['is_leader']) {
+			unSet($member['pid']);
+		}
+		$members[] = $member;
 		if ($you) {
 			$groups[$gid]['inteam'] = true;
+			$inteam = true;
 		}
 	}
 	
@@ -78,6 +82,7 @@ foreach ($groups as $gid => $group) {
 }
 
 $ret['teams'] = array_values($groups);
+$ret['inteam'] = $inteam;
 
 if (!isSet($embedded) || !$embedded) {
 	header('Content-Type: application/json');
