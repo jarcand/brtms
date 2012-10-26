@@ -37,7 +37,8 @@ $res = $db->query('SELECT
   (SELECT COUNT(*) FROM `tournaments` WHERE `major`=0) AS `tours_crowd`,
   (SELECT COUNT(*) FROM `tournaments` WHERE `published`=0) AS `tours_unpublished`,
   (SELECT `registeredts` FROM `players` ORDER BY `registeredts` DESC LIMIT 1) AS `last_registered`,
-  (SELECT COUNT(DISTINCT `gid`) FROM `tournament_players`) AS `total_teams`
+  (SELECT COUNT(DISTINCT `gid`) FROM `tournament_players`) AS `total_teams`,
+  (SELECT COUNT(`gid`) FROM `tournament_players`) AS `total_team_members`
   FROM DUAL');
 $stats = $res->fetch_assoc();
 
@@ -60,10 +61,10 @@ $src .= mt('Prize per Join', sPrintF('%.2f$', $prize_budget1 / $stats['joined_ma
   sPrintF('up to %.2f$', $prize_budget2 / $stats['joined_major'], 2));
 $src .= '</div>';
 $src .= '<div class="center">';
-$src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
 $src .= mt('Crowd Tours', $stats['tours_crowd'], 'green');
+$src .= mt('Joined Crowds', $stats['joined_crowd'], 'blue');
 $src .= mt('Unpublished', $stats['tours_unpublished'], 'red');
-$src .= mt('Total Teams', $stats['total_teams'], 'green');
+$src .= mt('Total Teams', $stats['total_teams'], 'green', $stats['total_team_members'] . ' members');
 $src .= '</div>';
 
 date_default_timezone_set('America/Montreal');
