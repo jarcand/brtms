@@ -170,7 +170,11 @@ function getTournamentDetails(t) {
 	}).done(function(data, sts) {
 		var src = '';
 		if (t.teamsize > 1) {
-			src += '<h2>Teams</h2><dl class="teams">';
+			src += '<h2>Teams';
+			if (t.joined != '1' && !data.inteam) {
+				src += ' &ndash; <small>You must join the tournament to join a team!</small>';
+			}
+			src += '</h2><dl class="teams">';
 			for (var i = 0; i < data.teams.length; i++) {
 				src += genTeam(data.teams[i], t.joined, data.inteam);
 			}
@@ -200,9 +204,9 @@ function getTournamentDetails(t) {
 
 function genTeam(team, t_joined, t_inteam) {
 	var is_leader = team.is_leader == '1'
-	var src = '<dt><strong>Team ' + team.name + (team.is_leader ? ' (your team)' : '') + '</strong>';
+	var src = '<dt><strong>Team ' + team.name + (team.is_leader ? ' (you are the leader)' : '') + '</strong>';
 	if (team.teamsize > team.members.length) {
-		src += ' &ndash; ' + (team.open == '1' ? 'OPEN team' : 'Closed team');
+		src += ' &ndash; ' + (team.open == '1' ? 'OPEN Team' : 'Closed Team');
 		if (t_joined == '1' && !t_inteam) {
 			src += ' &ndash; <a href="#" onclick="return joinTeam(' + team.gid
 			    + ');">Join Team</a>';
@@ -210,6 +214,8 @@ function genTeam(team, t_joined, t_inteam) {
 		if (team.open != '1') {
 			src += ' (Only if you know the team)';
 		}
+	} else {
+		src += ' &ndash; Complete Team';
 	}
 	if (is_leader) {
 		src += ' &ndash; <a href="#" onclick="return deleteTeam('
@@ -274,7 +280,7 @@ function showMyTeams(data) {
 function reloadTournaments() {
 	$.ajax({
 	  url: '${ROOT}/a/gettournaments',
-	  type: 'POST',
+	  type: 'GET',
 	  dataType: 'json'
 	}).done(updateTournaments
 	).fail(function(jqSHR, textStatus) {
