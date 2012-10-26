@@ -72,6 +72,7 @@ function tournamentsPageInit() {
 			$('#registration-overview').css('top',
 			  Math.max(tp - $(document).scrollTop(), 50));
 		});
+		setInterval(reloadTournaments, 30000);
 	}
 	var hash = location.hash;
 	var jointeamHighlight = false;
@@ -141,12 +142,14 @@ function showTournament(data, tourid) {
 		  + '<ul><li><a href="${ROOT}/login">Login to Players Portal</a></li></ul>';
 	}
 	
-	$(document).scrollTop(0);
 	document.title = titlebase + ' - Tournament: ' + t.name;
 	$('#header1').html('Tournament: ' + t.name);
 	$('#tournamentContent').show();
 	$('#tournamentsListContent').hide();
-	$('#tournamentDynContent').html(src);
+	if (gtourid != tourid) {
+		$(document).scrollTop(0);
+		$('#tournamentDynContent').html(src);
+	}
 	getTournamentDetails(t);
 	gtourid = tourid;
 }
