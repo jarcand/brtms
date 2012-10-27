@@ -74,7 +74,7 @@ function tournamentsPageInit() {
 			$('#registration-overview').css('top',
 			  Math.max(tp - $(document).scrollTop(), 50));
 		});
-		setInterval(reloadTournaments, 30000);
+//		setInterval(reloadTournaments, 30000);
 	}
 	var hash = location.hash;
 	var jointeamHighlight = false;
