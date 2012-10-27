@@ -29,9 +29,9 @@ $headers = implode("\r\n", array(
 // -----------------------------------------------------------------------------
 
 
-$date = strtotime("2012-11-03 06:00:00");
+$date = strtotime("2012-11-03 10:00:00");
 $remaining = $date - time();
-$remaining_days = floor($remaining / 3600 / 24);
+$remaining_days = ceil($remaining / 3600 / 24);
 
 // -----------------------------------------------------------------------------
 $message = sPrintF('Hello %1$s %2$s!
