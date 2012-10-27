@@ -29,7 +29,7 @@ $headers = implode("\r\n", array(
 // -----------------------------------------------------------------------------
 
 
-$date = strtotime("2012-11-03 10:00:00");
+$date = strtotime("2012-11-03 00:00:00");
 $remaining = $date - time();
 $remaining_days = ceil($remaining / 3600 / 24);
 
