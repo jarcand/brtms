@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/../l/view.inc.php';
 requireAdminSession();
 
 function fd($ts) {
-	return !$ts ? '' : (subStr($ts, 8, 2) . '_' . subStr($ts, 11));
+	return !$ts ? '' : (subStr($ts, 8, 2) . strToLower(subStr(strFTime('%b', strToTime($ts)), 0, 1)) . subStr($ts, 11));
 }
 
 $src = '<h1>Admin Dashboard</h1>';
