@@ -30,7 +30,7 @@ $src .= mt('Invites Sent', $stats['lasthour'], 'orange', 'Last Hour');
 $src .= mt('Unpublished', $stats['tours_unpublished'], 'red', 'Crowd Tours');
 $src .= '</div>';
 
-date_default_timezone_set('America/Montreal');
+date_default_timezone_set('America/Los_Angeles');
 $diff = time() - strToTime($stats['last_registered'] . ' EST');
 
 $src .= sPrintF('
