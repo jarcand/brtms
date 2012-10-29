@@ -31,7 +31,7 @@ $src .= mt('Unpublished', $stats['tours_unpublished'], 'red', 'Crowd Tours');
 $src .= '</div>';
 
 date_default_timezone_set('America/Los_Angeles');
-$diff = time() - strToTime($stats['last_registered'] . ' EST');
+$diff = time() - strToTime($stats['last_registered'] . ' PST');
 
 $src .= sPrintF('
 <div class="center faded-bg tac">
