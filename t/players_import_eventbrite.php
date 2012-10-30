@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$ticket = 'Regular Ticket - 2-3 Major Tournaments';
 			$credits = 3;
 			$early = 0;
-		} else if ($ticket_id == '14910690') {
+		} else if ($ticket_id == '14910700') {
 			$ticket = 'Regular Ticket - 4+ Major Tournaments';
 			$credits = 10;
 			$early = 0;
