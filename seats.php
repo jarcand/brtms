@@ -8,7 +8,6 @@ $res_seats = array(
   'A14' => ' Unavailable',
   'B14' => ' Unavailable',
   'C14' => ' Unavailable',
-  'D13' => ' Reserved',
   'D21' => 'Players Portal Admin',
   'D23' => 'Players Portal Admin',
   'D22' => 'Network Admin',
