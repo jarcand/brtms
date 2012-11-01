@@ -17,6 +17,7 @@ $res_seats = array(
   'H13' => ' Unavailable',
   'J13' => ' Unavailable',
   'K1' => ' Unavailable',
+  'K2' => ' Unavailable',
   'K3' => ' Unavailable',
   'K4' => ' Unavailable',
   'K5' => ' Unavailable',
