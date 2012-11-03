@@ -84,7 +84,7 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `seat`, `credits`, `firstlogi
 
 $src .= '<table cellspacing="0" class="border center">
 ';
-$ths = '<tr><th>#</th><th>Name</th><th>Seat</th><th>Major</th><th>Crowd</th><th>Teams</th><th>First Login</th><th>Last Login</th></tr>';
+$ths = '<tr><th>#</th><th>Name</th><th>Seat</th><th>Major</th><th>Crowd</th><th>Teams</th><th>First Login</th><th>Last Login</th><th>Actions</th></tr>';
 
 $i = 0;
 while ($p = $res->fetch_assoc()) {
@@ -95,7 +95,7 @@ while ($p = $res->fetch_assoc()) {
 	if ((strToTime($p['lastlogints']) - strToTime($p['firstlogints'])) < 60) {
 		$last_login = '--';
 	}
-	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
+	$src .= sPrintF('<tr><td>%s</td><td>%s %s</td><td>%s</td><td>%s/%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href="reset_password?pid=%1$s" title="Reset Password">[R]</td></tr>
 ', $p['pid'], $p['fname'], $p['lname'], $p['seat'], $p['tours_major'], $p['credits'], $p['tours_crowd'], $p['teams'], fd($p['firstlogints']), $last_login);
 }
 
