@@ -26,6 +26,8 @@ while ($p = $res->fetch_assoc()) {
 	}
 }
 
+kSort($ips);
+
 $src = '';
 
 $seat_str = '';
