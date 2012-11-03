@@ -18,7 +18,9 @@ $ips = array();
 while ($p = $res->fetch_assoc()) {
 	if (!isSet($res_seats[$p['seat']])) {
 		if ($p['ip']) {
-			$res_seats[$p['seat']] = $p['dname'] . ' - ' . $p['ip'];
+			if (preg_match('/^134[.]117[.]20[67][.]/', $p['ip'])) {
+				$res_seats[$p['seat']] = $p['dname'] . ' - ' . $p['ip'];
+			}
 			$ips[$p['ip']] = @$ips[$p['ip']] . $p['seat'] . ' - ' . $p['dname'] . ', ';
 		}
 	}
