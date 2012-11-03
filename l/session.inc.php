@@ -25,6 +25,18 @@ function loadPlayer() {
 			error($sql);
 		}
 		$_p = $res->fetch_assoc();
+		
+		$ip = $_SERVER['REMOTE_ADDR'];
+		
+		if (preg_match('/^134[.]117[.]20[67][.]/', $ip)
+		  || !preg_match('/^134[.]117[.]20[67][.]/', $_p['ip'])) {
+			$res = $db->query($sql = sPrintF('UPDATE `players`
+			  SET `ip`=%1$s WHERE `pid`=%2$s
+			  ', s($ip), s($_p['pid'])));
+			if (!$res) {
+				error($sql);
+			}
+		}
 	} else {
 		$_p = NULL;
 	}

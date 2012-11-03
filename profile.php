@@ -66,9 +66,10 @@ $src .= sPrintF('
 <tr><td colspan="2" style="text-align:center;">%1$s<br /> <small><em>Upgrade Ticket?  Contact <a href="mailto:sales&#64;battleroyale.ca">Sales</a> for assistance.</em></small></td></tr>
 <tr><td>Joined Tournaments</td><td>%2$s Major<br /> %3$s Ad-Hoc</td></tr>
 <tr><td>Seat:</td><td><a href="${ROOT}/seats">%4$s</a> %5$s</td></tr>
+<tr><td>IP Address:</td><td>%6$s</td></tr>
 </table>
 </fieldset>
-', $_p['ticket'], $sp['tours_major'], $sp['tours_crowd'], $_p['seat'] ? $_p['seat'] : 'Not Selected', $seat_release);
+', $_p['ticket'], $sp['tours_major'], $sp['tours_crowd'], $_p['seat'] ? $_p['seat'] : 'Not Selected', $seat_release, $_p['ip']);
 
 $src .= '</div>';
 
