@@ -12,10 +12,8 @@ function loadSeats(data) {
 	var i = 0;
 	for (key in data) {
 		var func = 'loadSeat("' + key + '","' + data[key] + '")';
-		setTimeout(func, i * 200);
+		setTimeout(func, 3000 + i * 200);
 		i++;
-		if (i > 10)
-			break;
 	}
 }
 
