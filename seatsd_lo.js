@@ -20,6 +20,7 @@ function loadSeats(data) {
 }
 
 function loadSeat(seat, dname) {
+	$('#seat-' + seat).addClass('occ').removeClass('vac2');
 	alert(seat + ' - ' + dname);
 }
 
