@@ -11,7 +11,7 @@ function getSeats() {
 function loadSeats(data) {
 	var i = 0;
 	for (key in data) {
-		var func = function() {loadSeat(key, data[key]);};
+		var func = 'loadSeat("' + key + '","' + data[key] + '")';
 		setTimeout(func, i * 1000);
 		i++;
 		if (i > 3)
