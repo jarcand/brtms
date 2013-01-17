@@ -12,16 +12,15 @@ function loadSeats(data) {
 	var i = 0;
 	for (key in data) {
 		var func = 'loadSeat("' + key + '","' + data[key] + '")';
-		setTimeout(func, i * 1000);
+		setTimeout(func, i * 200);
 		i++;
-		if (i > 3)
+		if (i > 10)
 			break;
 	}
 }
 
 function loadSeat(seat, dname) {
 	$('#seat-' + seat).addClass('occ').removeClass('vac2');
-	alert(seat + ' - ' + dname);
 }
 
 getSeats();
