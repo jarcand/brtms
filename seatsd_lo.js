@@ -9,10 +9,12 @@ function getSeats() {
 }
 
 function loadSeats(data) {
-	var src = '';
+	var i = 0;
 	for (key in data) {
-		alert(key);
-		break;
+		setTimeout(function() {loadSeat(key, data[key);}, i * 1000);
+		i++;
+		if (i > 3)
+			break;
 	}
 }
 
