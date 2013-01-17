@@ -75,6 +75,8 @@ $src .= '
 <p>You may hover over any seat with your cursor to see its status.</p>
 ';
 
+unSet($_p);
+
 $src .= genSeatChart($res_seats);
 
 $src .= '
