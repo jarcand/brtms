@@ -43,19 +43,6 @@ $res_seats = array(
   'L13' => ' Unavailable',
 );
 
-/*
-$res = $db->query($sql = 'SELECT `seat`, `dname` FROM `players` WHERE `seat` IS NOT NULL');
-if (!$res) {
-	error($sql);
-}
-
-while ($p = $res->fetch_assoc()) {
-	if (!isSet($res_seats[$p['seat']])) {
-		$res_seats[$p['seat']] = $p['dname'];
-	}
-}
-*/
-
 $src = '';
 
 $src .= '
