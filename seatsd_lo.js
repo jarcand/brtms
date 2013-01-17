@@ -18,5 +18,9 @@ function loadSeats(data) {
 	}
 }
 
+function loadSeat(seat, dname) {
+	alert(seat + ' - ' + dname);
+}
+
 getSeats();
 
