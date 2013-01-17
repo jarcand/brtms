@@ -9,7 +9,7 @@ function genSeatCell($seat, $res_seats = array()) {
 		if ($res_seats[$seat] == ' Unavailable') {
 			return '<th></th>';
 		}
-		return sPrintF('<th class="%3$s" title="Seat %1$s - %2$s">'
+		return sPrintF('<th class="%3$s" title="Seat %1$s - %2$s" id="seat-%1$s">'
 		  . '<input type="checkbox" /></th>',
 			$seat,
 			$res_seats[$seat] == ' Reserved' ? 'Reserved'
