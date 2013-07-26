@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX reques to change the current user's display name.
+ */
+
 require_once dirname(__FILE__) . '/../l/config.inc.php';
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
@@ -24,10 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		$c_dname = $res->fetch_assoc();
 		
+		// Ensure that the display name is not already used by another player
 		if ($c_dname['c'] > 0) {
 			$ret = array('result' => 'invalid', 'field' => 'dname');
 		} else {
-		
+			
+			// Update the DB
 			if (!$db->query($sql = 'UPDATE `players` SET `dname`=' . $s_dname
 			   . ' WHERE `pid`=' . s($_p['pid']))) {
 				error($sql);

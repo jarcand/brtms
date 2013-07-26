@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Display the prizes page with static content.
+ */
+
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
 mp('

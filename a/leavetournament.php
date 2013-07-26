@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * AJAX request for the current user to leave a tournament.
+ * Note: Returns the updated list of tournaments.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/utils.inc.php';
@@ -19,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$sqlp[] = sPrintF('`%s`=%s', $key, s($value));
 	}
 	
+	// Update the DB
 	$res = $db->query($sql = 'DELETE FROM `tournament_players` WHERE ' . implode(' AND ', $sqlp));
 	if (!$res) {
 		error($sql);
@@ -26,8 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	$ret['result'] = 'success';
 	
-//	header('Content-Type: application/json');
-//	echo json_encode($ret);
+	// Return the updated list of tournaments
 	require 'gettournaments.php';
 	
 } else {

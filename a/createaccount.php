@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX request to create a new player account.
+ */
+
 require_once dirname(__FILE__) . '/../l/config.inc.php';
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
@@ -18,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$fields['username']	= trim($V['user']);
 	$fields['password']	= trim($V['pass']);
 	
+	// Ensure the parameters are valid
 	if (strLen($fields['dname']) < 1
 	  || !preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $fields['email'])
 	  || !preg_match('/^[A-Z0-9._+-@]+$/i', $fields['username'])
@@ -44,12 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		$c_username = $res->fetch_assoc();
 		
+		// Ensure the display name is not already used
 		if ($c_dname['c'] > 0) {
 			$ret = array('result' => 'invalid', 'field' => 'dname');
+			
+		// Ensure the username is not already used
 		} else if ($c_username['c'] > 0) {
 			$ret = array('result' => 'invalid', 'field' => 'user');
+			
 		} else {
-		
+			
 			$res = $db->query($sql = 'SELECT `pid` FROM `players` WHERE `token`=' . $s_tok);
 			if (!$res) {
 				error($sql);
@@ -60,7 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			foreach ($fields as $key => $value) {
 				$sqlp[] = sPrintF('`%s`=%s', $key, s($value));
 			}
-	
+			
+			// Update the DB
 			if (!$db->query($sql = 'UPDATE `players` SET `firstlogints`=NOW(), '
 			   . implode(', ', $sqlp) . ' WHERE `token`=' . $s_tok)) {
 				error($sql);

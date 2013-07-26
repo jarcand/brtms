@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Display a brief administration dashboard.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/view.inc.php';
@@ -22,6 +26,7 @@ $res = $db->query('SELECT
   FROM DUAL');
 $stats = $res->fetch_assoc();
 
+// Display brief statistical information
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
 $src .= mt('Signed Up', $stats['signups'], 'green', sPrintF('equiv to %d%%', $stats['signups'] / $stats['total'] * 100));
@@ -33,6 +38,7 @@ $src .= '</div>';
 date_default_timezone_set('America/Los_Angeles');
 $diff = time() - strToTime($stats['last_registered'] . ' PST');
 
+// Display import from EventBrite feature
 $src .= sPrintF('
 <div class="center faded-bg tac">
 <form action="players_import_eventbrite" method="post">
@@ -49,6 +55,7 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `credits`, `email`, `register
   WHERE `firstlogints` IS NULL
   ORDER BY `credits`, `pid`');
 
+// Display the list of users that have yet to login to the system
 $src .= '<table cellspacing="0" class="border center">
 ';
 $ths = '<tr><th>#</th><th>Name</th><th>Credits</th><th>Email</th><th>Registered</th><th>Invited</th><th>First Login</th></tr>';

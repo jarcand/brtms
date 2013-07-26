@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX request to remove a player from a team/group.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/utils.inc.php';
@@ -15,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$pid = $_p['pid'];
 	}
 	
+	// Remove them from the group
 	$res = $db->query($sql = sPrintF('UPDATE `tournament_players`
 	  SET `gid`=NULL
 	  WHERE `gid`=%1$s AND `pid`=%2$s

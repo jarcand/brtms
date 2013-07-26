@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Redirect to the tournaments.php file.
+ */
+
 require_once dirname(__FILE__) . '/l/config.inc.php';
 
 echo sPrintF('

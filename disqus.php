@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Generate the HTML output to display the Disqus discussion area.
+ * Note: We're showing this page in an Iframe because we can't determine
+ * if we can dynamically load the Disqus on the tournaments.php page.
+ */
+
 require_once dirname(__FILE__) . '/l/session.inc.php';
 require_once dirname(__FILE__) . '/l/view.inc.php';
 

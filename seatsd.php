@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * Display a dynamic seating chart (experimentatal).
+ */
+
 require_once dirname(__FILE__) . '/l/seating.inc.php';
 require_once dirname(__FILE__) . '/l/session.inc.php';
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
+// Specify the seats that are special
 $res_seats = array(
   'A14' => ' Unavailable',
   'B14' => ' Unavailable',
@@ -45,6 +50,8 @@ $res_seats = array(
 
 $src = '';
 
+// Display instructions and legend
+// Note: The current display is as if the user is not logged in.
 $src .= '
 <fieldset class="faded-bg" style="float:right;margin-left:1em;width:380px;">
 <legend>Seat Legend</legend>
@@ -64,6 +71,8 @@ $src .= '
 
 unSet($_p);
 
+// Generate the chart
+// Note: The chart will be displayed as if the user is not logged in.
 $src .= genSeatChart($res_seats);
 
 $src .= '

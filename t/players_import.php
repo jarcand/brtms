@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Import players from a CSV blob of text, or display a form to do so.
+ */
+
 require_once dirname(__FILE__) . '/../l/config.inc.php';
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
@@ -11,11 +15,14 @@ function parse_line($line) {
 	return explode('","', subStr($line, 1, -1));
 }
 
+// If the form is submitted, ...
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
+	// Get the CSV blob
 	$csv = $_POST['csv'];
 	$lines = explode("\n", $csv);
 	
+	// Get the keys of the headers of the CSV text
 	$headers = parse_line(array_shift($lines));
 	
 	$keys = array();
@@ -38,16 +45,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
 		$parts = parse_line($line);
 		
+		// Check if the player was already imported
 		$res = $db->query($sql = sPrintF('SELECT COUNT(*) AS `c` FROM `players`
 		  WHERE `orderno`=%1$s AND `attendeeno`=%2$s
 		  ', s($parts[$keys['orderno']]), s($parts[$keys['attendeeno']])));
 		$row = $res->fetch_assoc();
 		
+		// If so, skip
 		if ($row['c'] != '0') {
 			$c_skips++;
 			continue;
 		}
 		
+		// Determine their credits and early-bird status
 		$ticket = $parts[$keys['ticket']];
 		$credits = 0;
 		if ($ticket == 'Early Bird Ticket - 1 Major Tournament'
@@ -71,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$early = 2;
 		}
 		
+		// Determine all their fields
 		$fields = array();
 		$fields['token']	= subStr(sha1($config['SALT'] . '-invite-' . $parts[$keys['attendeeno']]), 10, 20);
 		$fields['credits']	= $credits;
@@ -91,20 +102,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$sqlp[] = sPrintF('`%s`=%s', $key, s($value));
 		}
 		
+		// Add the player to the DB
 		if (!$db->query($sql = 'INSERT INTO `players` SET ' . implode(', ', $sqlp))) {
 			error($sql);
 		}
 		$c_inserts++;
 	}
 	
-	
+	// Display the results page
 	$src = sPrintF('<h1>Import Players: Results</h1>
 <p>Successfully imported %s players, skipped %2$s existing players.</p>', $c_inserts, $c_skips);
 	
 	mp($src);
 	
 } else {
-
+	
+	// Display the form
 	$src = '<h1>Import Players from CSV</h1>
 
 <form action="#" method="post">

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX request to get the details of a tournament.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 
@@ -7,6 +11,7 @@ requireSession('json');
 
 $tid = @$_GET['tid'];
 
+// Get the list of independant players registered to the tournament
 $res = $db->query($sql = sPrintF('SELECT `pid`, `dname`
   FROM `players` `p`
   INNER JOIN `tournament_players` USING (`pid`)
@@ -28,6 +33,7 @@ while ($p = $res->fetch_assoc()) {
 $ret = array();
 $ret['players'] = $players;
 
+// Get the list of teams/groups registered to the tournament
 $res = $db->query($sql = sPrintF('SELECT `gid`, `g`.`name`, `open`, `teamsize`,
   (`leader_pid`=%2$s) AS `is_leader`
   FROM `groups` `g`
@@ -53,6 +59,7 @@ while ($g = $res->fetch_assoc()) {
 $inteam = false;
 foreach ($groups as $gid => $group) {
 	
+	// Get the list of members in each team/group
 	$res = $db->query($sql = sPrintF('SELECT `pid`, `dname`
 	  FROM `players` `p`
 	  INNER JOIN `tournament_players` USING (`pid`)

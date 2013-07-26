@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * Display the tournaments pages.
+ * Note: This page behaves as a single-page website using AJAX.
+ */
+
 require_once dirname(__FILE__) . '/l/config.inc.php';
 require_once dirname(__FILE__) . '/l/session.inc.php';
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
+// Display the header instructions and tournaments list area
 $src = '
 <div id="registration-overview"></div>
 <div id="non-overview-wrapper">
@@ -15,6 +21,8 @@ $src = '
 ';
 
 if ($_p['pid']) {
+	
+	// Display a 'create a new tournament' link, the code for its form, and the 'create team' form
 	$src .= sPrintF('
 
 <h2 id="createTournamentLink"><a href="#" onclick="return showCreate();">Create a New Tournament</a></h2>
@@ -67,6 +75,7 @@ if ($_p['pid']) {
 ', $_p['dname']);
 }
 
+// Display a detailed page about a single tournament
 $src .= sPrintF('</div>
 <div id="tournamentContent">
 <p><a href="${ROOT}/tournaments#">&lt;&lt; Go back to full list</a></p>
@@ -78,6 +87,7 @@ $src .= sPrintF('</div>
 	var session = %1$s;
 	var preloadData = ', $_p['pid'] ? 'true' : 'false');
 
+// Embed the first AJAX response to save the time taken by making a new request
 $embedded = true;
 ob_start();
 require 'a/gettournaments.php';
@@ -88,5 +98,6 @@ $src .= ';
 </script>
 ';
 
+// Output the HTML page
 mp($src);
 

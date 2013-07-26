@@ -1,6 +1,13 @@
 var debug = false;
 
+/**
+ * Generate the HTML code to display the details of a torunament.
+ * @param t - The tournament data structure to use.
+ * @param detail - Whether to display a detail or brief report.
+ */
 function genTournament(t, detailed) {
+	
+	// Update the one-line players/teams/independants/approval line
 	var players_src = 'Players: ' + t.players
 	  + (t.teamsize > 1 ? ', Teams: ' + t.teams + ', Free Agents: ' + t.freeagents : '')
 	  + (t.published == '0' ? ', <em>Awaiting Approval</em>' : '');
@@ -10,11 +17,15 @@ function genTournament(t, detailed) {
 	if ($('#tour' + t.tid).length) {
 		$('#tour' + t.tid + ' .l2').html(players_src);
 		if (!detailed) {
+			// If not generating a detailed report, this was the only thing to change
 			return '';
 		}
 	}
 	
+	// Generate the URL
 	var href = '${ROOT}/tournaments#tournament/' + (t.shortcode || t.tid);
+	
+	// Generate the source for each of the four cells
 	var src1 = '<table cellpadding="0" cellspacing="0"><tr><td>'
 	  + '<img class="thumb" src="${ROOT}/imgs/game-'
           + (t.major == '1' && t.shortcode || 'default')
@@ -38,6 +49,7 @@ function genTournament(t, detailed) {
 	  + '<h3>Prizes:</h3><p>' + t.prizes + '</p>';
 	var src4 = '';
 	
+	// Put the cell sources together into the main table
 	var src = '<table cellspacing="0" class="tour '
 	  + (t.major == '1' ? 'major' : 'crowd') + '" id="tour' + t.tid
 	  + (detailed ? 'det' : '') + '">'
@@ -50,6 +62,8 @@ function genTournament(t, detailed) {
 	  + '<tr class="r3"><td class="c31"></td><td class="c32"></td>'
 	  + '<td class="c33"></td><td class="c34">'
 	  + '</td><td class="c35"></td></tr>';
+	
+	// Add the expanded rows if generating a detailed report
 	if (detailed) {
 		src += '<tr class="r4"><td class="c41"></td><td class="c42">'
 		  + src3 + '</td><td class="c43"></td><td class="c44">' + src4
@@ -63,8 +77,15 @@ function genTournament(t, detailed) {
 	return src;
 }
 
+// Whether the page has been initialized
 var tournamentsPageInited = false;
+
+// The original page title
 var titlebase = document.title;
+
+/**
+ * Initialize the page.
+ */
 function tournamentsPageInit() {
 	if (!tournamentsPageInited) {
 		tournamentsPageInited = true;
@@ -95,17 +116,30 @@ function tournamentsPageInit() {
 	showMyTeams(preloadData);
 }
 
+// The ID of the tournament being currently displayed
 var gtourid = '';
+
+/**
+ * Update the data of a tournament.
+ * @param data - The tournament's new data.
+ */
 function updateTournaments(data) {
 	preloadData = data;
 	if (gtourid) {
+		// If showing only one tournament
 		showTournament(data, gtourid);
 	} else {
+		// If show the list of tournaments
 		showTournamentList(data);
 	}
+	// Update the player's teams
 	showMyTeams(data);
 }
 
+/**
+ * Show the full list of tournaments.
+ * @param data - The tournaments' new data.
+ */
 function showTournamentList(data) {
 	var src = '';
 	for (var i = 0; i < data.tournaments.length; i++) {
@@ -123,6 +157,11 @@ function showTournamentList(data) {
 	gtourid = '';
 }
 
+/**
+ * Show an individual tournament.
+ * @param data - The data of the tournament.
+ * @param tourid - The ID of the tournament.
+ */
 function showTournament(data, tourid) {
 	var t;
 	for (var i = 0; i < data.tournaments.length; i++) {
@@ -156,6 +195,10 @@ function showTournament(data, tourid) {
 	gtourid = tourid;
 }
 
+/**
+ * Make an AJAX request to get the extended details of the specified tournament.
+ * @param t - The data structure of the tournament.
+ */
 function getTournamentDetails(t) {
 	if (!session) {
 		return;
@@ -202,6 +245,12 @@ function getTournamentDetails(t) {
 	});
 }
 
+/**
+ * Generate the HTML to display a team.
+ * @param tean - The data of the team.
+ * @param t_joined - Whether or not the user has joined the team's tournament.
+ * @param t_inteam - Whether or not the user is in this team.
+ */
 function genTeam(team, t_joined, t_inteam) {
 	var is_leader = team.is_leader == '1'
 	var src = '<dt><strong>Team ' + team.name + (team.is_leader ? ' (you are the leader)' : '') + '</strong>';
@@ -242,6 +291,12 @@ function genTeam(team, t_joined, t_inteam) {
 }
 
 var major_limit = 0;
+
+/**
+ * Update the interface with the player's team data.  This updates the 'join'
+ * links, and the registration-overview cart.
+ * @param data - The data of the player's teams.
+ */
 function showMyTeams(data) {
 	if (!session) {
 		return;
@@ -277,6 +332,9 @@ function showMyTeams(data) {
 	major_limit = data.limit;
 }
 
+/**
+ * Make an AJAX request to reload the list of tournaments.
+ */
 function reloadTournaments() {
 	$.ajax({
 	  url: '${ROOT}/a/gettournaments',
@@ -291,6 +349,10 @@ function reloadTournaments() {
 
 //-- [ Joining and Leaving Tournaments ] ---------------------------------------
 
+/**
+ * Make an AJAX request to add the user to the specified tournament.
+ * @param tid - The ID of the tournament.
+ */
 function joinTournament(tid) {
 	if (!session) {
 		alert('You need to login or purchase a Battle Royale VI ticket!');
@@ -305,11 +367,17 @@ function joinTournament(tid) {
 	  dataType: 'json'
 	}).done(function(data, sts) {
 		var src = '';
+		
+		// Check if the action was successful
 		if (data.result == 'success') {
 			$('#tour' + tid + ' .join, #tour' + tid + 'det .join').hide();
 			$('#tour' + tid + ' .joined, #tour' + tid + 'det .joined').show();
+			
+		// Check if there was an error with invalid data
 		} else if (data.result == 'error' && data.errorType == 'overlimit') {
 			alert('You have exceeded your limit of ' + major_limit + ' Major Tournaments.');
+			
+		// Some other type of server-side error
 		} else {
 			debug && alert(data.result + ': ' + data.errorType);
 		}
@@ -321,6 +389,10 @@ function joinTournament(tid) {
 	return false;
 }
 
+/**
+ * Make an AJAX request to remove the user from the specified tournament.
+ * @param tid - The ID of the tournament.
+ */
 function leaveTournament(tid) {
 	$.ajax({
 	  url: '${ROOT}/a/leavetournament',
@@ -331,11 +403,15 @@ function leaveTournament(tid) {
 	  dataType: 'json'
 	}).done(function(data, sts) {
 		var src = '';
+		
+		// Check if the action was successful
 		if (data.result == 'success') {
 			$('#tour' + tid + ' .joined, #tour' + tid + 'det .joined').hide();
 			$('#tour' + tid + ' .overlim, #tour' + tid + 'det .overlim').hide();
 			$('#tour' + tid + ' .underlim, #tour' + tid + 'det .underlim').show();
 			$('#tour' + tid + ' .join, #tour' + tid + 'det .join').show();
+			
+		// Some other type of server-side error
 		} else {
 			debug && alert(data.result + ': ' + data.errorType);
 		}
@@ -351,6 +427,10 @@ function leaveTournament(tid) {
 //-- [ Create Tournament ] -----------------------------------------------------
 
 var popup;
+
+/**
+ * Show the 'create tournament' popup form.
+ */
 function showCreate() {
 	popup = $('#createForm').bPopup({
 		onClose: function() {$('#createForm form').each(function() {this.reset();});}
@@ -361,6 +441,10 @@ function showCreate() {
 	return false;
 }
 
+/**
+ * Process the submisison of the 'create tournament' form.
+ * @param frm - A reference to the <form> DOM element.
+ */
 function createTournament(frm) {
 	if (!session) {
 		return false;
@@ -369,6 +453,7 @@ function createTournament(frm) {
 	$(frm).find('input, textarea').removeClass('invalid');
 	$(frm).find('p.error').remove();
 	
+	// Validate the fields
 	var error = false;
 	if (frm.desc.value.trim().length < 3) {
 		frm.desc.focus();
@@ -388,12 +473,15 @@ function createTournament(frm) {
 		$(frm.tname).after('<p class="error">Please specify a longer tournament name.</p>');
 		error = true;
 	}
+	
+	// If there are errors, abort
 	if (error) {
 		$(frm.subbtn).after('<p class="error">There were errors in your submission.</p>');
 		return false;
 	}
 	frm.subbtn.disabled = true;
 	
+	// Submit the form data through an AJAX request
 	$.ajax({
 	  url: '${ROOT}/a/createtournament',
 	  type: 'POST',
@@ -408,9 +496,13 @@ function createTournament(frm) {
 	  dataType: 'json'
 	}).done(function(data, sts) {
 		var src = '';
+		
+		// Check if the action was successful
 		if (data.result == 'success') {
 			src += genTournament(data.tournaments[0]);
 		}
+		
+		// Add the tournament to the list on the page, close the popup, and join the tournament
 		$('#tournaments').append(src);
 		if (popup && popup.close) {
 			popup.close();
@@ -426,6 +518,10 @@ function createTournament(frm) {
 //-- [ Create Team ] -----------------------------------------------------------
 
 var popup2;
+
+/**
+ * Show the 'create tournament' popup form.
+ */
 function showCreateTeam(tid, tname) {
 	popup2 = $('#createTeamForm').bPopup({
 		onClose: function() {$('#createTeamForm form').each(function() {this.reset();});}
@@ -438,6 +534,10 @@ function showCreateTeam(tid, tname) {
 	return false;
 }
 
+/**
+ * Process the submisison of the 'create team' form.
+ * @param frm - A reference to the <form> DOM element.
+ */
 function createTeam(frm) {
 	if (!session) {
 		return false;
@@ -446,6 +546,7 @@ function createTeam(frm) {
 	$(frm).find('input, textarea').removeClass('invalid');
 	$(frm).find('p.error').remove();
 	
+	// Validate the fields
 	var error = false;
 	if (frm.tname.value.trim().length < 3) {
 		frm.tname.focus();
@@ -453,12 +554,15 @@ function createTeam(frm) {
 		$(frm.tname).after('<p class="error">Please specify a longer team name.</p>');
 		error = true;
 	}
+	
+	// If there are errors, abort
 	if (error) {
 		$(frm.subbtn).after('<p class="error">There were errors in your submission.</p>');
 		return false;
 	}
 	frm.subbtn.disabled = true;
 	
+	// Submit the form data through an AJAX request
 	$.ajax({
 	  url: '${ROOT}/a/createteam',
 	  type: 'POST',
@@ -471,9 +575,13 @@ function createTeam(frm) {
 	  dataType: 'json'
 	}).done(function(data, sts) {
 		var src = '';
+		
+		// Check if the action was successful
 		if (data.result == 'success') {
 			reloadTournaments();
 		}
+		
+		// Close the popup
 		if (popup2 && popup2.close) {
 			popup2.close();
 		}
@@ -484,11 +592,16 @@ function createTeam(frm) {
 	return false;
 }
 
+/**
+ * Make an AJAX request to delete the specified team.
+ * @param gid - The ID of the team to delete.
+ */
 function deleteTeam(gid) {
 	if (!session) {
 		return false;
 	}
 	
+	// Make the AJAX request
 	$.ajax({
 	  url: '${ROOT}/a/deleteteam',
 	  type: 'POST',
@@ -497,8 +610,12 @@ function deleteTeam(gid) {
 	  },
 	  dataType: 'json'
 	}).done(function(data, sts) {
+		
+		// Check if the action was successful
 		if (data.result == 'success') {
 			reloadTournaments();
+			
+		// Some other type of server-side error
 		} else {
 			debug && alert(data.result + ': ' + data.errorType);
 		}
@@ -509,11 +626,16 @@ function deleteTeam(gid) {
 	return false;
 }
 
+/**
+ * Make an AJAX request to add the user to the specified team.
+ * @param gid - The ID of the team to join.
+ */
 function joinTeam(gid) {
 	if (!session) {
 		return false;
 	}
 	
+	// Make the AJAX request
 	$.ajax({
 	  url: '${ROOT}/a/jointeam',
 	  type: 'POST',
@@ -522,8 +644,12 @@ function joinTeam(gid) {
 	  },
 	  dataType: 'json'
 	}).done(function(data, sts) {
+		
+		// Check if the action was successful
 		if (data.result == 'success') {
 			reloadTournaments();
+			
+		// Some other type of server-side error
 		} else {
 			debug && alert(data.result + ': ' + data.errorType);
 		}
@@ -534,11 +660,17 @@ function joinTeam(gid) {
 	return false;
 }
 
+/**
+ * Make an AJAX request to remove a player from the team.
+ * @param gid - The ID of the team.
+ * @param pid - The ID of the player to remove.
+ */
 function removeTeamPlayer(gid, pid) {
 	if (!session) {
 		return false;
 	}
 	
+	// Make the AJAX request
 	$.ajax({
 	  url: '${ROOT}/a/removeteamplayer',
 	  type: 'POST',
@@ -548,8 +680,12 @@ function removeTeamPlayer(gid, pid) {
 	  },
 	  dataType: 'json'
 	}).done(function(data, sts) {
+		
+		// Check if the action was successful
 		if (data.result == 'success') {
 			reloadTournaments();
+			
+		// Some other type of server-side error
 		} else {
 			debug && alert(data.result + ': ' + data.errorType);
 		}

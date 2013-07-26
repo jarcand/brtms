@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Display a crude report on possible tournament scheduling conflicts.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/view.inc.php';

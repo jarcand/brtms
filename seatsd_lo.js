@@ -1,3 +1,6 @@
+/**
+ * Make an AJAX request to get the status of the seats.
+ */
 function getSeats() {
 	$.ajax({
 	  url: '${ROOT}/a/getseats',
@@ -8,18 +11,35 @@ function getSeats() {
 	});
 }
 
+/**
+ * Process the seat status results.
+ * @param data - The AJAX response data.
+ */
 function loadSeats(data) {
 	var i = 0;
 	for (key in data) {
-		var func = 'loadSeat("' + key + '","' + data[key] + '")';
-		setTimeout(func, 3000 + i * 200);
+		var scope = function(seat, dname) {
+			var func = function() {loadSeat(seat, dname);};
+			setTimeout(func, 1000 + i * 100);
+		};
+		scope(key, data[key]);
 		i++;
 	}
 }
 
+/**
+ * Show the specified seat as occupied.
+ * @param seat - The seat number.
+ * @param dname - The display name of the player.
+ */
 function loadSeat(seat, dname) {
-	$('#seat-' + seat).addClass('occ').removeClass('vac2');
+	var s = $('#seat-' + seat);
+	s.addClass('occ').removeClass('vac2');
+	if (/Vacant$/.exec(s.attr('title'))) {
+		s.attr('title', 'Taken by ' + dname);
+	}
 }
 
+// Get the seats
 getSeats();
 

@@ -1,33 +1,47 @@
 <?php
 
+/**
+ * Process an invitation acceptance.
+ */
+
 require_once dirname(__FILE__) . '/l/db.inc.php';
 require_once dirname(__FILE__) . '/l/session.inc.php';
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
+// Get the invitation token
 $tok = @$_GET['t'];
 
 $p = NULL;
+
+// Get the player's information
 if ($tok) {
 	$res = $db->query('SELECT * FROM `players` WHERE `firstlogints` IS NULL AND `token`=' . s($tok));
 	$p = $res->fetch_assoc();
 }
 
+// Ensure we found a player
 if (!isSet($p)) {
 	mp('<h1>Invalid Token</h1>
 <p>The link you are using is invalid, either because it is wrong or it has been used before.
   Please contact <a href="mailto:jeffrey&#64;battleroyale.ca">Jeffrey</a> for assitance.</p>');
 }
 
+// Logout any user that may already be logged in
 setCurrUser(0);
 
+// Check how many times the user's email address is reused
+// Note: Email address can be reused when someone registers many people at once,
+// using the same address for them
 $res = $db->query('SELECT COUNT(`email`) AS `c` FROM `players` WHERE `email`=' . s($p['email']));
 $count = $res->fetch_assoc();
 
+// If the email address is unique, use it as a recommendation for their username
 $username = '';
 if ($count['c'] <= 1) {
 	$username = $p['email'];
 }
 
+// Generate the HTML form that has AJAX submission
 $src = sPrintF('
 <div class="center">
 
@@ -69,5 +83,6 @@ $src = sPrintF('
 </div>
 ', $p['fname'], $p['lname'], $p['email'], $username, $p['dname'], $p['ticket'], $tok);
 
+// Output the page
 mp($src, 'Sign-Up Invitation');
 

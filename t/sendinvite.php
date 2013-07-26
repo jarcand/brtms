@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Send the player an invitation email, or display the form to confirm.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/view.inc.php';
@@ -15,6 +19,7 @@ if (!$res) {
 }
 $p = $res->fetch_assoc();
 
+// Generate the fields of the invitation email
 // -----------------------------------------------------------------------------
 $to = sPrintF('%1$s %2$s <%3$s>', $p['fname'], $p['lname'], $p['email']);
 $subject = 'Your Invitation to the Battle Royale Players Portal';
@@ -27,7 +32,6 @@ $headers = implode("\r\n", array(
 	'X-Mailer: PHP/' . phpversion(),
 ));
 // -----------------------------------------------------------------------------
-
 
 $date = strtotime("2012-11-03 00:00:00");
 $remaining = $date - time();
@@ -57,12 +61,15 @@ Battle Royale Organizing Committee
 ', $p['fname'], $p['lname'], $p['token'], $remaining_days);
 // -----------------------------------------------------------------------------
 
+// If the form was submitted, ...
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
+	// Send the email and check for errors
 	$result = @mail($to, $subject, str_replace('<br />', "\n", $message), $headers);
 	
 	if ($result) {
-
+		
+		// Email was successful, update the DB and show a message
 		header('Content-Type: text/plain');
 		echo 'Email invitation successfully sent!';
 		
@@ -75,12 +82,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		echo '  Database successfully updated!';
 		
 	} else {
+		
+		// There was an error, usually because running on the dev server
+		// that doesn't have mail() setup properly
 		header('Content-Type: text/plain');
 		echo 'Oh noes!  There were errors!';
 	}
 	
 } else {
-
+	
+	// Display the form
 	$src = sPrintF('
 <div class="center">
 <h1>Send Invitation Email</h1>

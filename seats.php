@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * Display a static seatign chart.
+ */
+
 require_once dirname(__FILE__) . '/l/seating.inc.php';
 require_once dirname(__FILE__) . '/l/session.inc.php';
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
+// Specify the seats that are special
 $res_seats = array(
   'A14' => ' Unavailable',
   'B14' => ' Unavailable',
@@ -48,6 +53,7 @@ if (!$res) {
 	error($sql);
 }
 
+// Generate the array of occupied seats
 while ($p = $res->fetch_assoc()) {
 	if (!isSet($res_seats[$p['seat']])) {
 		$res_seats[$p['seat']] = $p['dname'];
@@ -56,6 +62,8 @@ while ($p = $res->fetch_assoc()) {
 
 $src = '';
 
+// Display instructions and legend
+// Note: The display is different if the user is not logged in.
 if (isSet($_p)) {
 	$seat_str = '';
 	if ($_p['seat']) {
@@ -103,6 +111,8 @@ if (isSet($_p)) {
 ';
 }
 
+// Generate the chart
+// Note: The chart will be displayed differently if the user is not logged in.
 $src .= genSeatChart($res_seats);
 
 if (isSet($_p)) {

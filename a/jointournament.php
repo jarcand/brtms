@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * AJAX request for the current user to join a tournament.
+ * Note: Returns the updated list of tournaments.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/utils.inc.php';
@@ -20,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	$row = $res->fetch_assoc();
 	
+	// Check the number of major tournaments the user is registered in
 	if ($row['major'] == '1') {
 		$res = $db->query($sql = sPrintF('SELECT COUNT(*) AS `c` FROM `tournament_players`
 		  INNER JOIN `tournaments` USING (`tid`)
@@ -31,26 +37,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$count = $row['c'];
 	}
 	
+	// Ensure they have not surpassed their credit limit
 	if ($count >= $_p['credits']) {
 		$ret['result'] = 'error';
 		$ret['errorType'] = 'overlimit';
 		
 	} else {
-	
+		
 		$res = $db->query($sql = sPrintF('SELECT * FROM `tournament_players`
 		  WHERE `pid`=%1$s AND `tid`=%2$s', s($_p['pid']), $tid_s));
 		if (!$res) {
 			error($sql);
 		}
-	
-	
+		
+		// Ensure they are not already registered for the tournament
 		if ($res->fetch_assoc()) {
 		
 			$ret['result'] = 'error';
 			$ret['errorType'] = 'duplicateEntry';
 		
 		} else {
-	
+			
+			// Update the DB
 			if (!$db->query($sql = sPrintF('INSERT INTO `tournament_players`
 			  SET `pid`=%1$s, `tid`=%2$s', s($_p['pid']), s($_POST['tid'])))) {
 				error($sql);
@@ -60,8 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 	}
 	
-//	header('Content-Type: application/json');
-//	echo json_encode($ret);
+	// Return the updated list of tournaments
 	require 'gettournaments.php';
 	
 } else {

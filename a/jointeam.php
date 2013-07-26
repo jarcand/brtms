@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX request for the current user to join a team/group.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/utils.inc.php';
@@ -11,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$ret = array();
 	$gid = @$_POST['gid'];
 	
+	// Add them to the team/group
 	$res = $db->query($sql = sPrintF('UPDATE `tournament_players`
 	  SET `gid`=%1$s
 	  WHERE `tid`=(SELECT `tid` FROM `groups` WHERE `gid`=%1$s) AND `pid`=%2$s

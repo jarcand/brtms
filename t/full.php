@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Display the comprehensive administration dashboard.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/view.inc.php';
@@ -47,6 +51,7 @@ $stats = $res->fetch_assoc();
 $prize_budget1 = $stats['tickets_1cred'] * 3 + $stats['tickets_3cred'] * 8 + $stats['tickets_10cred'] * 13;
 $prize_budget2 = $stats['tickets_1cred'] * 10 + $stats['tickets_3cred'] * 15 + $stats['tickets_10cred'] * 20;
 
+// Display the comprehensive statistical information
 $src .= '<div class="center">';
 $src .= mt('Total Players', $stats['total'], 'yellow');
 $src .= mt('Signed Up', $stats['signups'], 'green', sPrintF('equiv to %d%%', $stats['signups'] / $stats['total'] * 100));
@@ -82,6 +87,7 @@ $res = $db->query('SELECT `pid`, `fname`, `lname`, `seat`, `credits`, `firstlogi
   FROM `players` `p`
   ORDER BY `tours_major`, `credits`, `tours_crowd`, `firstlogints`');
 
+// Display the full list of users with some of their stats
 $src .= '<table cellspacing="0" class="border center">
 ';
 $ths = '<tr><th>#</th><th>Name</th><th>Seat</th><th>Major</th><th>Crowd</th><th>Teams</th><th>First Login</th><th>Last Login</th><th>Actions</th></tr>';

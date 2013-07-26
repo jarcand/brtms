@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX request to change the currrent user's password.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/utils.inc.php';
@@ -21,16 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	$p = $res->fetch_assoc();
 	
+	// Ensure that the current password matches the DB
 	if (!$p || $p['password'] != $curpwd) {
 		
 		$ret = array('result' => 'error', 'errorType' => 'invalidPassword');
 		
+	// Ensure that the new password meets the requirements
 	} else if (strLen($newpwd_r) < 8) {
 		
 		$ret = array('result' => 'error', 'errorType' => 'invalidParameters');
 		
 	} else {
 		
+		// Update the DB
 		$res = $db->query($sql = 'UPDATE `players`
 		  SET `password`=' . s($newpwd) . '
 		  WHERE `pid`=' . s($_p['pid']));

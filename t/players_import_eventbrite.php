@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Import players from the EventBrite JSON feed, or display a form to do so.
+ */
+
 require_once dirname(__FILE__) . '/../l/config.inc.php';
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
@@ -11,12 +15,15 @@ function parse_line($line) {
 	return explode('","', subStr($line, 1, -1));
 }
 
+// If the form is submitted, ...
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
+	// Get the JSON feed
 	$json = file_get_contents($config['eventbrite_attendee_list']);
 	
 	$data = json_decode($json, true);
 	
+	// Check if each player was already imported
 	$stmt = $db->stmt_init();
 	$stmt->prepare($sql = 'SELECT COUNT(*) AS `c` FROM `players`
 	  WHERE `orderno`=? AND `attendeeno`=?');
@@ -39,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$stmt->execute();
 		$stmt->fetch();
 		
+		// If so, skip
 		if ($c_players != '0') {
 			$c_skips++;
 		} else {
@@ -52,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$c_inserts = 0;
 	foreach ($to_add as $att) {
 		
+		// Determine their credits and early-bird status
 		$ticket_id = $att['ticket_id'];
 		$ticket = '';
 		$credits = 0;
@@ -82,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$early = 0;
 		}
 		
+		// Determine all their fields
 		$fields = array();
 		$fields['token']	= subStr(sha1($config['SALT'] . '-invite-' . $att['id']), 10, 20);
 		$fields['credits']	= $credits;
@@ -102,20 +112,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$sqlp[] = sPrintF('`%s`=%s', $key, s($value));
 		}
 		
+		// Add the player to the DB
 		if (!$db->query($sql = 'INSERT INTO `players` SET ' . implode(', ', $sqlp))) {
 			error($sql);
 		}
 		$c_inserts++;
 	}
 	
-	
+	// Display the results page
 	$src = sPrintF('<h1>Import Players: Results</h1>
 <p>Successfully imported %s players, skipped %2$s existing players.</p><pre>%3$s</pre>', $c_inserts, $c_skips, $d);
 	
 	mp($src);
 	
 } else {
-
+	
+	// Display the form
 	$src = '<h1>Import Players from Eventbrite</h1>
 
 <form action="#" method="post">

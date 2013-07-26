@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX request to create a new team/group.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/utils.inc.php';
@@ -22,13 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$sqlp[] = sPrintF('`%s`=%s', $key, s($value));
 	}
 	
+	// Create the team/group in the DB
 	if (!$db->query($sql = 'INSERT INTO `groups` SET ' . implode(', ', $sqlp))) {
 		error($sql);
 	}
 	
 	$gid = $db->insert_id;
 	
-	
+	// Add the current player to the new team/group
 	if (!$db->query($sql = sPrintF('UPDATE `tournament_players`
 	  SET `gid`=%1$s
 	  WHERE `pid`=%2$s AND `tid`=%3$s

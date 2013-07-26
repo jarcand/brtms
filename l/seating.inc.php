@@ -1,7 +1,18 @@
 <?php
 
+/**
+ * This library file contains the functions used to generate the seating chart.
+ */
+
 require_once dirname(__FILE__) . '/session.inc.php';
 
+/**
+ * Generate a table cell in the seating chart.
+ * Note: The chart will be displayed differently if the user is not logged in.
+ * @param $seat - The seat number (ex: J14).
+ * @param $res_sets - The states of the seats (ex: occupied, reserved, etc).
+ * @return The HTML code of the generated table cell.
+ */
 function genSeatCell($seat, $res_seats = array()) {
 	global $_p;
 	
@@ -26,6 +37,12 @@ function genSeatCell($seat, $res_seats = array()) {
 	}
 }
 
+/**
+ * Generate the seating chart.
+ * Note: The chart will be displayed differently if the user is not logged in.
+ * @param $res_sets - The states of the seats (ex: occupied, reserved, etc).
+ * @return The HTML code of the generated chart.
+ */
 function genSeatChart($res_seats = array()) {
 	
 	$output = '<table cellspacing="0" class="seating-chart real">

@@ -1,21 +1,40 @@
 <?php
 
+/**
+ * This library file contains the functions to used to manage user sessions.
+ */
 
 require_once dirname(__FILE__) . '/config.inc.php';
 require_once dirname(__FILE__) . '/db.inc.php';
 
+// The session cookie name
 define('SES_COOK', $config['instance'] . '-session');
 
+/**
+ * Encode the provided password with salt!
+ * @param $password - The password to encode.
+ * @return The sha1 hash encoded password.
+ */
 function encodePassword($password) {
 	global $config;
 	return sha1($config['SALT'] . '-password-' . $password);
 }
 
+/**
+ * Check if there is currently a user session.
+ * @return Whether or not there is a user session.
+ */
 function isSession() {
 	global $_p;
 	return isSet($_p);
 }
 
+/**
+ * Load the current player's information.
+ * Note: This function has the side-effect of storing the user's IP address in
+ * the database, for use in determining their LAN IP address.
+ * @global $_p - This function affects the global $_p variable.
+ */
 function loadPlayer() {
 	global $db, $ses_token, $_p;
 	if ($ses_token) {
@@ -28,6 +47,8 @@ function loadPlayer() {
 		
 		$ip = $_SERVER['REMOTE_ADDR'];
 		
+		// Update the user's IP address in the database, but
+		// only change a known LAN IP for another IP on our LAN
 		if (preg_match('/^134[.]117[.]20[67][.]/', $ip)
 		  || !preg_match('/^134[.]117[.]20[67][.]/', $_p['ip'])) {
 			$res = $db->query($sql = sPrintF('UPDATE `players`
@@ -42,6 +63,12 @@ function loadPlayer() {
 	}
 }
 
+/**
+ * Enfore the existence of a user session.  If it does not exist, redirect to
+ * the login page.
+ * @param $type default('html') - The redirect output type.
+ * @terminates This function may terminate the script.
+ */
 function requireSession($type = 'html') {
 	global $config, $_p;
 	if (!isSession()) {
@@ -58,6 +85,14 @@ function requireSession($type = 'html') {
 	}
 }
 
+/**
+ * Enfore the existence of a admin session.  If it does not exist, redirect to
+ * the login page.
+ * Note: Admin session is defined as a session for user with PID=1.
+ * @TODO Modify the system to have a more flexible definition of admin user.
+ * @param $type default('html') - The redirect output type.
+ * @terminates This function may terminate the script.
+ */
 function requireAdminSession($type = 'html') {
 	global $config, $_p;
 	if (!isSession() || $_p['pid'] != 1) {
@@ -72,6 +107,10 @@ function requireAdminSession($type = 'html') {
 	}
 }
 
+/**
+ * Set the current user to the one with the specified session token.
+ * @param $new_ses_token - The session token of the new user.
+ */
 function setCurrUser($new_ses_token) {
 	global $ses_token;
 	$ses_token = $new_ses_token;
@@ -79,6 +118,7 @@ function setCurrUser($new_ses_token) {
 	loadPlayer();
 }
 
+// Get the session token from the user's cookie
 $ses_token = @$_COOKIE[SES_COOK];
 $_p = NULL;
 

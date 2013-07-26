@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * AJAX request to get the list of occupied seats and their occupants.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 
 requireSession('json');
 
+// Get the list of seats and the occupant
 $res = $db->query($sql = 'SELECT `seat`, `dname` FROM `players` WHERE `seat` IS NOT NULL');
 if (!$res) {
 	error($sql);

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Display the main home page with static content.
+ */
+
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
 mp('<h1>Players Portal</h1>

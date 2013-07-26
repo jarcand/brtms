@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * AJAX request to change the current player's seat selection.
+ */
+
 require_once dirname(__FILE__) . '/../l/db.inc.php';
 require_once dirname(__FILE__) . '/../l/session.inc.php';
 require_once dirname(__FILE__) . '/../l/utils.inc.php';
@@ -13,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$seat = null;
 	}
 	
+	// Ensure the seat format is valid
 	if ($seat != null && !preg_match('/^[a-z][0-9][0-9]?$/i', $seat)) {
 		$ret = array('result' => 'invalid', 'errorType' => 'invalidParameter');
 		
@@ -24,13 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (!$res) {
 			error($sql);
 		}
-	
+		
+		// Ensure that the seat is not already taken
 		if ($res->fetch_assoc()) {
 		
 			$ret = array('result' => 'invalid', 'errorType' => 'dupe');
 		
 		} else {
-	
+			
+			// Update the DB
 			if (!$db->query($sql = 'UPDATE `players`
 			  SET `seatts`=NOW(), `seat`=' . $s_seat . '
 			  WHERE `pid`=' . s($_p['pid']))) {

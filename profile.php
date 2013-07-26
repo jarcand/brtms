@@ -1,11 +1,16 @@
 <?php
 
+/**
+ * Display the user's profile.
+ */
+
 require_once dirname(__FILE__) . '/l/db.inc.php';
 require_once dirname(__FILE__) . '/l/session.inc.php';
 require_once dirname(__FILE__) . '/l/view.inc.php';
 
 requireSession();
 
+// Get the user's profile information
 $res = $db->query($sql = sPrintF('SELECT
   (SELECT COUNT(`tid`) FROM `tournaments` `t`
     INNER JOIN `tournament_players` `tp` USING (`tid`)
@@ -21,6 +26,7 @@ $src = '
 <h1>Player Profile</h1>
 ';
 
+// Generate the general account information page section
 $src .= sPrintF('
 <form action="#" onsubmit="return updateDname(this);">
 <fieldset class="faded-bg" style="width:450px;">
@@ -36,7 +42,7 @@ $src .= sPrintF('
 </form>
 ', $_p['fname'], $_p['lname'], $_p['email'], $_p['username'], $_p['dname']);
 
-
+// Generate the change password page section
 $src .= sPrintF('
 <form action="#" onsubmit="return changePassword(this);">
 <fieldset class="faded-bg" style="width:450px;">
@@ -53,11 +59,13 @@ $src .= sPrintF('
 </form>
 ', $_p['fname'], $_p['lname'], $_p['email'], $_p['username'], $_p['dname']);
 
+// Check if the user selected a seat
 $seat_release = '';
 if ($_p['seat']) {
 	$seat_release = '&ndash; <a href="javascript:releaseSeat();">Release Seat</a>';
 }
 
+// Generate the registration information page section
 $src .= sPrintF('
 <fieldset class="faded-bg" style="width:450px;">
 <legend>Registration Info</legend>
@@ -73,5 +81,6 @@ $src .= sPrintF('
 
 $src .= '</div>';
 
+// Output the generated HTML page
 mp($src, 'Player Profile');
 
